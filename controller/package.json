@@ -1,0 +1,11 @@
+{
+  "name": "olt-backend-controller",
+  "version": "1.0.0",
+  "description": "mqtt broker controller for tasmota sonoff",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chiarani Fabio",
+  "license": "ISC"
+}
