@@ -1,0 +1,8 @@
+Start broker:
+/usr/local/sbin/mosquitto -c /usr/local/etc/mosquitto/mosquitto.conf
+
+Send request:
+mosquitto_pub -h 192.168.1.109 -t cmnd/sonoff-1/power -m 0
+
+subscribe status:
+mosquitto_sub -h 192.168.1.109 -t cmnd/sonoff-1/STATUS -v
