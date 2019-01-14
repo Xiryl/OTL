@@ -9,6 +9,7 @@
   "author": "Chiarani Fabio",
   "license": "ISC",
   "dependencies": {
+    "colors": "^1.3.3",
     "mqtt": "^2.18.8"
   }
 }
