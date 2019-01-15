@@ -11,46 +11,40 @@ client.on('connect', function () {
 
 	console.log(`[CONTROLLER]-[connect]-[${Date.now()}] Client connected to ${broker}`);
 
-	// subscribe to get sonoff status
+	/** subscribe to sonoff */
 	client.subscribe(`stat/${device}/+`);
+	client.publish	(`cmnd/${device}/status`);
 
-	client.publish(`cmnd/${device}/status`);
 });
 
 let first =  true;
 client.on('message', function (topic, message) {
 
+	if( topic === `stat/${device}/STATUS`) {
+		console.log('[STATUS] inside status');
 
-	if(first) {
-		const x = JSON.parse(message.toString()).Status.Power;
-		console.log('[message]', JSON.parse(message.toString()));
-		console.log('[stat]', x);
-		console.log('[topic]', topic.toString());
-	
-	// control if message received is for actual sonoff
-	/*if (topic === `stat/${device}/STATUS`) {
-	}*/
-		console.log(`${Date.now()} Received ${topic} ${message}`);
+		const actualPowerStatus = JSON.parse(message.toString()).Status.Power;
+		const newStatus = actualPowerStatus == 0 ? 'ON' : 'OFF';
 
-		let newState;
-		console.log('** stato:', state);
-		if(x === 0) {
-			newState = 'ON';
-			console.log('on');
-		}
-		else{
-			newState = 'OFF';
-			console.log('off');
-		}
+		console.log(`[STATUS] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
+		console.log(`[STATUS] new power status : ${newStatus} [0] OFF - [1] ON`);
+		console.log('[STATUS] sending new power status ...');
 
-		console.log('** stato:', newState);
-		client.publish(`cmnd/${device}/power`, newState);
-		console.log(`${Date.now()} TX cmnd/${device}/power ${newState}`);
-		first=false;
-}
-else {
-	console.log('------\n\n');
-	return;
-}
-	
+		client.publish(`cmnd/${device}/power`, newStatus);
+		console.log('[STATUS] sended.');
+
+	}
+	else if( topic === `stat/${device}/RESULT`) {
+		console.log('[RESULT] inside status');
+		console.log(`[RESULT] ${message.toString()}`);
+		//** skip this */
+	}
+	else if( topic === `stat/${device}/POWER`) {
+		console.log('[POWER] inside status');
+		console.log(`[POWER] ${message.toString()}`);
+
+		//** skip this */
+	}
 });
+
+
