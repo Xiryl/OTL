@@ -1,5 +1,6 @@
 /**https://medium.com/dev-bits/a-guide-for-adding-jwt-token-based-authentication-to-your-single-page-nodejs-applications-c403f7cf04f4 */
 let jwt = require('jsonwebtoken');
+const config = require('./config/config.json');
 
 let chechToken = ( request, response, callback ) =>  {
     console.log('[SERVER] inside chechToken');
@@ -17,7 +18,7 @@ let chechToken = ( request, response, callback ) =>  {
         console.log('[SERVER] received token:',token);
 
         /** verify the token with jwt */
-        jwt.verify(token, config.private_key, ( error, decoded )  => {
+        jwt.verify(token, config.jwt.JWT_PRIVATE_KEY, ( error, decoded )  => {
             if(error) {
                 return response.json({
                     success: false,

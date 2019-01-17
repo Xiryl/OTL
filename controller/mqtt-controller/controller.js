@@ -1,4 +1,5 @@
-const mqtt		= require('mqtt');
+const mqtt	 = require('mqtt');
+const config = require('../config/config.json');
 
 /** API */
 /**==================================================================================== */
@@ -6,7 +7,7 @@ mqtt_client.publish(`cmnd/${device}/power`, 'OFF');
 
 /** MQTT */
 /**==================================================================================== */
-const mqtt_client = mqtt.connect(BROKER_ADDR);	
+const mqtt_client = mqtt.connect(config.MQTT.MQTT_SERVER_ADDRESS);	
 
 /** CONNECTION HANDLER */
 mqtt_client.on('connect', function () {

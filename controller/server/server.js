@@ -2,14 +2,13 @@ const express       = require('express');
 const bodyParser    = require('body-parser');
 let authenticator   = require('../authenticator');
 let loginHandler    = require('./server-handlers/login-handler');
-
+const config        = require('../config/config.json');
 
 let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
-
     // check if topic exists
-    if(mqttTopics.topics.includes(topic)) {
+    if(config.MQTT.MQTT_ALLOWED_TOPICS.includes(topic)) {
         // check if devices is on white list
-        if(mqttDevices.allowed_devices.includes(dev)) {
+        if(config.MQTT.MQTT_ALLOWED_DEVICES.includes(dev)) {
             //TODO: send command   
             
             return res.json({
@@ -18,7 +17,6 @@ let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
             });
         }
     }
-    
 }
 
 let start = () => {
@@ -54,7 +52,7 @@ let start = () => {
         });
     });
     
-    app.listen(SERVER_PORT, () => console.log(`Server is listening on port: ${SERVER_PORT}`));
+    app.listen(config.server.SERVER_PORT, () => console.log(`Server is listening on port: ${config.server.SERVER_PORT}`));
 };
 
 start();
