@@ -11,7 +11,7 @@ Over The Light is my personal project for home automation system that allows you
 
 ## Guide
 - [Install](#installation)
-- [Authentication](#how-authentication-and-device-command-work)
+- [Authentication system with JWT](#how-authentication-and-device-command-work)
 - [Project Structure](#project-structure)
 - [Related](#related)
 
