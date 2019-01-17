@@ -20,7 +20,7 @@ To start the project make sure you have fill the `config` file with the correct 
 
 ## How Authentication and device command work
 
-The authentication system use JWT + PrivateKey + User IP to authenticate the request. You can open the image in large format [here](hhttps://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png?raw=true)
+The authentication system use JWT + PrivateKey + User IP to authenticate the request. You can open the image in large format [here](https://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png?raw=true)
 
 <img src="https://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png" />
 
