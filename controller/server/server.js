@@ -8,8 +8,8 @@ let loginHandler    = require('./server-handlers/login-handler');
 /** const */
 const SERVER_PORT = 5011;
 
-let APISendCommandToMQTTBroker = (request, response) => {
-    //OK
+let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
+   console.log('yooo');
 }
 
 let start = () => {
@@ -31,10 +31,10 @@ let start = () => {
     });
 
     /** API call handler */ 
-    app.get('/:device/:command', (request, response) => {
-        console.log(request.params.device);
-        console.log(request.params.command);
-        //authenticator.chechToken(req, res, APISendCommandToMQTTBroker);
+    app.get('/:topic/:device/:command', (request, response) => {
+        authenticator.chechToken(request, response, (err, data) => {
+            APISendCommandToMQTTBroker(request, response, request.params.topic, request.params.device, request.params.command);
+        });
     });
     
     app.listen(SERVER_PORT, () => console.log(`Server is listening on port: ${SERVER_PORT}`));

@@ -8,12 +8,9 @@ const SERVER_PORT = 8448;
 const BROKER_HOST = '192.168.43.110';
 const BROKER_ADDR = `mqtt://${BROKER_HOST}`;	
 
-const allowed_devices = ['sonoff-1'];				// SONOFF IDENTIFIER
-
 /** API */
 /**==================================================================================== */
 app.get('/', (req, res) => {
-	
 	mqtt_client.publish(`cmnd/${device}/power`, 'OFF');	
 	res.send('Hello World with Express');
 
@@ -35,7 +32,7 @@ mqtt_client.on('connect', function () {
 
 	/** subscribe to sonoff */
 	mqtt_client.subscribe(`stat/${device}/+`);
-	mqtt_client.publish	(`cmnd/${device}/status`);
+	mqtt_client.publish	 (`cmnd/${device}/status`);
 
 });
 

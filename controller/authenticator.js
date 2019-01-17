@@ -3,7 +3,7 @@
 let     jwt     = require('jsonwebtoken');
 const   config  = require('./config/config.js');
 
-let chechToken = ( request, response, next ) =>  {
+let chechToken = ( request, response, callback ) =>  {
     console.log('[SERVER] inside chechToken');
     let token = request.headers['x-access-token'] || request.headers['authorization'];
     const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
@@ -26,7 +26,7 @@ let chechToken = ( request, response, next ) =>  {
             }
 
             if(decoded.ip === client_ip) {
-                return next(request, response);
+                return callback(null, 'ok');
             }
             else {
                 return response.json({
