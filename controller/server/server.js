@@ -1,15 +1,30 @@
 const express       = require('express');
 const bodyParser    = require('body-parser');
-let jwt             = require('jsonwebtoken');
-let config          = require('../config/config');
 let authenticator   = require('../authenticator');
 let loginHandler    = require('./server-handlers/login-handler');
+
+const mqttDevices   = require('./../mqtt-controller/devices');
+const mqttTopics    = require('./../mqtt-controller/topics');
+const mqttCommands  = ['ON', 'OFF'];
 
 /** const */
 const SERVER_PORT = 5011;
 
 let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
-   console.log('yooo');
+
+    // check if topic exists
+    if(mqttTopics.topics.includes(topic)) {
+        // check if devices is on white list
+        if(mqttDevices.allowed_devices.includes(dev)) {
+            //TODO: send command   
+            
+            return res.json({
+                allowed: true,
+                message: `Command ${cmd} sended to ${topic}/${dev} successfully.`
+            });
+        }
+    }
+    
 }
 
 let start = () => {
@@ -32,8 +47,16 @@ let start = () => {
 
     /** API call handler */ 
     app.get('/:topic/:device/:command', (request, response) => {
-        authenticator.chechToken(request, response, (err, data) => {
-            APISendCommandToMQTTBroker(request, response, request.params.topic, request.params.device, request.params.command);
+        authenticator.chechToken(request, response, ( data ) => {
+            if(!data) {
+                return response.json({
+                    allowed: true,
+                    message: 'Something goes wrong. Retry.'
+                });
+            }
+            else{
+                APISendCommandToMQTTBroker(request, response, request.params.topic, request.params.device, request.params.command); 
+            }
         });
     });
     

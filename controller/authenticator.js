@@ -5,11 +5,12 @@ const   config  = require('./config/config.js');
 
 let chechToken = ( request, response, callback ) =>  {
     console.log('[SERVER] inside chechToken');
-    let token = request.headers['x-access-token'] || request.headers['authorization'];
+    let token       = request.headers['x-access-token'] || request.headers['authorization'];
     const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
     
     if(token) {
         if (token.startsWith('Bearer ')) {
+            
             /** Remove Bearer from string */ 
             token = token.slice(7, token.length);
         }
@@ -26,7 +27,7 @@ let chechToken = ( request, response, callback ) =>  {
             }
 
             if(decoded.ip === client_ip) {
-                return callback(null, 'ok');
+                return callback(true);
             }
             else {
                 return response.json({
