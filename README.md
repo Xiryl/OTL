@@ -20,7 +20,7 @@ To start the project make sure you have fill the `config` file with the correct 
 
 ## How Authentication and device command work
 
-The authentication system use JWT + PrivateKey + User IP to authenticate the request. You can open the image in large format [here](https://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png)
+The authentication system use JWT + PrivateKey + User IP to authenticate the request. You can open the image in large format [here](hhttps://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png?raw=true)
 
 <img src="https://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png" />
 
@@ -29,7 +29,7 @@ Each folder of the repo corresponds to an component. You can find these componen
 
 - `droid`
   - Android app
-  - Wear OS app
+  - Wear OS appIOT_Comunication.png
 - `controller`
   - all the components that manage the back-end & MQTT broker
 - `raspi`
