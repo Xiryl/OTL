@@ -8,12 +8,11 @@ let loginHandler    = require('./server-handlers/login-handler');
 /** const */
 const SERVER_PORT = 5011;
 
-let apiHandler = (request, response) => {
+let APISendCommandToMQTTBroker = (request, response) => {
     //OK
 }
 
 let start = () => {
-
     // Todo: make more secure like https://expressjs.com/it/advanced/best-practice-security.html
 
     let app = express();
@@ -25,15 +24,17 @@ let start = () => {
 
     app.use(bodyParser.json());
 
-    /** AUTH HANDLER */ 
-    app.post('/auth', (req, res)  => {
+    /** PAI auth handler */ 
+    app.post('/auth', (request, response)  => {
         console.log('[SERVER] inside /auth');
-        loginHandler(req, res);
+        loginHandler(request, response);
     });
 
-    /** API CALL HANDLER */ 
-    app.get('/on', (req, res) => {
-        authenticator.chechToken(req, res, apiHandler);
+    /** API call handler */ 
+    app.get('/:device/:command', (request, response) => {
+        console.log(request.params.device);
+        console.log(request.params.command);
+        //authenticator.chechToken(req, res, APISendCommandToMQTTBroker);
     });
     
     app.listen(SERVER_PORT, () => console.log(`Server is listening on port: ${SERVER_PORT}`));
