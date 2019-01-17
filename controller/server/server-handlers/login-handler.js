@@ -11,7 +11,7 @@ let loginHandler = (request, response) => {
         /** create token */
         let client_token = jwt.sign({client_username: username, ip: client_ip}, config.jwt.JWT_PRIVATE_KEY);
 
-        console.log(`[SERVER] Autehticated user '${username}' with token '${client_token}'.\nIP: ${client_ip}`);
+        console.log(`[SERVER] Autehticated user '${username}' with token '${client_token}' e IP: ${client_ip}`);
 
         /** send token */
         response.json({

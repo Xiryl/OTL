@@ -3,7 +3,6 @@ let jwt = require('jsonwebtoken');
 const config = require('./config/config.json');
 
 let chechToken = ( request, response, callback ) =>  {
-    console.log('[SERVER] inside chechToken');
 
     let token       = request.headers['x-access-token'] || request.headers['authorization'];
     const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;

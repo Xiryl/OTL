@@ -3,6 +3,7 @@ const bodyParser    = require('body-parser');
 let authenticator   = require('../authenticator');
 let loginHandler    = require('./server-handlers/login-handler');
 const config        = require('../config/config.json');
+const controller    = require('../mqtt-controller/controller');
 
 let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
     // check if topic exists
@@ -11,6 +12,8 @@ let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
         if(config.MQTT.MQTT_ALLOWED_DEVICES.includes(dev)) {
             //TODO: send command   
             
+            controller(null, dev, cmd);
+
             return res.json({
                 allowed: true,
                 message: `Command ${cmd} sended to ${topic}/${dev} successfully.`
@@ -23,7 +26,6 @@ let start = () => {
     // Todo: make more secure like https://expressjs.com/it/advanced/best-practice-security.html
 
     let app = express();
-    let handler = null;
 
     app.use(bodyParser.urlencoded({
         extended: true
@@ -33,7 +35,6 @@ let start = () => {
 
     /** PAI auth handler */ 
     app.post('/auth', (request, response)  => {
-        console.log('[SERVER] inside /auth');
         loginHandler(request, response);
     });
 
