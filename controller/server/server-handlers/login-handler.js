@@ -1,5 +1,4 @@
-let jwt             = require('jsonwebtoken');
-let config          = require('../../config/config');
+let jwt = require('jsonwebtoken');
 
 /** const */
 const TOKEN_EXPIRATION = '1h';

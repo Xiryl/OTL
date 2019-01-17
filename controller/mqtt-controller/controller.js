@@ -1,25 +1,8 @@
 const mqtt		= require('mqtt');
-let express		= require('express')
-let app			= express();
-
-/** CONSTANTS */
-/**==================================================================================== */
-const SERVER_PORT = 8448;
-const BROKER_HOST = '192.168.43.110';
-const BROKER_ADDR = `mqtt://${BROKER_HOST}`;	
 
 /** API */
 /**==================================================================================== */
-app.get('/', (req, res) => {
-	mqtt_client.publish(`cmnd/${device}/power`, 'OFF');	
-	res.send('Hello World with Express');
-
-});
-
-app.listen(SERVER_PORT, function () {
-     console.log(`[SERVER] Starting server on port ${SERVER_PORT} ...`);
-});
-
+mqtt_client.publish(`cmnd/${device}/power`, 'OFF');	
 
 /** MQTT */
 /**==================================================================================== */

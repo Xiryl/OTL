@@ -3,12 +3,6 @@ const bodyParser    = require('body-parser');
 let authenticator   = require('../authenticator');
 let loginHandler    = require('./server-handlers/login-handler');
 
-const mqttDevices   = require('./../mqtt-controller/devices');
-const mqttTopics    = require('./../mqtt-controller/topics');
-const mqttCommands  = ['ON', 'OFF'];
-
-/** const */
-const SERVER_PORT = 5011;
 
 let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
 

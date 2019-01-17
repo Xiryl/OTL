@@ -1,0 +1,22 @@
+{
+    "MQTT": {
+        "MQTT_BROKER_ADDRESS" : "address",
+        "MQTT_ALLOWED_DEVICES" : [
+            "device1"
+        ],
+        "MQTT_ALLOWED_TOPICS" : [
+            "topic1"
+        ],
+        "MQTT_ALLOWED_COMMANDS" : [
+            "ON", "OFF"
+        ]
+    },
+    "server" : {
+        "SERVER_HOST" : "localhost",
+        "SERVER_PORT" : 8080
+    },
+    "jwt" : {
+        "JWT_TOKEN_EXPIRATION" : "1h",
+        "JWT_PRIVATE_KEY" : "pass"
+    }
+}
