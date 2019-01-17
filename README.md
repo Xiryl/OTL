@@ -16,7 +16,37 @@ Over The Light is my personal project for home automation system that allows you
 - [Related](#related)
 
 ## Installation
-To start the project make sure you have fill the `config` file with the correct parameters
+To run the entire project you need:
+- An MQTT broker server active
+- MQTT libraries on pc
+- Install all node dependencies with `npm install` for each component
+- Fill the `config.json` file
+
+```
+{
+    "MQTT": {
+        "MQTT_BROKER_ADDRESS" : "mqtt://127.0.01, // MQTT Broker Server Address
+        "MQTT_ALLOWED_DEVICES" : [
+            "sonoff-1"                            // List of allowed IoT devices that can be access from MQTT controller
+        ],
+        "MQTT_ALLOWED_TOPICS" : [
+            "bedroom"                             // List of allowed topics that can be access from MQTT controller
+        ],      
+        "MQTT_ALLOWED_COMMANDS" : [
+            "ON", "OFF"                           // List of allowed commands that the user can send
+        ]
+    },
+    "server" : {
+        "SERVER_HOST" : "localhost",              // Where start express server
+        "SERVER_PORT" : 5011                      // Express server port
+    },
+    "jwt" : {
+        "JWT_ALLOWED_USERS" : [ "op6-fabio"],     // Users that can be access to Express server (API)
+        "JWT_TOKEN_EXPIRATION" : "1h",            // JWT Experiation time
+        "JWT_PRIVATE_KEY" : "fabiofabio"          // JWT Secret Key for sign
+    }
+}
+```
 
 ## How Authentication and device command work
 
