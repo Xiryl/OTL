@@ -4,15 +4,18 @@ let     jwt     = require('jsonwebtoken');
 const   config  = require('./config/config.js');
 
 let chechToken = ( request, response, next ) =>  {
-
+    console.log('[SERVER] inside chechToken');
     let token = request.headers['x-access-token'] || request.headers['authorization'];
-    if (token.startsWith('Bearer ')) {
-        /** Remove Bearer from string */ 
-        token = token.slice(7, token.length);
-    }
-
+    const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+    
     if(token) {
-        
+        if (token.startsWith('Bearer ')) {
+            /** Remove Bearer from string */ 
+            token = token.slice(7, token.length);
+        }
+
+        console.log('[SERVER] received token:',token);
+
         /** verify the token with jwt */
         jwt.verify(token, config.private_key, ( error, decoded )  => {
             if(error) {
@@ -22,8 +25,15 @@ let chechToken = ( request, response, next ) =>  {
                 });
             }
 
-            request.decoded = decoded;
-            next();
+            if(decoded.ip === client_ip) {
+                return next(request, response);
+            }
+            else {
+                return response.json({
+                    success: false,
+                    message: 'Invalid token.'
+                });
+            }
         });
     }
     else {
