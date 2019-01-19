@@ -5,6 +5,7 @@ let loginHandler    = require('./server-handlers/login-handler');
 const config        = require('../config/config.json');
 const controller    = require('../mqtt-controller/controller');
 let log             = require('./../logger/logger');
+let slack           = require('./../slack/slack');
 
 
 let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
@@ -17,7 +18,16 @@ let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
             if(config.MQTT.MQTT_ALLOWED_COMMANDS.includes(cmd)) {
                 controller(topic, dev, cmd);
                 log.info(`Command from IP: ${client_ip}-'${topic}/${dev}/${cmd}' sent.`);
-    
+                
+                slack.webhook({
+                    channel: config.slack.SLACK_CHANNEL,
+                    username: "VPS",
+                    icon_emoji: ":bulb:",
+                    text: `Light turned ${cmd} from user with IP:${client_ip}.`
+                  }, function(err, res) {
+                    console.log(err);
+                  });
+
                 return res.json({
                     allowed: true,
                     message: `Command ${cmd} sended to ${topic}/${dev}/${cmd} successfully.`
