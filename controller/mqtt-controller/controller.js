@@ -1,6 +1,8 @@
 const mqtt	 = require('mqtt');
 const config = require('../config/config.json');
 
+let getDeviceStatus = () => {};
+
 let controlDevice = (topic, device, command) => {
 	const mqtt_client = mqtt.connect(config.MQTT.MQTT_BROKER_ADDRESS);	
 
@@ -45,4 +47,4 @@ let controlDevice = (topic, device, command) => {
 	});
 };
 
-module.exports = controlDevice;
+module.exports = controlDevice, getDeviceStatus;

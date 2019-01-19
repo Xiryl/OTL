@@ -4,21 +4,47 @@ let authenticator   = require('../authenticator');
 let loginHandler    = require('./server-handlers/login-handler');
 const config        = require('../config/config.json');
 const controller    = require('../mqtt-controller/controller');
+let log             = require('./../logger/logger');
+
 
 let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
-    // check if topic exists
+    const client_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    // check if topic is on white list
     if(config.MQTT.MQTT_ALLOWED_TOPICS.includes(topic)) {
         // check if devices is on white list
-        if(config.MQTT.MQTT_ALLOWED_DEVICES.includes(dev)) {
-            //TODO: send command   
-            
-            controller(null, dev, cmd);
-
+        if(config.MQTT.MQTT_ALLOWED_DEVICES.includes(dev)) {  
+            // check if command is on white list
+            if(config.MQTT.MQTT_ALLOWED_COMMANDS.includes(cmd)) {
+                controller(topic, dev, cmd);
+                log.info(`Command from IP: ${client_ip}-'${topic}/${dev}/${cmd}' sent.`);
+    
+                return res.json({
+                    allowed: true,
+                    message: `Command ${cmd} sended to ${topic}/${dev}/${cmd} successfully.`
+                });
+            }
+            else{
+                log.error(`User from IP: ${client_ip}-'${topic}/${dev}/${cmd}' send invalid command.`);
+                return res.json({
+                    allowed: false,
+                    message: `Invalid command '${cmd}'.`
+                });
+            }
+        }
+        else{
+            log.error(`User from IP: ${client_ip}-'${topic}/${dev}/${cmd}' send invalid device.`);
             return res.json({
-                allowed: true,
-                message: `Command ${cmd} sended to ${topic}/${dev} successfully.`
+                allowed: false,
+                message: `Invalid device '${dev}'.`
             });
         }
+    }
+    else {
+        log.error(`User from IP: ${client_ip}-'${topic}/${dev}/${cmd}' send invalid topic.`);
+        return res.json({
+            allowed: false,
+            message: `Invalid topic '${topic}'.`
+        });
     }
 }
 
@@ -40,6 +66,13 @@ let start = () => {
 
     /** API call handler */ 
     app.get('/:topic/:device/:command', (request, response) => {
+        const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+        const topic     = request.params.topic;
+        const device    = request.params.device;
+        const command   = request.params.command;
+
+        log.debug(`Receiving request: '${topic}/${device}/${command}' from IP: ${client_ip}`);
+
         authenticator.chechToken(request, response, ( data ) => {
             if(!data) {
                 return response.json({
@@ -48,12 +81,13 @@ let start = () => {
                 });
             }
             else{
+                log.info(`User authenticated with IP: ${client_ip}. Checking command validation...`);
                 APISendCommandToMQTTBroker(request, response, request.params.topic, request.params.device, request.params.command); 
             }
         });
     });
     
-    app.listen(config.server.SERVER_PORT, () => console.log(`Server is listening on port: ${config.server.SERVER_PORT}`));
+    app.listen(config.server.SERVER_PORT, () => {log.info(`Server is listening on port: ${config.server.SERVER_PORT}`);});
 };
 
 start();

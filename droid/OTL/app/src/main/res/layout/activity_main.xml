@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
     <android.support.design.bottomappbar.BottomAppBar
@@ -12,20 +11,16 @@
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="@drawable/ic_menu"
-        app:backgroundTint="@android:color/white"
-        android:elevation="8dp"
-        app:fabAlignmentMode="center">
-
-
+        app:backgroundTint="@color/colorPrimary"
+        app:fabAlignmentMode="center"
+        app:elevation="10dp"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
 
     </android.support.design.bottomappbar.BottomAppBar>
-
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fav"
         android:elevation="8dp"
-        app:backgroundTint="#48D364"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_anchor="@id/bar"

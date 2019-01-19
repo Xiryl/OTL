@@ -1,5 +1,6 @@
 let jwt      = require('jsonwebtoken');
 const config = require('../../config/config.json');
+let log      = require('./../../logger/logger');
 
 let loginHandler = (request, response) => {
 
@@ -11,7 +12,7 @@ let loginHandler = (request, response) => {
         /** create token */
         let client_token = jwt.sign({client_username: username, ip: client_ip}, config.jwt.JWT_PRIVATE_KEY);
 
-        console.log(`[SERVER] Autehticated user '${username}' with token '${client_token}' e IP: ${client_ip}`);
+        log.info(`Autehticated user '${username}' with token '${client_token}' & IP: ${client_ip}`)
 
         /** send token */
         response.json({
@@ -22,7 +23,7 @@ let loginHandler = (request, response) => {
     }
     else
     {
-        console.log(`[SERVER] Autehtication failed for user '${username}'.\nIP: ${client_ip}`);
+        log.error(`Failed to authenticate user '${username}' with IP: ${client_ip}`);
 
         response.json({
             success: false,

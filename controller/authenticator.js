@@ -1,6 +1,7 @@
 /**https://medium.com/dev-bits/a-guide-for-adding-jwt-token-based-authentication-to-your-single-page-nodejs-applications-c403f7cf04f4 */
-let jwt = require('jsonwebtoken');
-const config = require('./config/config.json');
+let jwt         = require('jsonwebtoken');
+const config    = require('./config/config.json');
+let log         = require('./logger/logger');
 
 let chechToken = ( request, response, callback ) =>  {
 
@@ -13,12 +14,13 @@ let chechToken = ( request, response, callback ) =>  {
             /** Remove Bearer from string */ 
             token = token.slice(7, token.length);
         }
-
-        console.log('[SERVER] received token:',token);
+        
+        log.debug(`Received request from IP:${client_ip} and token:${token}`);
 
         /** verify the token with jwt */
         jwt.verify(token, config.jwt.JWT_PRIVATE_KEY, ( error, decoded )  => {
             if(error) {
+                log.error(`Error, invalid token from IP:${client_ip} and token:${token}`);
                 return response.json({
                     success: false,
                     message: 'Invalid token.'
@@ -26,9 +28,11 @@ let chechToken = ( request, response, callback ) =>  {
             }
 
             if(decoded.ip === client_ip) {
+                log.debug(`Validating user with IP:${client_ip} and token:${token}`);
                 return callback(true);
             }
             else {
+                log.error(`Error, invalid 'client_ip' with same token from IP:${client_ip} and token:${token}`);
                 return response.json({
                     success: false,
                     message: 'Invalid token.'
@@ -37,6 +41,7 @@ let chechToken = ( request, response, callback ) =>  {
         });
     }
     else {
+        log.error(`Error, Auth token is not supplied from IP:${client_ip}.`);
         return response.json({
             success: false,
             message: 'Auth token is not supplied.'
