@@ -2,10 +2,11 @@
 let jwt         = require('jsonwebtoken');
 const config    = require('./config/config.json');
 let log         = require('./logger/logger');
+let customError = require('./../../customError/customError');
 
-let chechToken = ( request, response, callback ) =>  {
+let chechToken = async ( request, response ) =>  {
 
-    let token       = request.headers['x-access-token'] || request.headers['authorization'];
+    let token       = request.headers['x-access-token']  || request.headers['authorization'];
     const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
     
     if(token) {
@@ -21,31 +22,22 @@ let chechToken = ( request, response, callback ) =>  {
         jwt.verify(token, config.jwt.JWT_PRIVATE_KEY, ( error, decoded )  => {
             if(error) {
                 log.error(`Error, invalid token from IP:${client_ip} and token:${token}`);
-                return response.json({
-                    success: false,
-                    message: 'Invalid token.'
-                });
+                throw new InvalidTokenException();
             }
 
             if(decoded.ip === client_ip) {
                 log.debug(`Validating user with IP:${client_ip} and token:${token}`);
-                return callback(true);
+                return true;
             }
             else {
                 log.error(`Error, invalid 'client_ip' with same token from IP:${client_ip} and token:${token}`);
-                return response.json({
-                    success: false,
-                    message: 'Invalid token.'
-                });
+                throw new UserIpChangesException();
             }
         });
     }
     else {
         log.error(`Error, Auth token is not supplied from IP:${client_ip}.`);
-        return response.json({
-            success: false,
-            message: 'Auth token is not supplied.'
-        });
+        throw new MissingTokenException();
     }
 };
 

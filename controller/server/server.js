@@ -100,6 +100,8 @@ let start = () => {
 
     app.use(bodyParser.json());
 
+
+
     /** AUTH */
     /**======================================================================== */
     app.post('/auth', async (request, response)  => {
@@ -133,7 +135,7 @@ let start = () => {
         const device    = request.params.device;
         const command   = request.params.command;
 
-        log.debug(`Receiving request: '${action}/${topic}/${device}/${command}' from IP: ${client_ip}`);
+        log.debug(`Receiving command: '${action}/${topic}/${device}/${command}' from IP: ${client_ip}`);
 
         authenticator.chechToken(request, response, ( data ) => {
             if(!data) {
