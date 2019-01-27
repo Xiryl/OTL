@@ -15,8 +15,8 @@ class MissingTokenException extends Error {
 		super("Token is not supplied");
 	}
 }
-module.exports = { 
+module.exports = 
 	InvalidTokenException, 
 	UserIpChangesException, 
 	MissingTokenException 
-};
+;

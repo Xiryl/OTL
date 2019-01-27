@@ -2,7 +2,7 @@
 let jwt         = require('jsonwebtoken');
 const config    = require('./config/config.json');
 let log         = require('./logger/logger');
-let customError = require('./../../customError/customError');
+let customError = require('./customError/customError');
 
 let chechToken = async ( request, response ) =>  {
 
