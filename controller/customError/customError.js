@@ -15,8 +15,37 @@ class MissingTokenException extends Error {
 		super("Token is not supplied");
 	}
 }
-module.exports = { 
+
+class InvalidActionForCommandException extends Error {
+	constructor() {
+		super("Invalid param action for command");
+	}
+}
+
+class InvalidTopicForCommandException extends Error {
+	constructor() {
+		super("Invalid topic for command");
+	}
+}
+
+class InvalidDeviceForCommandException extends Error {
+	constructor() {
+		super("Invalid device for command");
+	}
+}
+
+class InvalidCommandForCommandException extends Error {
+	constructor() {
+		super("Invalid command for command");
+	}
+}
+
+module.exports = 
 	InvalidTokenException, 
 	UserIpChangesException, 
-	MissingTokenException 
-};
+	MissingTokenException,
+	InvalidActionForCommandException,
+	InvalidTopicForCommandException,
+	InvalidDeviceForCommandException,
+	InvalidCommandForCommandException
+;

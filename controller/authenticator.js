@@ -4,11 +4,8 @@ const config    = require('./config/config.json');
 let log         = require('./logger/logger');
 let customError = require('./../../customError/customError');
 
-let chechToken = async ( request, response ) =>  {
+let chechToken = async (token, client_ip) =>  {
 
-    let token       = request.headers['x-access-token']  || request.headers['authorization'];
-    const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-    
     if(token) {
         if (token.startsWith('Bearer ')) {
 
