@@ -6,17 +6,13 @@ const config        = require('../config/config.json');
 let controller      = require('../mqtt-controller/controller');
 let log             = require('./../logger/logger');
 let slack           = require('./../slack/slack');
+const cmdValidation = require('./serverDataValidator');
 
 
 let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
     const client_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    // check if topic is on white list
-    if(config.MQTT.MQTT_ALLOWED_TOPICS.includes(topic)) {
-        // check if devices is on white list
-        if(config.MQTT.MQTT_ALLOWED_DEVICES.includes(dev)) {  
-            // check if command is on white list
-            if(config.MQTT.MQTT_ALLOWED_COMMANDS.includes(cmd)) {
-                controller.controlDevice(topic, dev, cmd);
+
+                
                 log.info(`Command from IP: ${client_ip}-'${topic}/${dev}/${cmd}' sent.`);
                 
                /* slack.webhook({
@@ -129,6 +125,7 @@ let start = () => {
     /** COMMAND */
     /**======================================================================== */
     app.get('/:action/:topic/:device/:command', (request, response) => {
+        const token     = request.headers['x-access-token']  || request.headers['authorization'];
         const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
         const action    = request.params.action;
         const topic     = request.params.topic;
@@ -137,21 +134,56 @@ let start = () => {
 
         log.debug(`Receiving command: '${action}/${topic}/${device}/${command}' from IP: ${client_ip}`);
 
-        authenticator.chechToken(request, response, ( data ) => {
-            if(!data) {
-                return response.json({
-                    allowed: true,
-                    message: 'Something goes wrong. Retry.'
-                });
-            }
-            else{
+        try {
+            const res_auth = await authenticator.chechToken(token, client_ip);
+
+            if(res_auth) {
                 log.info(`User authenticated with IP: ${client_ip}. Checking command validation...`);
 
-                if(action === 'control'){
-                    APISendCommandToMQTTBroker(request, response, topic, device, command); 
+                try {
+                    const res_cmd_validation = await cmdValidation.commandParamValidation(action, topic, device, command);
+                    
+                    if(res_cmd_validation) {
+                        // launch command
+                        controller.controlDevice(topic, device, command);
+                    }
                 }
+                catch(Exception ex) {
+
+                }
+                
+
             }
-        });
+        }
+        catch(InvalidTokenException ex) {
+            log.error(`User with IP: ${client_ip} send invalid token: ${token}`);
+            response.json({
+                allowed: false,
+                message: ex.message
+            });
+        }
+        catch(UserIpChangesException ex) {
+            log.error(`User with IP: ${client_ip} was authenticated with different IP`);
+            response.json({
+                allowed: false,
+                message: ex.message
+            });
+        }
+        catch(MissingTokenException ex) {
+            log.error(`User with IP: ${client_ip} miss token`);
+            response.json({
+                allowed: false,
+                message: ex.message
+            });
+        }
+        catch(Exception ex) {
+            log.error(`User with IP: ${client_ip} got unknow error during authentication`);
+            response.json({
+                allowed: false,
+                message: `Something goes wrong, retry. Error: ${ex.message}`
+            });
+        }
+
     });
 
      /** API call handler */ 

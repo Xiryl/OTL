@@ -9,11 +9,13 @@
         ],
         "MQTT_ALLOWED_COMMANDS" : [
             "ON", "OFF"
-        ]
+        ],
+        "MQTT_ALLOWED_ACTION_FOR_COMMAND" : "control",
+        "MQTT_ALLOWED_ACTION_FOR_STATUS"  : "status"
     },
     "server" : {
         "SERVER_HOST" : "localhost",
-        "SERVER_PORT" : 8080
+        "SERVER_PORT" : 8080,
     },
     "jwt" : {
         "JWT_TOKEN_EXPIRATION" : "1h",
