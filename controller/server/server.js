@@ -7,8 +7,9 @@ let controller      = require('../mqtt-controller/controller');
 let log             = require('./../logger/logger');
 let slack           = require('./../slack/slack');
 const cmdValidation = require('./serverDataValidator');
+let customError     = require('./../customError/customError');
 
-
+/*
 let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
     const client_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
@@ -23,7 +24,7 @@ let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
                   }, function(err, res) {
                     // nothing
                   });*/
-
+/*
                 return res.json({
                     allowed: true,
                     message: `Command ${cmd} sended to ${topic}/${dev}/${cmd} successfully.`
@@ -52,7 +53,7 @@ let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
             message: `Invalid topic '${topic}'.`
         });
     }
-}
+}*/
 
 let APISendCommandStatusToMQTTBroker = (req, res, topic, dev) => {
     const client_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -86,7 +87,7 @@ let APISendCommandStatusToMQTTBroker = (req, res, topic, dev) => {
 }
 
 let start = () => {
-    // Todo: make more secure like https://expressjs.com/it/advanced/best-practice-security.html
+    // TODO: make more secure like https://expressjs.com/it/advanced/best-practice-security.html
 
     let app = express();
 
@@ -96,8 +97,6 @@ let start = () => {
 
     app.use(bodyParser.json());
 
-
-
     /** AUTH */
     /**======================================================================== */
     app.post('/auth', async (request, response)  => {
@@ -105,26 +104,39 @@ let start = () => {
         const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
         const username  = request.body.client_username;
 
-        const token = await loginHandler(client_ip, username);
+        try {
+            const token = await loginHandler(client_ip, username);
 
-        if(!token) {
+            log.info(`Authenticated user:${username} with IP:${client_ip} and token:${token}`);
+
             return response.json({
-                success: false,
-                message: err
+                success: true,
+                message: 'Authentication successful.',
+                token: token
             });
         }
-
-        return response.json({
-            success: true,
-            message: 'Authentication successful.',
-            token: token
-        });
-        
+        catch(ex) {
+            if(ex instanceof customError.UserNotAllowedException)
+            {
+                log.error(`An error occurring during authentication for ${username} and IP:${client_ip}. Error: ${ex.message}`);
+                return response.json({
+                    success: false,
+                    message: ex.message
+                });
+            }
+            else{
+                log.error(`An error occurring during authentication for ${username} and IP:${client_ip}. Error: ${ex.message}`);
+                return response.json({
+                    success: false,
+                    message: 'Whoops! An error occurred'
+                });
+            }
+        }
     });
 
     /** COMMAND */
     /**======================================================================== */
-    app.get('/:action/:topic/:device/:command', (request, response) => {
+    app.get('/:action/:topic/:device/:command', async (request, response) => {
         const token     = request.headers['x-access-token']  || request.headers['authorization'];
         const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
         const action    = request.params.action;
@@ -148,39 +160,37 @@ let start = () => {
                         controller.controlDevice(topic, device, command);
                     }
                 }
-                catch(Exception ex) {
-
+                catch(Exception) {
+                    log.error(`error: ${Exception}`);
                 }
-                
-
             }
         }
-        catch(InvalidTokenException ex) {
-            log.error(`User with IP: ${client_ip} send invalid token: ${token}`);
-            response.json({
-                allowed: false,
-                message: ex.message
-            });
-        }
-        catch(UserIpChangesException ex) {
-            log.error(`User with IP: ${client_ip} was authenticated with different IP`);
-            response.json({
-                allowed: false,
-                message: ex.message
-            });
-        }
-        catch(MissingTokenException ex) {
-            log.error(`User with IP: ${client_ip} miss token`);
-            response.json({
-                allowed: false,
-                message: ex.message
-            });
-        }
-        catch(Exception ex) {
-            log.error(`User with IP: ${client_ip} got unknow error during authentication`);
-            response.json({
-                allowed: false,
-                message: `Something goes wrong, retry. Error: ${ex.message}`
+        catch(ex) {
+            if(ex instanceof InvalidTokenException) {
+                log.error(`An error occurring during authentication for IP:${client_ip}. Error: ${ex.message}`);
+                return response.json({
+                    success: false,
+                    message: ex.message
+                });
+            }
+            else if(ex instanceof UserIpChangesException) {
+                log.error(`An error occurring during authentication for IP:${client_ip}. Error: ${ex.message}`);
+                return response.json({
+                    success: false,
+                    message: ex.message
+                });
+            }
+            else if(ex instanceof MissingTokenException) {
+                log.error(`An error occurring during authentication for IP:${client_ip}. Error: ${ex.message}`);
+                return response.json({
+                    success: false,
+                    message: ex.message
+                });
+            }
+            log.error(`An error occurring during authentication for ${username} and IP:${client_ip}. Error: ${ex.message}`);
+                return response.json({
+                    success: false,
+                    message: 'Whoops! An error occurred'
             });
         }
 

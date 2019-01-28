@@ -1,6 +1,7 @@
 let jwt      = require('jsonwebtoken');
 const config = require('../../config/config.json');
 let log      = require('./../../logger/logger');
+let customex = require('./../../customError/customError')
 
 let loginHandler = async (client_ip, username) => {
     
@@ -16,8 +17,7 @@ let loginHandler = async (client_ip, username) => {
     else
     {
         log.error(`Failed to authenticate user '${username}' with IP: ${client_ip}`);
-
-        return null;
+        throw new customex.UserNotAllowedException;
     }
 }
 

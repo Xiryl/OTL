@@ -1,26 +1,20 @@
 class InvalidTokenException extends Error {
 	constructor() {
-		super("Errore token non valido");
+		super("Invalid token.");
 	}
 }
 
 class UserIpChangesException extends Error {
 	constructor() {
-		super("Ip utente cambiato");
+		super("The token is no longer valid after your ip change.");
 	}
 }
 
 class MissingTokenException extends Error {
 	constructor() {
-		super("Token is not supplied");
+		super("Auth token is not supplied.");
 	}
 }
-<<<<<<< HEAD
-module.exports = 
-	InvalidTokenException, 
-	UserIpChangesException, 
-	MissingTokenException 
-=======
 
 class InvalidActionForCommandException extends Error {
 	constructor() {
@@ -46,13 +40,20 @@ class InvalidCommandForCommandException extends Error {
 	}
 }
 
-module.exports = 
+class UserNotAllowedException extends Error {
+	constructor() {
+		super("The specific user are not allowed to loggin in.");
+	}
+}
+
+module.exports = {
 	InvalidTokenException, 
 	UserIpChangesException, 
 	MissingTokenException,
 	InvalidActionForCommandException,
 	InvalidTopicForCommandException,
 	InvalidDeviceForCommandException,
-	InvalidCommandForCommandException
->>>>>>> master
+	InvalidCommandForCommandException,
+	UserNotAllowedException
+}
 ;

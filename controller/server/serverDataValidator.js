@@ -5,7 +5,7 @@ const config = require('./../config/config');
 		.../action/topic/device/command
 	the action must be the string contained inside config/MQTT_ALLOWED_ACTION_FOR_COMMAND
 */
-let commandParamValidation = await (action, topic, device, command) {
+let commandParamValidation = async (action, topic, device, command) => {
 	if(action === config.MQTT_ALLOWED_ACTION_FOR_COMMAND) {
 		if(config.MQTT_ALLOWED_TOPICS.includes(topic)) {
 			if(config.MQTT_ALLOWED_DEVICES.includes(device)) {
@@ -23,7 +23,7 @@ let commandParamValidation = await (action, topic, device, command) {
 		else {
 			throw new InvalidTopicForCommandException();
 		}
-	}
+	} 
 	else {
 		throw new InvalidActionForCommandException();
 	}

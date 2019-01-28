@@ -19,7 +19,7 @@ let chechToken = async (token, client_ip) =>  {
         jwt.verify(token, config.jwt.JWT_PRIVATE_KEY, ( error, decoded )  => {
             if(error) {
                 log.error(`Error, invalid token from IP:${client_ip} and token:${token}`);
-                throw new InvalidTokenException();
+                throw new customError.InvalidTokenException;
             }
 
             if(decoded.ip === client_ip) {
@@ -28,13 +28,13 @@ let chechToken = async (token, client_ip) =>  {
             }
             else {
                 log.error(`Error, invalid 'client_ip' with same token from IP:${client_ip} and token:${token}`);
-                throw new UserIpChangesException();
+                throw new customError.UserIpChangesException;
             }
         });
     }
     else {
         log.error(`Error, Auth token is not supplied from IP:${client_ip}.`);
-        throw new MissingTokenException();
+        throw new customError.MissingTokenException;
     }
 };
 
