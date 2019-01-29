@@ -25,12 +25,12 @@ let getDeviceStatus = (topic, device, callback) => {
 
 			log.warn(`[STATUS] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
 
-			callback(actualPowerStatus === 0 ? 'OFF' : 'ON');
+			callback(actualPowerStatus);
 		}
 	});
 };
 
-let controlDevice = (topic, device, command) => {
+let controlDevice = (topic, device, command, callback) => {
 	const mqtt_client = mqtt.connect(config.MQTT.MQTT_BROKER_ADDRESS);	
 
 	mqtt_client.on('connect', function () {
@@ -65,6 +65,7 @@ let controlDevice = (topic, device, command) => {
 			log.warn(`[RESULT] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
 			mqtt_client.publish(`cmnd/${device}/power`, actualPowerStatus);
 			mqtt_client.end();
+			callback(actualPowerStatus);
 			//** skip this */
 		}
 		else if( topic === `stat/${device}/POWER`) {

@@ -9,83 +9,6 @@ let slack           = require('./../slack/slack');
 const cmdValidation = require('./serverDataValidator');
 let customError     = require('./../customError/customError');
 
-/*
-let APISendCommandToMQTTBroker = (req, res, topic, dev, cmd) => {
-    const client_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
-                
-                log.info(`Command from IP: ${client_ip}-'${topic}/${dev}/${cmd}' sent.`);
-                
-               /* slack.webhook({
-                    channel: config.slack.SLACK_CHANNEL,
-                    username: "VPS",
-                    icon_emoji: ":bulb:",
-                    text: `Light turned ${cmd} from user with IP:${client_ip}.`
-                  }, function(err, res) {
-                    // nothing
-                  });*/
-/*
-                return res.json({
-                    allowed: true,
-                    message: `Command ${cmd} sended to ${topic}/${dev}/${cmd} successfully.`
-                });
-            }
-            else{
-                log.error(`User from IP: ${client_ip}-'${topic}/${dev}/${cmd}' send invalid command.`);
-                return res.json({
-                    allowed: false,
-                    message: `Invalid command '${cmd}'.`
-                });
-            }
-        }
-        else{
-            log.error(`User from IP: ${client_ip}-'${topic}/${dev}/${cmd}' send invalid device.`);
-            return res.json({
-                allowed: false,
-                message: `Invalid device '${dev}'.`
-            });
-        }
-    }
-    else {
-        log.error(`User from IP: ${client_ip}-'${topic}/${dev}/${cmd}' send invalid topic.`);
-        return res.json({
-            allowed: false,
-            message: `Invalid topic '${topic}'.`
-        });
-    }
-}*/
-
-let APISendCommandStatusToMQTTBroker = (req, res, topic, dev) => {
-    const client_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    // check if topic is on white list
-    if(config.MQTT.MQTT_ALLOWED_TOPICS.includes(topic)) {
-        // check if devices is on white list
-        if(config.MQTT.MQTT_ALLOWED_DEVICES.includes(dev)) {  
-                controller.getDeviceStatus(topic, dev, (status) => {
-                    return res.json({
-                        allowed: true,
-                        message: `Status of ${topic}/${dev} is ${status}.`,
-                        status : status
-                    });
-                });
-        }
-        else{
-            log.error(`User request status from IP: ${client_ip}-'${topic}/${dev}/${cmd}' send invalid device.`);
-            return res.json({
-                allowed: false,
-                message: `Invalid device '${dev}'.`
-            });
-        }
-    }
-    else {
-        log.error(`User request status from IP: ${client_ip}-'${topic}/${dev}/' send invalid topic.`);
-        return res.json({
-            allowed: false,
-            message: `Invalid topic '${topic}'.`
-        });
-    }
-}
-
 let start = () => {
     // TODO: make more secure like https://expressjs.com/it/advanced/best-practice-security.html
 
@@ -157,10 +80,24 @@ let start = () => {
                     
                     if(res_cmd_validation) {
                         // launch command
-                        controller.controlDevice(topic, device, command);
 
                         log.info(`[SERVER] from IP:${client_ip} sended command: ${action}/${topic}/${device}/${command}.`);
-                        
+
+                        controller.controlDevice(topic, device, command, (status) => {
+                            log.info(`[SERVER] ${action}/${topic}/${device}/${command} has status: ${status}.`);
+                            if(status === command) {
+                                return response.json({
+                                    success: true,
+                                    message: `The device is aready ${status}`
+                                });
+                            }
+                            else {
+                                return response.json({
+                                    success: true,
+                                    message: `The device turned ${status}`
+                                });
+                            }
+                        });
                     }
                     else {
                         console.log('***ER');
@@ -242,32 +179,6 @@ let start = () => {
         }
 
     });
-
-     /** API call handler 
-     app.get('/:action/:topic/:device', (request, response) => {
-        const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-        const action    = request.params.action;
-        const topic     = request.params.topic;
-        const device    = request.params.device;
-
-        log.debug(`Receiving status request: '${action}/${topic}/${device} from IP: ${client_ip}`);
-
-        authenticator.chechToken(request, response, ( data ) => {
-            if(!data) {
-                return response.json({
-                    allowed: true,
-                    message: 'Something goes wrong. Retry.'
-                });
-            }
-            else{
-                log.info(`User authenticated with IP: ${client_ip}. Checking command validation...`);
-
-                if(action === 'getstatus') {
-                    APISendCommandStatusToMQTTBroker(request, response, topic, device); 
-                }
-            }
-        });
-    });*/ 
     
     app.listen(config.server.SERVER_PORT, () => {log.info(`Server is listening on port: ${config.server.SERVER_PORT}`);});
 };
