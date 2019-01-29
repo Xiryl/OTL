@@ -1,12 +1,13 @@
 const mqtt	 = require('mqtt');
 const config = require('../config/config.json');
+const log 	 = require('./../logger/logger');
 
 let getDeviceStatus = (topic, device, callback) => {
 	const mqtt_client = mqtt.connect(config.MQTT.MQTT_BROKER_ADDRESS);	
 
 	mqtt_client.on('connect', function () {
 
-		console.log(`[CONTROLLER]-[connect]-[${Date.now()}] Connected to ${config.MQTT.MQTT_BROKER_ADDRESS}`);
+		log.debug(`[CONTROLLER]-[connect]-[${Date.now()}] Connected to ${config.MQTT.MQTT_BROKER_ADDRESS}`);
 
 		/** subscribe to sonoff */
 		mqtt_client.subscribe(`stat/${device}/+`);
@@ -30,16 +31,19 @@ let getDeviceStatus = (topic, device, callback) => {
 };
 
 let controlDevice = (topic, device, command) => {
+	log.warn('here');
+	console.log('here');
 	const mqtt_client = mqtt.connect(config.MQTT.MQTT_BROKER_ADDRESS);	
 
 	mqtt_client.on('connect', function () {
 
-		console.log(`[CONTROLLER]-[connect]-[${Date.now()}] Connected to ${config.MQTT.MQTT_BROKER_ADDRESS}`);
+		log.debug(`[CONTROLLER]-[connect]-[${Date.now()}] Connected to ${config.MQTT.MQTT_BROKER_ADDRESS}`);
 	
 		/** subscribe to sonoff */
 		mqtt_client.subscribe(`stat/${device}/+`);
 
-		//mqtt_client.publish	 (`cmnd/${device}/status`);
+		//NO: mqtt_client.publish	 (`cmnd/${device}/status`);
+
 		mqtt_client.publish(`cmnd/${device}/power`, command);
 	
 	});

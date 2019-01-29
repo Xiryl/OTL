@@ -18,25 +18,25 @@ class MissingTokenException extends Error {
 
 class InvalidActionForCommandException extends Error {
 	constructor() {
-		super("Invalid param action for command");
+		super("Invalid parameter {action}.");
 	}
 }
 
 class InvalidTopicForCommandException extends Error {
 	constructor() {
-		super("Invalid topic for command");
+		super("Invalid parameter {topic}.");
 	}
 }
 
 class InvalidDeviceForCommandException extends Error {
 	constructor() {
-		super("Invalid device for command");
+		super("Invalid parameter {device}.");
 	}
 }
 
 class InvalidCommandForCommandException extends Error {
 	constructor() {
-		super("Invalid command for command");
+		super("Invalid parameter {command}.");
 	}
 }
 

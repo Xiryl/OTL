@@ -149,7 +149,7 @@ let start = () => {
         try {
             const res_auth = await authenticator.chechToken(token, client_ip);
 
-            if(res_auth) {
+            if(res_auth === 'ok') {
                 log.info(`User authenticated with IP: ${client_ip}. Checking command validation...`);
 
                 try {
@@ -158,11 +158,54 @@ let start = () => {
                     if(res_cmd_validation) {
                         // launch command
                         controller.controlDevice(topic, device, command);
+
+                        log.info(`[SERVER] from IP:${client_ip} sended command: ${action}/${topic}/${device}/${command}.`);
+                        
+                    }
+                    else {
+                        console.log('***ER');
                     }
                 }
-                catch(Exception) {
-                    log.error(`error: ${Exception}`);
+                catch(ex) {
+                    if(ex instanceof customError.InvalidCommandForCommandException) {
+                        log.error(`An error occurring during command falidation for IP:${client_ip}. Error: ${ex.message}`);
+                        return response.json({
+                            success: false,
+                            message: ex.message
+                        });
+                    }
+                    else if(ex instanceof customError.InvalidDeviceForCommandException) {
+                        log.error(`An error occurring during command falidation for IP:${client_ip}. Error: ${ex.message}`);
+                        return response.json({
+                            success: false,
+                            message: ex.message
+                        });
+                    }
+                    else if(ex instanceof customError.InvalidTopicForCommandException) {
+                        log.error(`An error occurring during command falidation for IP:${client_ip}. Error: ${ex.message}`);
+                        return response.json({
+                            success: false,
+                            message: ex.message
+                        });
+                    }
+                    else if(ex instanceof customError.InvalidActionForCommandException) {
+                        log.error(`An error occurring during command falidation for IP:${client_ip}. Error: ${ex.message}`);
+                        return response.json({
+                            success: false,
+                            message: ex.message
+                        });
+                    }
+                    else {
+                        log.error(`An error occurring during command validation for ${username} and IP:${client_ip}. Error: ${ex.message}`);
+                        return response.json({
+                            success: false,
+                            message: 'Whoops! An error occurred'
+                        });
+                    }
                 }
+            }
+            else {
+                console.log('EH NO' + res_auth);
             }
         }
         catch(ex) {
@@ -196,10 +239,10 @@ let start = () => {
 
     });
 
-     /** API call handler */ 
+     /** API call handler 
      app.get('/:action/:topic/:device', (request, response) => {
         const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-        const action     = request.params.action;
+        const action    = request.params.action;
         const topic     = request.params.topic;
         const device    = request.params.device;
 
@@ -220,7 +263,7 @@ let start = () => {
                 }
             }
         });
-    });
+    });*/ 
     
     app.listen(config.server.SERVER_PORT, () => {log.info(`Server is listening on port: ${config.server.SERVER_PORT}`);});
 };
