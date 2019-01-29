@@ -22,28 +22,37 @@ To run the entire project you need:
 - Install all node dependencies with `npm install` for each component
 - Fill the `config.json` file
 
-```
+```JSON
 {
     "MQTT": {
-        "MQTT_BROKER_ADDRESS" : "mqtt://127.0.01, // MQTT Broker Server Address
-        "MQTT_ALLOWED_DEVICES" : [
-            "sonoff-1"                            // List of allowed IoT devices that can be access from MQTT controller
+        "MQTT_BROKER_ADDRESS" : "mqtt://127.0.16.1",        // MQTT broker address  
+        "MQTT_ALLOWED_DEVICES" : [                          // MQTT allowed devices to control from intranet
+            "sonoff-1"
         ],
-        "MQTT_ALLOWED_TOPICS" : [
-            "bedroom"                             // List of allowed topics that can be access from MQTT controller
-        ],      
-        "MQTT_ALLOWED_COMMANDS" : [
-            "ON", "OFF"                           // List of allowed commands that the user can send
+        "MQTT_ALLOWED_TOPICS" : [                           // MQTT allowed topics to control from intranet
+            "bedroom"
+        ],
+        "MQTT_ALLOWED_COMMANDS" : [                         // MQTT allowed commands to control from intranet
+            "ON", "OFF", "getstatus"
         ]
     },
     "server" : {
-        "SERVER_HOST" : "localhost",              // Where start express server
-        "SERVER_PORT" : 5011                      // Express server port
+        "SERVER_HOST" : "127.0.0.1",                        // Server IP host
+        "SERVER_PORT" : 5000,                               // Server port
+        "FILENAME_LOG" : "out-log.log",                     // Server log file
+        "ALLOWED_ACTIONS" : [                               // Server allowed API actions
+            "control",
+            "getstatus"
+        ]
     },
     "jwt" : {
-        "JWT_ALLOWED_USERS" : [ "op6-fabio"],     // Users that can be access to Express server (API)
-        "JWT_TOKEN_EXPIRATION" : "1h",            // JWT Experiation time
-        "JWT_PRIVATE_KEY" : "fabiofabio"          // JWT Secret Key for sign
+        "JWT_ALLOWED_USERS" : [ "mbp-fabio"],               // JWT allowed users
+        "JWT_TOKEN_EXPIRATION" : "1h",                      // JWT token expiration (h)
+        "JWT_PRIVATE_KEY" : "maow"                          // JWT signature
+    },
+    "slack" : {
+        "SLACK_WEBHOOK": "https://hooks.slack.com/...",     // Slack webhook
+        "SLACK_CHANNEL": "#maow"                            // Slack channel
     }
 }
 ```
