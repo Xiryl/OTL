@@ -149,7 +149,7 @@ let start = () => {
         try {
             const res_auth = await authenticator.chechToken(token, client_ip);
 
-            if(res_auth === 'ok') {
+            if(res_auth) {
                 log.info(`User authenticated with IP: ${client_ip}. Checking command validation...`);
 
                 try {
@@ -196,7 +196,7 @@ let start = () => {
                         });
                     }
                     else {
-                        log.error(`An error occurring during command validation for ${username} and IP:${client_ip}. Error: ${ex.message}`);
+                        log.error(`An error occurring during command validation for IP:${client_ip}. Error: ${ex.message}`);
                         return response.json({
                             success: false,
                             message: 'Whoops! An error occurred'
@@ -205,32 +205,36 @@ let start = () => {
                 }
             }
             else {
-                console.log('EH NO' + res_auth);
+                log.error(`An error occurring during auth validation for IP:${client_ip}. Error: ${ex.message}`);
+                return response.json({
+                    success: false,
+                    message: 'Whoops! You are not authenticated!'
+                });
             }
         }
         catch(ex) {
-            if(ex instanceof InvalidTokenException) {
-                log.error(`An error occurring during authentication for IP:${client_ip}. Error: ${ex.message}`);
+            if(ex instanceof customError.InvalidTokenException) {
+                log.error(`An error occurring during authentication1 for IP:${client_ip}. Error: ${ex.message}`);
                 return response.json({
                     success: false,
                     message: ex.message
                 });
             }
-            else if(ex instanceof UserIpChangesException) {
-                log.error(`An error occurring during authentication for IP:${client_ip}. Error: ${ex.message}`);
+            else if(ex instanceof customError.UserIpChangesException) {
+                log.error(`An error occurring during authentication2 for IP:${client_ip}. Error: ${ex.message}`);
                 return response.json({
                     success: false,
                     message: ex.message
                 });
             }
-            else if(ex instanceof MissingTokenException) {
-                log.error(`An error occurring during authentication for IP:${client_ip}. Error: ${ex.message}`);
+            else if(ex instanceof customError.MissingTokenException) {
+                log.error(`An error occurring during authentication3 for IP:${client_ip}. Error: ${ex.message}`);
                 return response.json({
                     success: false,
                     message: ex.message
                 });
             }
-            log.error(`An error occurring during authentication for ${username} and IP:${client_ip}. Error: ${ex.message}`);
+            log.error(`An error occurring during authentication4 for IP:${client_ip}. Error: ${ex.message}`);
                 return response.json({
                     success: false,
                     message: 'Whoops! An error occurred'

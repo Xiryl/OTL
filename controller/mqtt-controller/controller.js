@@ -19,11 +19,11 @@ let getDeviceStatus = (topic, device, callback) => {
 	mqtt_client.on('message', function (topic, message) {
 
 		if( topic === `stat/${device}/STATUS`) {
-			console.log('[STATUS] inside status');
+			log.warn('[STATUS] inside status');
 
 			const actualPowerStatus = JSON.parse(message.toString()).Status.Power;
 
-			console.log(`[STATUS] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
+			log.warn(`[STATUS] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
 
 			callback(actualPowerStatus === 0 ? 'OFF' : 'ON');
 		}
@@ -31,8 +31,6 @@ let getDeviceStatus = (topic, device, callback) => {
 };
 
 let controlDevice = (topic, device, command) => {
-	log.warn('here');
-	console.log('here');
 	const mqtt_client = mqtt.connect(config.MQTT.MQTT_BROKER_ADDRESS);	
 
 	mqtt_client.on('connect', function () {
@@ -52,26 +50,26 @@ let controlDevice = (topic, device, command) => {
 	mqtt_client.on('message', function (topic, message) {
 
 		if( topic === `stat/${device}/STATUS`) {
-			console.log('[STATUS] inside status');
+			log.warn('[STATUS] inside status');
 
 			const actualPowerStatus = JSON.parse(message.toString()).Status.Power;
 			const newStatus = actualPowerStatus == 0 ? 'ON' : 'OFF';
 
-			console.log(`[STATUS] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
-			console.log(`[STATUS] new power status : ${newStatus} [0] OFF - [1] ON`);
+			log.warn(`[STATUS] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
+			log.warn(`[STATUS] new power status : ${newStatus} [0] OFF - [1] ON`);
 		}
 		else if( topic === `stat/${device}/RESULT`) {
-			console.log('[RESULT] inside status');
-			console.log(`[RESULT] ${message.toString()}`);
+			log.warn('[RESULT] inside status');
+			log.warn(`[RESULT] ${message.toString()}`);
 			const actualPowerStatus = JSON.parse(message.toString()).POWER;
-			console.log(`[RESULT] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
+			log.warn(`[RESULT] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
 			mqtt_client.publish(`cmnd/${device}/power`, actualPowerStatus);
 			mqtt_client.end();
 			//** skip this */
 		}
 		else if( topic === `stat/${device}/POWER`) {
-			console.log('[POWER] inside power');
-			console.log(`[POWER] ${message.toString()}`);
+			log.warn('[POWER] inside power');
+			log.warn(`[POWER] ${message.toString()}`);
 			//** skip this */
 		}
 	});

@@ -20,7 +20,6 @@ let chechToken = async (token, client_ip, next) =>  {
             const decoded = jwt.verify(token, config.jwt.JWT_PRIVATE_KEY);
             if(decoded.ip === client_ip) {
                 log.debug(`Validating user with IP:${client_ip} and token:${token}`);
-
                 return true;
             }
             else {
