@@ -8,6 +8,7 @@ let log             = require('./../logger/logger');
 let slack           = require('./../slack/slack');
 const cmdValidation = require('./serverDataValidator');
 let customError     = require('./../customError/customError');
+let helmet          = require('helmet');
 
 let start = () => {
     // TODO: make more secure like https://expressjs.com/it/advanced/best-practice-security.html
@@ -19,6 +20,9 @@ let start = () => {
     }));
 
     app.use(bodyParser.json());
+    app.use(helmet());
+    app.disable('x-powered-by');
+
 
     /** AUTH */
     /**======================================================================== */
@@ -177,7 +181,6 @@ let start = () => {
                     message: 'Whoops! An error occurred'
             });
         }
-
     });
     
     app.listen(config.server.SERVER_PORT, () => {log.info(`Server is listening on port: ${config.server.SERVER_PORT}`);});
