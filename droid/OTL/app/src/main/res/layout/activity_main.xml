@@ -9,19 +9,37 @@
     android:background="@color/background_panna"
     tools:context=".views.MainActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="accendi"
-        android:id="@+id/accendi"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:layout_marginTop="100dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="spegni"
-        android:backgroundTint="#ff00f0"
-        android:id="@+id/spegni"/>
+        <TextView
+            android:id="@+id/mainactivity_title"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/os_regular"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:text="DISPOSITIVI SALVATI:"
+            android:textSize="20sp"
+            android:textColor="#000" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@id/mainactivity_title"
+            android:paddingStart="8dp"
+            android:layout_marginTop="16dp"
+            android:clipToPadding = "false"
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            android:id="@+id/mainactivity_rv_devices"
+            android:orientation="horizontal"/>
+
+    </RelativeLayout>
+
+
 
 
     <com.google.android.material.bottomappbar.BottomAppBar
@@ -31,7 +49,7 @@
         android:layout_height="wrap_content"
         app:backgroundTint="@color/colorPrimary"
         app:fabAlignmentMode="center"
-        app:elevation="8dp">
+        app:elevation="5dp">
 
     </com.google.android.material.bottomappbar.BottomAppBar>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_anchor="@id/mainActivity_bottomappbar"
-        app:tint="@color/fab_icon"
+        app:tint="#5D8FF1"
         app:backgroundTint="@android:color/white"
         android:src="@drawable/ic_home"/>
 
