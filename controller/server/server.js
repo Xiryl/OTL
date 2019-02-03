@@ -81,7 +81,7 @@ let start = () => {
 
                 try {
                     const res_cmd_validation = await cmdValidation.commandParamValidation(action, topic, device, command);
-                    
+                     
                     if(res_cmd_validation) {
                         // launch command
 
@@ -104,10 +104,14 @@ let start = () => {
                         });
                     }
                     else {
-                        console.log('***ER');
+                        return response.json({
+                            success: true,
+                            message: `An error occurring command validation.`
+                        });
                     }
                 }
                 catch(ex) {
+                    // todo verifica qui ex.message
                     if(ex instanceof customError.InvalidCommandForCommandException) {
                         log.error(`An error occurring during command falidation for IP:${client_ip}. Error: ${ex.message}`);
                         return response.json({

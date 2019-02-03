@@ -8,7 +8,7 @@ let loginHandler = async (client_ip, username) => {
     if(config.jwt.JWT_ALLOWED_USERS.includes(username)) {
 
         /** create token */
-        let client_token = jwt.sign({client_username: username, ip: client_ip}, config.jwt.JWT_PRIVATE_KEY);
+        let client_token = jwt.sign({client_username: username, ip: client_ip}, config.jwt.JWT_PRIVATE_KEY, { expiresIn: config.jwt.JWT_TOKEN_EXPIRATION } );
 
         log.info(`Autehticated user '${username}' with token '${client_token}' & IP: ${client_ip}`)
 
