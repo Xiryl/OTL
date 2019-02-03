@@ -3,4 +3,7 @@
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#5691CF</color>
+
+    <!-- Main Colors -->
+    <color name="background_panna">#FCF9F8</color>
 </resources>

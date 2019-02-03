@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data/>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/background_panna"
+    tools:context=".views.MainActivity">
 
     <Button
         android:layout_width="wrap_content"
@@ -19,24 +22,32 @@
         android:text="spegni"
         android:id="@+id/spegni"/>
 
+
+
     <android.support.design.bottomappbar.BottomAppBar
-        android:id="@+id/bar"
+        android:id="@+id/mainActivity_bottomappbar"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:backgroundTint="@color/colorPrimary"
         app:fabAlignmentMode="center"
-        app:elevation="100dp"
+        app:elevation="4dp"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
 
     </android.support.design.bottomappbar.BottomAppBar>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fav"
-        android:elevation="8dp"
+        android:id="@+id/mainactivity_fab"
+        android:elevation="2dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_anchor="@id/bar"
+        app:layout_anchor="@id/mainActivity_bottomappbar"
         android:src="@drawable/ic_light"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_above="@id/mainActivity_bottomappbar"
+        android:background="@drawable/support_shadow"/>
 
 </android.support.design.widget.CoordinatorLayout>
+</layout>

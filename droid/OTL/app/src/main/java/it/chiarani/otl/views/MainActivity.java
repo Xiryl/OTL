@@ -1,9 +1,11 @@
-package it.chiarani.otl;
+package it.chiarani.otl.views;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,6 +16,10 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import it.chiarani.otl.R;
+import it.chiarani.otl.ServerClient;
+import it.chiarani.otl.ServerRepository;
+import it.chiarani.otl.databinding.ActivityMainBinding;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,32 +28,34 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
-    private static final String YOUR_HTTPS_URL = "\"https://156.54.213.27/\"";
-    BottomAppBar bottomAppBar;
+    private final String            TAG = this.getClass().getSimpleName();
+    private ActivityMainBinding     binding;
+
+
     Button accendi, spegni;
-    FloatingActionButton fab;
+
+
+    @Override
+    protected int getLayoutID() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void setActivityBinding() {
+        binding = DataBindingUtil.setContentView(this, getLayoutID());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        bottomAppBar = findViewById(R.id.bar);
-        //setSupportActionBar(bottomAppBar);
-        fab = findViewById(R.id.fav);
+        Log.d(TAG, "Launching Main Activity");
 
-        bottomAppBar.replaceMenu(R.menu.bottom_menu);
-
-          /* Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://156.54.213.27/")
-                .addConverterFactory(GsonConverterFactory.create());*/
-
-
-
-        // Retrofit retrofit = builder.build();
-
+        // bottombar
+        binding.mainActivityBottomappbar.replaceMenu(R.menu.bottom_menu);
+        fabClickListener();
 
 
         accendi = findViewById(R.id.accendi);
@@ -106,26 +114,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-
-
-
-
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (bottomAppBar.getFabAlignmentMode() == BottomAppBar.FAB_ALIGNMENT_MODE_CENTER) {
-                    bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
-                    //bottomAppBar.replaceMenu(R.menu.menu_secondary);
-                } else {
-                    bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_light));
-                    //bottomAppBar.replaceMenu(R.menu.menu_primary);
-                }
-            }
-        });
-
     }
 
     public static OkHttpClient getUnsafeOkHttpClient() {
@@ -169,5 +157,22 @@ public class MainActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private void fabClickListener() {
+        binding.mainactivityFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (binding.mainActivityBottomappbar.getFabAlignmentMode() == BottomAppBar.FAB_ALIGNMENT_MODE_CENTER) {
+                    binding.mainActivityBottomappbar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+                    binding.mainactivityFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
+                    //bottomAppBar.replaceMenu(R.menu.menu_secondary);
+                } else {
+                    binding.mainActivityBottomappbar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+                    binding.mainactivityFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_light));
+                    //bottomAppBar.replaceMenu(R.menu.menu_primary);
+                }
+            }
+        });
     }
 }
