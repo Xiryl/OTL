@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="accendi"
+        android:id="@+id/accendi"/>
+
+    <Button
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="spegni"
+        android:id="@+id/spegni"/>
+
     <android.support.design.bottomappbar.BottomAppBar
         android:id="@+id/bar"
         android:layout_gravity="bottom"
@@ -13,7 +26,7 @@
         android:layout_height="wrap_content"
         app:backgroundTint="@color/colorPrimary"
         app:fabAlignmentMode="center"
-        app:elevation="10dp"
+        app:elevation="100dp"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
 
     </android.support.design.bottomappbar.BottomAppBar>
