@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data/>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,34 +20,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="spegni"
+        android:backgroundTint="#ff00f0"
         android:id="@+id/spegni"/>
 
 
-
-    <android.support.design.bottomappbar.BottomAppBar
+    <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/mainActivity_bottomappbar"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:backgroundTint="@color/colorPrimary"
         app:fabAlignmentMode="center"
-        app:elevation="4dp"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
+        app:elevation="8dp">
 
-    </android.support.design.bottomappbar.BottomAppBar>
-
-    <android.support.design.widget.FloatingActionButton
+    </com.google.android.material.bottomappbar.BottomAppBar>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/mainactivity_fab"
-        android:elevation="2dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_anchor="@id/mainActivity_bottomappbar"
-        android:src="@drawable/ic_light"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_above="@id/mainActivity_bottomappbar"
-        android:background="@drawable/support_shadow"/>
+        app:tint="@color/fab_icon"
+        app:backgroundTint="@android:color/white"
+        android:src="@drawable/ic_home"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

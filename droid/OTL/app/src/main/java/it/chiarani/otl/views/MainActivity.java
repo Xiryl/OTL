@@ -1,10 +1,10 @@
 package it.chiarani.otl.views;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.bottomappbar.BottomAppBar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.bottomappbar.BottomAppBar;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -55,7 +55,7 @@ public class MainActivity extends BaseActivity {
 
         // bottombar
         binding.mainActivityBottomappbar.replaceMenu(R.menu.bottom_menu);
-        fabClickListener();
+       // fabClickListener();
 
 
         accendi = findViewById(R.id.accendi);
