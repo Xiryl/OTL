@@ -41,6 +41,7 @@ let controlDevice = (topic, device, command, callback) => {
 	
 		// subscribe to device status
 		mqtt_client.subscribe(`stat/${device}/+`);
+		mqtt_client.publish	 (`cmnd/${device}/status`);
 
 		// send command to device
 		mqtt_client.publish(`cmnd/${device}/power`, command);
@@ -54,30 +55,37 @@ let controlDevice = (topic, device, command, callback) => {
 
 			const actualPowerStatus = JSON.parse(message.toString()).Status.Power;
 			const newStatus = actualPowerStatus == 0 ? 'ON' : 'OFF';
+			const convertedStatus = actualPowerStatus == 0 ? 'OFF' : 'ON';
 
-			log.debug(`[STATUS] old power status : ${actualPowerStatus} [0] OFF - [1] ON`);
+			log.debug(`[STATUS] old power status : ${convertedStatus} [0] OFF - [1] ON`);
 			log.debug(`[STATUS] new power status : ${newStatus} [0] OFF - [1] ON`);
 
-			callback(newStatus);
+			if(command === convertedStatus)
+				callback('-1');
+			else
+				callback('1');
 
 			// stop connection
 			mqtt_client.end();
-		}/*
+			
+		}
 		else if( topic === `stat/${device}/RESULT`) {
-			log.warn('[RESULT] inside status');
-			log.warn(`[RESULT] ${message.toString()}`);
+			/*//log.warn('[RESULT] inside status');
+			//log.warn(`[RESULT] ${message.toString()}`);
+			
 			const actualPowerStatus = JSON.parse(message.toString()).POWER;
-			log.warn(`[RESULT] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
-			mqtt_client.publish(`cmnd/${device}/power`, actualPowerStatus);
+			log.debug(`[RESULT] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
+			//mqtt_client.publish(`cmnd/${device}/power`, actualPowerStatus);
+
 			mqtt_client.end();
 			callback(actualPowerStatus);
-			//** skip this 
+			//** skip this */
 		}
 		else if( topic === `stat/${device}/POWER`) {
-			/*log.warn('[POWER] inside power');
-			log.warn(`[POWER] ${message.toString()}`);
-			//** skip this 
-		}*/
+			
+		//	log.warn(`[POWER] ${message.toString()}`);
+			
+		}
 	});
 };
 

@@ -89,16 +89,16 @@ let start = () => {
 
                         controller.controlDevice(topic, device, command, (status) => {
                             log.info(`[SERVER] ${action}/${topic}/${device}/${command} has status: ${status}.`);
-                            if(status === command) {
+                            if(status ==='-1') {
                                 return response.json({
                                     success: true,
-                                    message: `The device is aready ${status}`
+                                    message: `The device was already ${status}`
                                 });
                             }
                             else {
                                 return response.json({
                                     success: true,
-                                    message: `The device turned ${status}`
+                                    message: `Device turned ${status}`
                                 });
                             }
                         });
