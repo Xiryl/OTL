@@ -55,8 +55,8 @@ let controlDevice = (topic, device, command, callback) => {
 			const actualPowerStatus = JSON.parse(message.toString()).Status.Power;
 			const newStatus = actualPowerStatus == 0 ? 'ON' : 'OFF';
 
-			log.warn(`[STATUS] old power status: ${actualPowerStatus} [0] OFF - [1] ON`);
-			log.warn(`[STATUS] new power status : ${newStatus} [0] OFF - [1] ON`);
+			log.debug(`[STATUS] old power status: ${actualPowerStatus} [0] OFF - [1] ON`);
+			log.debug(`[STATUS] new power status : ${newStatus} [0] OFF - [1] ON`);
 
 			callback(newStatus);
 
