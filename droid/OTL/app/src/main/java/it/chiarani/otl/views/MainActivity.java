@@ -24,6 +24,7 @@ import it.chiarani.otl.ServerClient;
 import it.chiarani.otl.ServerRepository;
 import it.chiarani.otl.adapters.DeviceAdapter;
 import it.chiarani.otl.databinding.ActivityMainBinding;
+import it.chiarani.otl.helper.Config;
 import it.chiarani.otl.model.Device;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -31,6 +32,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static it.chiarani.otl.control.DeviceCommander.getUnsafeOkHttpClient;
 
 
 public class MainActivity extends BaseActivity implements DeviceAdapter.ClickListener {
@@ -144,62 +147,13 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
         binding.mainactivityRvDevices.setAdapter(adapterslot);
     }
 
-    public static OkHttpClient getUnsafeOkHttpClient() {
 
-        try {
-            // Create a trust manager that does not validate certificate chains
-            final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
-                @Override
-                public void checkClientTrusted(
-                        java.security.cert.X509Certificate[] chain,
-                        String authType) throws CertificateException {
-                }
-
-                @Override
-                public void checkServerTrusted(
-                        java.security.cert.X509Certificate[] chain,
-                        String authType) throws CertificateException {
-                }
-
-                @Override
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return new java.security.cert.X509Certificate[0];
-                }
-            } };
-
-            // Install the all-trusting trust manager
-            final SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustAllCerts,
-                    new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
-            final SSLSocketFactory sslSocketFactory = sslContext
-                    .getSocketFactory();
-
-            OkHttpClient okHttpClient = new OkHttpClient();
-            okHttpClient = okHttpClient.newBuilder()
-                    .sslSocketFactory(sslSocketFactory)
-                    .hostnameVerifier(org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER).build();
-
-            return okHttpClient;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 
     private void fabClickListener() {
         binding.mainactivityFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (binding.mainActivityBottomappbar.getFabAlignmentMode() == BottomAppBar.FAB_ALIGNMENT_MODE_CENTER) {
-                    binding.mainActivityBottomappbar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-                    binding.mainactivityFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu));
-                    //bottomAppBar.replaceMenu(R.menu.menu_secondary);
-                } else {
-                    binding.mainActivityBottomappbar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                    binding.mainactivityFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_light));
-                    //bottomAppBar.replaceMenu(R.menu.menu_primary);
-                }
+
             }
         });
     }
@@ -207,7 +161,7 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
     @Override
     public void onClick(String status) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://156.54.213.27/")
+                .baseUrl(Config.MQTT_BROKER_ADDR)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(getUnsafeOkHttpClient())
                 .build();

@@ -70,15 +70,20 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         if(devices.get(position).isState())
         {
+            /* gray state */
             holder.rl.setBackground(mContext.getResources().getDrawable(R.drawable.item_device_gradient_inactive));
-            holder.title.setTextColor(mContext.getResources().getColor(R.color.background_fab));
+            holder.title.setTextColor(mContext.getResources().getColor(R.color.item_device_title_disactive));
+            holder.img.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_light_dark));
+
             devices.get(position).setState(false);
             listener.onClick("OFF");
         }
         else
         {
+            /* yellow state */
             holder.rl.setBackground(mContext.getResources().getDrawable(R.drawable.item_device_gradient_active));
-            holder.title.setTextColor(mContext.getResources().getColor(R.color.fab_icon));
+            holder.title.setTextColor(mContext.getResources().getColor(R.color.item_device_title_active));
+            holder.img.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_light));
 
             devices.get(position).setState(true);
             listener.onClick("ON");
@@ -86,37 +91,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         holder.title.setText(devices.get(position).getName());
         holder.subtitle.setText(devices.get(position).getTopic());
-
-
-       /* if(first_entry == 1) {
-            listener.onClick(weather_day, position);
-            first_entry = 2;
-        }
-        holder.rl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                oldPos = this.getAdapterPosition();;
-                notifyDataSetChanged();
-               // listener.onClick(weather_day, position);
-            }
-        })
-
-        if(oldPos == position) {
-            holder.rl.setBackground(mContext.getResources().getDrawable(R.drawable.item_device_gradient_active));
-            holder.title.setTextColor(mContext.getResources().getColor(R.color.fab_icon));
-        }
-        else
-        {
-
-            holder.rl.setBackground(mContext.getResources().getDrawable(R.drawable.item_device_gradient_inactive));
-            holder.title.setTextColor(mContext.getResources().getColor(R.color.background_fab));
-
-        }
-
-        holder.title.setText(devices.get(position).getName());
-        holder.subtitle.setText(devices.get(position).getTopic());
-
-        listener.onClick(position);;*/
 
     }
 
