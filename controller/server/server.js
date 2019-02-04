@@ -11,7 +11,6 @@ let customError     = require('./../customError/customError');
 let helmet          = require('helmet');
 
 let start = () => {
-    // TODO: make more secure like https://expressjs.com/it/advanced/best-practice-security.html
 
     let app = express();
 
@@ -31,34 +30,26 @@ let start = () => {
         const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
         const username  = request.body.client_username;
 
+        const token = "";
         try {
-            const token = await loginHandler(client_ip, username);
-
-            log.info(`Authenticated user:${username} with IP:${client_ip} and token:${token}`);
-
-            return response.json({
-                success: true,
-                message: 'Authentication successful.',
-                token: token
-            });
+            token = await loginHandler(client_ip, username);
         }
         catch(ex) {
-            if(ex instanceof customError.UserNotAllowedException)
-            {
-                log.error(`An error occurring during authentication for ${username} and IP:${client_ip}. Error: ${ex.message}`);
-                return response.json({
-                    success: false,
-                    message: ex.message
-                });
-            }
-            else{
-                log.error(`An error occurring during authentication for ${username} and IP:${client_ip}. Error: ${ex.message}`);
-                return response.json({
-                    success: false,
-                    message: 'Whoops! An error occurred'
-                });
-            }
+            log.error(`An error occurring during authentication for ${username} and IP:${client_ip}. Error: ${ex.message}`);
+            return response.json({
+                success: false,
+                message: ex.message
+            });
         }
+
+        log.info(`Authenticated user:${username} with IP:${client_ip} and token:${token}`);
+
+        return response.json({
+            success: true,
+            message: 'Authentication successful.',
+            token: token
+        });
+        
     });
 
     /** COMMAND */
@@ -73,118 +64,68 @@ let start = () => {
 
         log.debug(`Receiving command: '${action}/${topic}/${device}/${command}' from IP: ${client_ip}`);
 
+        const res_auth = "";
         try {
-            const res_auth = await authenticator.chechToken(token, client_ip);
+            res_auth = await authenticator.chechToken(token, client_ip);
+        }
+        catch(ex) {
+            log.error(`An error occurring during authentication for IP:${client_ip}. Error: ${ex.message}`);
+            return response.json({
+                success: false,
+                message: ex.message
+            });
+        }
 
-            if(res_auth) {
-                log.info(`User authenticated with IP: ${client_ip}. Checking command validation...`);
+        if(res_auth) {
+            log.info(`User authenticated with IP: ${client_ip}. Checking command validation...`);
 
-                try {
-                    const res_cmd_validation = await cmdValidation.commandParamValidation(action, topic, device, command);
-                     
-                    if(res_cmd_validation) {
-                        // launch command
+            const res_cmd_validation = "";
+            try {
+                res_cmd_validation = await cmdValidation.commandParamValidation(action, topic, device, command);
+            }
+            catch(ex) {
+                log.error(`An error occurring during command validation for IP:${client_ip}. Error: ${ex.message}`);
+                    return response.json({
+                        success: false,
+                        message: ex.message
+                });
+            }
+            
+            if(res_cmd_validation) {
+                log.info(`[SERVER] from IP:${client_ip} sended command: ${action}/${topic}/${device}/${command}.`);
 
-                        log.info(`[SERVER] from IP:${client_ip} sended command: ${action}/${topic}/${device}/${command}.`);
-
-                        controller.controlDevice(topic, device, command, (status) => {
-                            log.info(`[SERVER] ${action}/${topic}/${device}/${command} has status: ${status}.`);
-                            if(status ==='-1') {
-                                return response.json({
-                                    success: true,
-                                    message: `The device was already ${status}`
-                                });
-                            }
-                            else {
-                                return response.json({
-                                    success: true,
-                                    message: `Device turned ${status}`
-                                });
-                            }
+                controller.controlDevice(topic, device, command, (status) => {
+                    log.info(`[SERVER] ${action}/${topic}/${device}/${command} has status: ${status}.`);
+                    if(status === '-1') {
+                        return response.json({
+                            success: true,
+                            message: `The device was already ${command}`
                         });
                     }
                     else {
                         return response.json({
                             success: true,
-                            message: `An error occurring command validation.`
+                            message: `Device turned ${command}`
                         });
                     }
-                }
-                catch(ex) {
-                    // todo verifica qui ex.message
-                    if(ex instanceof customError.InvalidCommandForCommandException) {
-                        log.error(`An error occurring during command falidation for IP:${client_ip}. Error: ${ex.message}`);
-                        return response.json({
-                            success: false,
-                            message: ex.message
-                        });
-                    }
-                    else if(ex instanceof customError.InvalidDeviceForCommandException) {
-                        log.error(`An error occurring during command falidation for IP:${client_ip}. Error: ${ex.message}`);
-                        return response.json({
-                            success: false,
-                            message: ex.message
-                        });
-                    }
-                    else if(ex instanceof customError.InvalidTopicForCommandException) {
-                        log.error(`An error occurring during command falidation for IP:${client_ip}. Error: ${ex.message}`);
-                        return response.json({
-                            success: false,
-                            message: ex.message
-                        });
-                    }
-                    else if(ex instanceof customError.InvalidActionForCommandException) {
-                        log.error(`An error occurring during command falidation for IP:${client_ip}. Error: ${ex.message}`);
-                        return response.json({
-                            success: false,
-                            message: ex.message
-                        });
-                    }
-                    else {
-                        log.error(`An error occurring during command validation for IP:${client_ip}. Error: ${ex.message}`);
-                        return response.json({
-                            success: false,
-                            message: 'Whoops! An error occurred'
-                        });
-                    }
-                }
+                });
             }
             else {
-                log.error(`An error occurring during auth validation for IP:${client_ip}. Error: ${ex.message}`);
                 return response.json({
                     success: false,
-                    message: 'Whoops! You are not authenticated!'
+                    message: `An error occurring command validation.`
                 });
             }
+            
         }
-        catch(ex) {
-            if(ex instanceof customError.InvalidTokenException) {
-                log.error(`An error occurring during authentication1 for IP:${client_ip}. Error: ${ex.message}`);
-                return response.json({
-                    success: false,
-                    message: ex.message
-                });
-            }
-            else if(ex instanceof customError.UserIpChangesException) {
-                log.error(`An error occurring during authentication2 for IP:${client_ip}. Error: ${ex.message}`);
-                return response.json({
-                    success: false,
-                    message: ex.message
-                });
-            }
-            else if(ex instanceof customError.MissingTokenException) {
-                log.error(`An error occurring during authentication3 for IP:${client_ip}. Error: ${ex.message}`);
-                return response.json({
-                    success: false,
-                    message: ex.message
-                });
-            }
-            log.error(`An error occurring during authentication4 for IP:${client_ip}. Error: ${ex.message}`);
-                return response.json({
-                    success: false,
-                    message: 'Whoops! An error occurred'
+        else {
+            log.error(`An error occurring during auth validation for IP:${client_ip}. Error: ${ex.message}`);
+            return response.json({
+                success: false,
+                message: 'Whoops! You are not authenticated!'
             });
         }
+        
     });
     
     app.listen(config.server.SERVER_PORT, () => {log.info(`Server is listening on port: ${config.server.SERVER_PORT}`);});
