@@ -45,7 +45,6 @@ let controlDevice = (topic, device, command, callback) => {
 
 		// send command to device
 		mqtt_client.publish(`cmnd/${device}/power`, command);
-	
 	});
 
 	/** DEVICE CALLBACK MESSAGE HANDLER */
@@ -54,19 +53,31 @@ let controlDevice = (topic, device, command, callback) => {
 		if( topic === `stat/${device}/STATUS`) {
 
 			const actualPowerStatus = JSON.parse(message.toString()).Status.Power;
-			const newStatus = actualPowerStatus == 0 ? 'ON' : 'OFF';
-			const convertedStatus = actualPowerStatus == 0 ? 'OFF' : 'ON';
+			const newStatus 		= actualPowerStatus == 0 ? 'ON' : 'OFF';
+			const convertedStatus 	= actualPowerStatus == 0 ? 'OFF' : 'ON';
 
 			log.debug(`[STATUS] old power status : ${convertedStatus} [0] OFF - [1] ON`);
 			log.debug(`[STATUS] new power status : ${newStatus} [0] OFF - [1] ON`);
 
-			if(command === convertedStatus)
-				callback('-1');
-			else
-				callback('1');
+			if(command === convertedStatus) {
+				callback('-1'); // device was already on the same status
+			}
+			else{
+				callback('1');	// status changed
+			}		
 
 			// stop connection
 			mqtt_client.end();
+
+			// notify agent
+			slack.webhook({
+				channel: config.slack.SLACK_CHANNEL,
+				username: "VPS",
+				icon_emoji: ":bulb:",
+				text: `Authorized: topic/${device}/${command}.`
+			}, function(err, res) {
+				// nothing
+			});
 			
 		}
 		else if( topic === `stat/${device}/RESULT`) {

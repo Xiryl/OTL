@@ -30,7 +30,7 @@ let start = () => {
         const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
         const username  = request.body.client_username;
 
-        const token = "";
+        let token = "";
         try {
             token = await loginHandler(client_ip, username);
         }
@@ -64,7 +64,7 @@ let start = () => {
 
         log.debug(`Receiving command: '${action}/${topic}/${device}/${command}' from IP: ${client_ip}`);
 
-        const res_auth = "";
+        let res_auth = "";
         try {
             res_auth = await authenticator.chechToken(token, client_ip);
         }
@@ -79,7 +79,7 @@ let start = () => {
         if(res_auth) {
             log.info(`User authenticated with IP: ${client_ip}. Checking command validation...`);
 
-            const res_cmd_validation = "";
+            let res_cmd_validation = "";
             try {
                 res_cmd_validation = await cmdValidation.commandParamValidation(action, topic, device, command);
             }
