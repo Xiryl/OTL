@@ -23,9 +23,11 @@ import it.chiarani.otl.R;
 import it.chiarani.otl.ServerClient;
 import it.chiarani.otl.ServerRepository;
 import it.chiarani.otl.adapters.DeviceAdapter;
+import it.chiarani.otl.adapters.RoomsAdapter;
 import it.chiarani.otl.databinding.ActivityMainBinding;
 import it.chiarani.otl.helper.Config;
 import it.chiarani.otl.model.Device;
+import it.chiarani.otl.model.HouseRoom;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,86 +67,32 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
         binding.mainActivityBottomappbar.replaceMenu(R.menu.bottom_menu);
        // fabClickListener();
 
-        /*
-        *  binding.activityProbBulletRvSlot.setHasFixedSize(true);
-
-        LinearLayoutManager linearLayoutManagerslot1 = new LinearLayoutManager(this);
-        linearLayoutManagerslot1.setOrientation(LinearLayoutManager.HORIZONTAL);
-        binding.activityProbBulletRvSlot.setLayoutManager(linearLayoutManagerslot1);
-
-        BulletProbDaysAdapter adapterslot = new BulletProbDaysAdapter(getApplicationContext(), data, this::onClick);
-        binding.activityProbBulletRvSlot.setAdapter(adapterslot);
-
-        accendi = findViewById(R.id.accendi);
-        accendi.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://156.54.213.27/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .client(getUnsafeOkHttpClient())
-                        .build();
-
-                ServerClient client = retrofit.create(ServerClient.class);
-
-                Call<ServerRepository> call = client.chiamataOn("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfdXNlcm5hbWUiOiJvcDYtZmFiaW8iLCJpcCI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE1NDc5MTYxOTR9.y5kgvR2edN34CVlgpM2bYUGw4VowNrNOl9lqF2lmM9A");
-                call.enqueue(new Callback<ServerRepository>() {
-                    @Override
-                    public void onResponse(Call<ServerRepository> call, Response<ServerRepository> response) {
-                        int x = 1;
-                    }
-
-                    @Override
-                    public void onFailure(Call<ServerRepository> call, Throwable t) {
-                        int x = 1;
-                    }
-                });
-            }
-        });
-
-
-        spegni = findViewById(R.id.spegni);
-        spegni.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://156.54.213.27/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .client(getUnsafeOkHttpClient())
-                        .build();
-
-                ServerClient client = retrofit.create(ServerClient.class);
-
-                Call<ServerRepository> call = client.chiamataOff("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfdXNlcm5hbWUiOiJvcDYtZmFiaW8iLCJpcCI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE1NDc5MTYxOTR9.y5kgvR2edN34CVlgpM2bYUGw4VowNrNOl9lqF2lmM9A");
-                call.enqueue(new Callback<ServerRepository>() {
-                    @Override
-                    public void onResponse(Call<ServerRepository> call, Response<ServerRepository> response) {
-                        int x = 1;
-                    }
-
-                    @Override
-                    public void onFailure(Call<ServerRepository> call, Throwable t) {
-                        int x = 1;
-                    }
-                });
-            }
-        });*/
-
 
         List<Device> devices = new ArrayList<>();
         devices.add(new Device("h", "Luce Salotto", "salotto/lampadina", "m", "n", "s", true, true));
-       // devices.add(new Device("h", "Luce Camera", "camera/lampadina", "m", "n", "s", true, true));
+        devices.add(new Device("h", "Luce Principale", "camera-letto/fabio", "m", "n", "s", true, true));
+        devices.add(new Device("h", "Luce Letto", "camera-letto/fabio", "m", "n", "s", true, true));
+
+        List<HouseRoom> rooms = new ArrayList<>();
+        rooms.add(new HouseRoom("h", "Salotto", "Salotto", "m", "n", "s", true, true));
+        rooms.add(new HouseRoom("h", "Cucina", "Cucina", "m", "n", "s", true, true));
 
         binding.mainactivityRvDevices.setHasFixedSize(true);
+        binding.mainactivityRvRooms.setHasFixedSize(true);
 
-        LinearLayoutManager linearLayoutManagerslot1 = new LinearLayoutManager(this);
-        linearLayoutManagerslot1.setOrientation(LinearLayoutManager.HORIZONTAL);
-        binding.mainactivityRvDevices.setLayoutManager(linearLayoutManagerslot1);
+        LinearLayoutManager linearLayoutManagerslot = new LinearLayoutManager(this);
+        linearLayoutManagerslot.setOrientation(LinearLayoutManager.HORIZONTAL);
+        binding.mainactivityRvDevices.setLayoutManager(linearLayoutManagerslot);
 
-        DeviceAdapter adapterslot = new DeviceAdapter(getApplicationContext(),this, devices);
-        binding.mainactivityRvDevices.setAdapter(adapterslot);
+        LinearLayoutManager linearLayoutManagerslot_rooms = new LinearLayoutManager(this);
+        linearLayoutManagerslot_rooms.setOrientation(LinearLayoutManager.HORIZONTAL);
+        binding.mainactivityRvRooms.setLayoutManager(linearLayoutManagerslot_rooms);
+
+        DeviceAdapter deviceAdapter = new DeviceAdapter(getApplicationContext(),this, devices);
+        binding.mainactivityRvDevices.setAdapter(deviceAdapter);
+
+        RoomsAdapter roomsAdapter = new RoomsAdapter(getApplicationContext(),null, rooms);
+        binding.mainactivityRvRooms.setAdapter(roomsAdapter);
     }
 
 

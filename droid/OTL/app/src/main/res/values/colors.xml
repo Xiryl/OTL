@@ -11,6 +11,6 @@
 
     <!-- Device Item Colors -->
     <color name="item_device_title_disactive">#F3A474</color>
-    <color name="item_device_title_active">#8AB43D</color>
+    <color name="item_device_title_active">#6B6B6B</color>
 
 </resources>

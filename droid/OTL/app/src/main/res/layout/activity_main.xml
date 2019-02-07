@@ -14,19 +14,74 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/mainactivity_title"
+            android:id="@+id/mainactivity_title_room"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:fontFamily="@font/os_regular"
             android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:text="DISPOSITIVI SALVATI:"
-            android:textSize="20sp"
+            android:text="Le tue stanze"
+            android:textSize="25sp"
             android:textColor="#000" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_below="@id/mainactivity_title"
+            android:layout_below="@id/mainactivity_title_room"
+            android:paddingStart="8dp"
+            android:layout_marginTop="16dp"
+            android:clipToPadding = "false"
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            android:id="@+id/mainactivity_rv_rooms"
+            android:orientation="horizontal"/>
+
+
+
+<!--
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/mainactivity_ll_toggle_all"
+            android:layout_below="@id/mainactivity_rv_rooms"
+            android:orientation="horizontal">
+
+    <com.kyleduo.switchbutton.SwitchButton
+        android:id="@+id/a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:kswThumbColor="#5D8FF1"
+        app:kswBackColor="#E5EBF8"/>
+
+            <TextView
+                android:layout_toRightOf="@id/a"
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/os_regular"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:text="Dispositivi preferiti"
+                android:textSize="15sp"
+                android:textColor="#000" />
+
+        </RelativeLayout> -->
+
+        <TextView
+            android:layout_below="@id/mainactivity_rv_rooms"
+            android:id="@+id/mainactivity_title_dispositivi"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/os_regular"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:text="Dispositivi preferiti"
+            android:textSize="25sp"
+            android:textColor="#000" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@id/mainactivity_title_dispositivi"
             android:paddingStart="8dp"
             android:layout_marginTop="16dp"
             android:clipToPadding = "false"
@@ -37,7 +92,15 @@
             android:id="@+id/mainactivity_rv_devices"
             android:orientation="horizontal"/>
 
+
+        <ImageView
+            android:layout_marginTop="40dp"
+            android:layout_below="@id/mainactivity_rv_devices"
+            android:layout_width="match_parent"
+            android:src="@drawable/ic_image_test"
+            android:layout_height="500dp" />
     </RelativeLayout>
+
 
 
 
