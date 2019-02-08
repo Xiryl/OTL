@@ -1,15 +1,15 @@
-package it.chiarani.otl;
+package it.chiarani.otl.retrofit_model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ServerRepository {
+public class RetrofitDiscover {
     @SerializedName("success")
     @Expose
     private Boolean success;
     @SerializedName("message")
     @Expose
-    private String message;
+    private RetrofitDevices message;
 
     public Boolean getSuccess() {
         return success;
@@ -19,13 +19,11 @@ public class ServerRepository {
         this.success = success;
     }
 
-    public String getMessage() {
+    public RetrofitDevices getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(RetrofitDevices message) {
         this.message = message;
     }
-
-
 }

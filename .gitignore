@@ -154,3 +154,5 @@ typings/
 controller/config/config\.js
 
 controller/config/config\.json
+
+droid/OTL/app/src/main/java/it/chiarani/otl/helper/Config\.java

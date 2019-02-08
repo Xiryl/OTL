@@ -2,25 +2,18 @@ package it.chiarani.otl.views;
 
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import com.google.android.material.bottomappbar.BottomAppBar;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import it.chiarani.otl.R;
-import it.chiarani.otl.ServerClient;
+import it.chiarani.otl.control.RetrofitAPIClient;
 import it.chiarani.otl.ServerRepository;
 import it.chiarani.otl.adapters.DeviceAdapter;
 import it.chiarani.otl.adapters.RoomsAdapter;
@@ -28,7 +21,9 @@ import it.chiarani.otl.databinding.ActivityMainBinding;
 import it.chiarani.otl.helper.Config;
 import it.chiarani.otl.model.Device;
 import it.chiarani.otl.model.HouseRoom;
-import okhttp3.OkHttpClient;
+import it.chiarani.otl.retrofit_model.RetrofitDevice;
+import it.chiarani.otl.retrofit_model.RetrofitDevices;
+import it.chiarani.otl.retrofit_model.RetrofitDiscover;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,8 +37,12 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
 
     private final String            TAG = this.getClass().getSimpleName();
     private ActivityMainBinding     binding;
-
-
+    List<Device> devices = new ArrayList<>();
+    List<HouseRoom> rooms = new ArrayList<>();
+    DeviceAdapter deviceAdapter;
+    RoomsAdapter roomsAdapter;
+    Retrofit retrofit;
+    RetrofitAPIClient retrofitAPIClient;
     Button accendi, spegni;
 
 
@@ -65,18 +64,47 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
 
         // bottombar
         binding.mainActivityBottomappbar.replaceMenu(R.menu.bottom_menu);
-       // fabClickListener();
 
-
-        List<Device> devices = new ArrayList<>();
-        devices.add(new Device("h", "Luce Salotto", "salotto/lampadina", "m", "n", "s", true, true));
-        devices.add(new Device("h", "Luce Principale", "camera-letto/fabio", "m", "n", "s", true, true));
-        devices.add(new Device("h", "Luce Letto", "camera-letto/fabio", "m", "n", "s", true, true));
-
-        List<HouseRoom> rooms = new ArrayList<>();
         rooms.add(new HouseRoom("h", "Salotto", "Salotto", "m", "n", "s", true, true));
         rooms.add(new HouseRoom("h", "Cucina", "Cucina", "m", "n", "s", true, true));
 
+        setListAdapters();
+
+        retrofit = new Retrofit.Builder()
+            .baseUrl(Config.MQTT_BROKER_ADDR)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(getUnsafeOkHttpClient())
+                .build();
+
+        retrofitAPIClient = retrofit.create(RetrofitAPIClient.class);
+
+        Call<RetrofitDiscover> call = retrofitAPIClient.chiamataDiscover(Config.TMP_TOKEN);
+        call.enqueue(new Callback<RetrofitDiscover>() {
+            @Override
+            public void onResponse(Call<RetrofitDiscover> call, Response<RetrofitDiscover> response) {
+
+                response.body(); // have your all data
+                RetrofitDevices mex =response.body().getMessage();
+                RetrofitDevice x = mex.getDevices().get(0);
+
+                if(x.getState() == 1)
+
+                devices.add(new Device("h", x.getDevname(), x.getTopic(), "m", "n", "s", true, true));
+                else
+                    devices.add(new Device("h", x.getDevname(), x.getTopic(), "m", "n", "s", false, true));
+                    deviceAdapter.notifyDataSetChanged();
+             //   Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<RetrofitDiscover> call, Throwable t) {
+                int x = 1;
+            }
+        });
+
+    }
+
+    private void setListAdapters() {
         binding.mainactivityRvDevices.setHasFixedSize(true);
         binding.mainactivityRvRooms.setHasFixedSize(true);
 
@@ -88,13 +116,12 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
         linearLayoutManagerslot_rooms.setOrientation(LinearLayoutManager.HORIZONTAL);
         binding.mainactivityRvRooms.setLayoutManager(linearLayoutManagerslot_rooms);
 
-        DeviceAdapter deviceAdapter = new DeviceAdapter(getApplicationContext(),this, devices);
+        deviceAdapter = new DeviceAdapter(getApplicationContext(),this, devices);
         binding.mainactivityRvDevices.setAdapter(deviceAdapter);
 
-        RoomsAdapter roomsAdapter = new RoomsAdapter(getApplicationContext(),null, rooms);
+        roomsAdapter = new RoomsAdapter(getApplicationContext(),null, rooms);
         binding.mainactivityRvRooms.setAdapter(roomsAdapter);
     }
-
 
 
     private void fabClickListener() {
@@ -108,20 +135,17 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
 
     @Override
     public void onClick(String status) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.MQTT_BROKER_ADDR)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(getUnsafeOkHttpClient())
-                .build();
-
-        ServerClient client = retrofit.create(ServerClient.class);
 
         if(status.equals("OFF")) {
-            Call<ServerRepository> call = client.chiamataOff("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfdXNlcm5hbWUiOiJvcDYtZmFiaW8iLCJpcCI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE1NDc5MTYxOTR9.y5kgvR2edN34CVlgpM2bYUGw4VowNrNOl9lqF2lmM9A");
+            Call<ServerRepository> call = retrofitAPIClient.chiamataOff(Config.TMP_TOKEN);
             call.enqueue(new Callback<ServerRepository>() {
                 @Override
                 public void onResponse(Call<ServerRepository> call, Response<ServerRepository> response) {
-                    int x = 1;
+
+
+                    response.body(); // have your all data
+                    String id =response.body().getMessage();
+                    Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
                 }
 
                 @Override
@@ -131,11 +155,13 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
             });
         }
         if(status.equals("ON")) {
-            Call<ServerRepository> call = client.chiamataOn("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfdXNlcm5hbWUiOiJvcDYtZmFiaW8iLCJpcCI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE1NDc5MTYxOTR9.y5kgvR2edN34CVlgpM2bYUGw4VowNrNOl9lqF2lmM9A");
+            Call<ServerRepository> call = retrofitAPIClient.chiamataOn(Config.TMP_TOKEN);
             call.enqueue(new Callback<ServerRepository>() {
                 @Override
                 public void onResponse(Call<ServerRepository> call, Response<ServerRepository> response) {
-                    int x = 1;
+                    response.body(); // have your all data
+                    String id =response.body().getMessage();
+                    Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
                 }
 
                 @Override

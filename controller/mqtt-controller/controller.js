@@ -2,8 +2,8 @@ const mqtt	 = require('mqtt');
 const config = require('../config/config.json');
 const log 	 = require('./../logger/logger');
 
-/*
-let getDeviceStatus = (topic, device, callback) => {
+
+let getDeviceStatus = async (topic, device, callback) => {
 	const mqtt_client = mqtt.connect(config.MQTT.MQTT_BROKER_ADDRESS);	
 
 	mqtt_client.on('connect', function () {
@@ -23,12 +23,17 @@ let getDeviceStatus = (topic, device, callback) => {
 			const actualPowerStatus = JSON.parse(message.toString()).Status.Power;
 
 			log.warn(`[STATUS] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
-
+			
 			callback(actualPowerStatus);
+
+			// stop connection
+			mqtt_client.end();
+
+			
 		}
 	});
 };
-*/
+
 
 let controlDevice = (topic, device, command, callback) => {
 
@@ -100,4 +105,4 @@ let controlDevice = (topic, device, command, callback) => {
 	});
 };
 
-module.exports = { controlDevice };
+module.exports = { controlDevice, getDeviceStatus };

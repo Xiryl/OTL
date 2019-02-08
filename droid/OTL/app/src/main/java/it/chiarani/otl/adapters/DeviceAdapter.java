@@ -79,7 +79,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        if(devices.get(position).isState())
+        if(!devices.get(position).isState())
         {
             /* gray state */
             holder.rl.setBackground(mContext.getResources().getDrawable(R.drawable.item_device_gradient_inactive));

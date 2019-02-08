@@ -7,7 +7,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import it.chiarani.otl.ServerClient;
 import it.chiarani.otl.ServerRepository;
 import it.chiarani.otl.helper.APITypes;
 import it.chiarani.otl.helper.Config;
@@ -24,19 +23,12 @@ public class DeviceCommander {
 
     }
 
-    public static boolean makeRequest(APITypes apiType) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.MQTT_BROKER_ADDR)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(getUnsafeOkHttpClient())
-                .build();
-
-        ServerClient client = retrofit.create(ServerClient.class);
+    public static String makeRequest(APITypes apiType, RetrofitAPIClient client, String token) {
 
         switch (apiType) {
             case DEVICE_ON:
 
-                Call<ServerRepository> call_on = client.chiamataOn("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfdXNlcm5hbWUiOiJvcDYtZmFiaW8iLCJpcCI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE1NDc5MTYxOTR9.y5kgvR2edN34CVlgpM2bYUGw4VowNrNOl9lqF2lmM9A");
+                Call<ServerRepository> call_on = client.chiamataOn(token);
                 call_on.enqueue(new Callback<ServerRepository>() {
                     @Override
                     public void onResponse(Call<ServerRepository> call, Response<ServerRepository> response) {
@@ -51,7 +43,7 @@ public class DeviceCommander {
 
                 break;
             case DEVICE_OFF:
-                Call<ServerRepository> call_off = client.chiamataOff("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRfdXNlcm5hbWUiOiJvcDYtZmFiaW8iLCJpcCI6Ijo6ZmZmZjoxMjcuMC4wLjEiLCJpYXQiOjE1NDc5MTYxOTR9.y5kgvR2edN34CVlgpM2bYUGw4VowNrNOl9lqF2lmM9A");
+                Call<ServerRepository> call_off = client.chiamataOff(token);
                 call_off.enqueue(new Callback<ServerRepository>() {
                     @Override
                     public void onResponse(Call<ServerRepository> call, Response<ServerRepository> response) {
@@ -69,7 +61,7 @@ public class DeviceCommander {
             case ROOM_DISCOVERY: break;
             default : break;
         }
-        return false;
+        return "";
     }
 
     /**********************************************************************************************/
