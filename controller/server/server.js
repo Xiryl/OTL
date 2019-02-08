@@ -52,6 +52,54 @@ let start = () => {
         
     });
 
+    /** DISCOVERY */
+    /**======================================================================== */
+    app.get('/discovery', async (request, response)  => {
+        const token     = request.headers['x-access-token']  || request.headers['authorization'];
+        const client_ip = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+
+        log.debug(`Receiving discovery from IP: ${client_ip}`);
+
+        let res_auth = "";
+        try {
+            res_auth = await authenticator.chechToken(token, client_ip);
+        }
+        catch(ex) {
+            log.error(`An error occurring during auth/discovery for IP:${client_ip}. Error: ${ex.message}`);
+            return response.json({
+                success: false,
+                message: ex.message
+            });
+        }
+
+        if(res_auth) {
+            log.info(`User authenticated with IP: ${client_ip}. Executing discovery...`);
+
+            let discovery = { devices:[] };
+            for(let i = 0; i < config.MQTT.MQTT_ALLOWED_DEVICES.length; i++) {
+                let status = await controller.getDeviceStatus('', config.MQTT.MQTT_ALLOWED_DEVICES[i], ( status ) => { 
+                    let data = { 
+                        devname : config.MQTT.MQTT_ALLOWED_DEVICES[i],
+                         state : status,
+                         topic:'tmp'
+                        };
+                    discovery.devices.push(data);
+                    return response.json({
+                        success: true,
+                        message: discovery
+                    });
+                });
+            }
+        }
+        else {
+            log.error(`An error occurring during auth validation/discovery for IP:${client_ip}. Error: ${ex.message}`);
+            return response.json({
+                success: false,
+                message: 'Whoops! You are not authenticated!'
+            });
+        }
+    });
+
     /** COMMAND */
     /**======================================================================== */
     app.get('/:action/:topic/:device/:command', async (request, response) => {
