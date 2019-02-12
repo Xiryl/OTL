@@ -7,12 +7,12 @@
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-Over The Light is my personal project for home automation system that allows you to communicate with the devices (sonoff) in the home safely and automatically. The system automatically detects connected devices at home and adds them to the server to allow them to be controlled from the Android app or Wear OS app.
+Over The Light is my personal project for home automation system that allows you to communicate with smart devices (sonoff) at home safely. The system automatically detects connected devices at home and adds them to the server to allow them to be controlled from the Android app or Wear OS app.
 
-> Attention: the project is under construction. The android app, or the server may not be work as expected. Need help or questions? [contact me :)](https://www.t.me/Xiryl) 
+> Attention: this project is under construction. The android app, or the server may not be work as expected. Need help or questions? [contact me :)](https://www.t.me/Xiryl) 
 
 ## Guide
-- [dafaq am I reinventing the wheel??](#why-reinvent-the-wheel)
+- [Dafaq am I reinventing the wheel!?](#why-reinventing-the-wheel)
 - [Install](#installation)
 - [Android](#android)
 - [Auth & API call workflow](#auth-and-api-call-workflow)
@@ -22,41 +22,38 @@ Over The Light is my personal project for home automation system that allows you
 - [Related](#related)
 - [PR](#pr)
 
-## Why Reinvent the Wheel?
+## Why Reinventing the Wheel?
 <img src="https://github.com/Xiryl/OTL/blob/master/ot/giphy.gif" />
 
 **dafaq is this repo?** _why am I reinventing the wheel?_
 
 Who has never wanted to try some smart IoT devices in their home? I am among these.
-**The problem:** the official app for control sonoff hardware, eWeLink, has several security problems. _Why my data must travel to Chinese aws server? with clear token on HTTP req?_ 
-- security problem
-- terrible UI/UX 
-- inability to set timers, device groups and actions
+**The problem:** the official app for this stuff, eWeLink, has several security problems. 
+- security concerns (clear HTTP traffic to China)
+- terrible UI/UX
+- lack of features
 
 **My solution:** build my own home automation system. 
 
-> _More smart. More secure. **More sexy.**_
+> _Smarter. More secure. **Sexier.**_
 
 OTL offers:
-- jwt + simmetric key + IP whitelist and check for authentication
-- support all devices on mqtt
-- group IoT devices (_by topic_)
-- control single, or group device
+- jwt + simmetric key + IP whitelist and authentication checks
+- supports all devices on mqtt
+- group IoT devices _by topic_
+- single or grouped device control
 - timers and actions
 - sexy UI
-- it does not matter which client you connect to, it works anyway on telegram bot, android app, web page, or API call with postman
-- whitelist on commands, API, devices name, topics, ...
-- obviusly has compatibility to google/alexa assistant
+- available on telegram, android, web and Postman (if you love raw requests 😏)
+- full customization (block specific commands, APIs, devices, topics)
+- compatible with Google Assistant and Alexa
 - logs
 
 ## Installation
 To run the entire project you need:
-- MQTT broker server (in my case on my personal vps)
-- MQTT phao/mosquitto client for testing via shell
-- Fill the `config.json` file
-
-Then run `npm install` on each component before start the `server.js` main file!
-
+- An instance of MQTT broker server
+- For shell testing, MQTT phao/mosquitto
+- Modify the `config.json` file accordingly
 
 ```JSON
 {
@@ -94,34 +91,37 @@ Then run `npm install` on each component before start the `server.js` main file!
 }
 ```
 
+Then `npm install` and `node server.js`
+
 ## Android
-Just open the project with android studio.
+Open the project with Android Studio.
 
 The app UI should look like these (_It would be different, I like to change the UI several times_):
 
 <img src="https://github.com/Xiryl/OTL/blob/master/ot/mokup.png" width="600px" />
 
+Please forgive me for the Android mockup on and iPhone X(s).
 
 ## Auth and API call workflow
 
-The authentication system use jwt + key + client IP. You can open the image in large format [HERE](https://raw.githubusercontent.com/Xiryl/OTL/master/ot/api_diagram.png?raw=true)
+The authentication system uses jwt + key + client IP. You can open a larger version of the image [HERE](https://raw.githubusercontent.com/Xiryl/OTL/master/ot/api_diagram.png?raw=true)
 
 <img src="https://github.com/Xiryl/OTL/blob/master/ot/api_diagram.png" />
 
 ## System Workflow Connection
 
-When a new device req. connection call this workflow. You can open the image in large format [HERE](https://github.com/Xiryl/OTL/blob/master/ot/devices_diagram.png?raw=true)
+When a new device req. connection call this workflow. You can open a larger version of the image [HERE](https://github.com/Xiryl/OTL/blob/master/ot/devices_diagram.png?raw=true)
 
 <img src="https://github.com/Xiryl/OTL/blob/master/ot/devices_diagram.png" />
 
 ## System Workflow Discovery
 
-When a new device req. mqtt discovery call this workflow. You can open the image in large format [HERE](https://raw.githubusercontent.com/Xiryl/OTL/master/ot/discovery_diagram.png?raw=true)
+When a new device req. mqtt discovery call this workflow. You can open a larger version of the image [HERE](https://raw.githubusercontent.com/Xiryl/OTL/master/ot/discovery_diagram.png?raw=true)
 
 <img src="https://github.com/Xiryl/OTL/blob/master/ot/discovery_diagram.png" />
 
 ## Project Structure
-Each folder of the repo corresponds to an component. You can find these components:
+Each folder of the repo represents a component
 
 - `droid`
   - Android app
@@ -140,6 +140,5 @@ Each folder of the repo corresponds to an component. You can find these componen
 - [sonoff basic](http://bfy.tw/MGJI)
 - [ewelink problems](https://www.iot-tests.org/2018/06/sonoff-basic-wifi/)
 
-#### PR
-PR are allowed.
-For make a PR plesase read the wiki/howtoPR
+#### Can I contribute?
+Pull requests are allowed. Please read `CONTRIBUTE.md` first.
