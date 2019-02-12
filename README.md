@@ -20,7 +20,7 @@ Over The Light is my personal project for home automation system that allows you
 - [System Workflow - discovery](#system-workflow-discovery)
 - [Project Structure](#project-structure)
 - [Related](#related)
-- [PR](#pr)
+- [PR](#can-i-contribute)
 
 ## Why Reinventing the Wheel?
 <img src="https://github.com/Xiryl/OTL/blob/master/ot/giphy.gif" />
