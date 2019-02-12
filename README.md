@@ -9,6 +9,8 @@
 
 Over The Light is my personal project for home automation system that allows you to communicate with the devices (sonoff) in the home safely and automatically. The system automatically detects connected devices at home and adds them to the server to allow them to be controlled from the Android app or Wear OS app.
 
+> Attention: the project is under construction. The android app, or the server may not be work as expected. Need help or questions? [contact me :)](https://www.t.me/Xiryl) 
+
 ## Guide
 - [dafaq am I reinventing the wheel??](#why-reinvent-the-wheel)
 - [Install](#installation)
