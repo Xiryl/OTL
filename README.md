@@ -97,7 +97,10 @@ Then run `npm install` on each component before start the `server.js` main file!
 ## Android
 Just open the project with android studio.
 
-The app UI should look like these (_It would be different, I like to change the UI several times_): ...
+The app UI should look like these (_It would be different, I like to change the UI several times_):
+
+<img src="https://github.com/Xiryl/OTL/blob/master/ot/mokup.png" width="600px" />
+
 
 ## Auth and API call workflow
 
