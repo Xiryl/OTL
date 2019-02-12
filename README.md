@@ -11,7 +11,9 @@ Over The Light is my personal project for home automation system that allows you
 
 ## Guide
 - [Install](#installation)
-- [Authentication system with JWT](#how-authentication-and-device-command-work)
+- [Auth & API call workflow](#auth-&-api-call-workflow)
+- [System Workflow - connection](#system-workflow-connection)
+- [System Workflow - discovery](#system-workflow-discovery)
 - [Project Structure](#project-structure)
 - [Related](#related)
 - [PR](#pr)
@@ -61,11 +63,23 @@ Then run `npm install` on each component.
 }
 ```
 
-## How Authentication and device command work
+## Auth & API call workflow
 
-The authentication system use jwt + key + client IP. You can open the image in large format [HERE](https://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png?raw=true)
+The authentication system use jwt + key + client IP. You can open the image in large format [HERE](https://raw.githubusercontent.com/Xiryl/OTL/master/ot/api_diagram.png?raw=true)
 
-<img src="https://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png" />
+<img src="https://github.com/Xiryl/OTL/blob/master/ot/api_diagram.png" />
+
+## System Workflow Connection
+
+When a new device req. connection call this workflow. You can open the image in large format [HERE](https://github.com/Xiryl/OTL/blob/master/ot/devices_diagram.png?raw=true)
+
+<img src="https://github.com/Xiryl/OTL/blob/master/ot/devices_diagram.png" />
+
+## System Workflow Discovery
+
+When a new device req. mqtt discovery call this workflow. You can open the image in large format [HERE](https://raw.githubusercontent.com/Xiryl/OTL/master/ot/discovery_diagram.png?raw=true)
+
+<img src="https://github.com/Xiryl/OTL/blob/master/ot/discovery_diagram.png" />
 
 ## Project Structure
 Each folder of the repo corresponds to an component. You can find these components:
