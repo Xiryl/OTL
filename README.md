@@ -14,13 +14,16 @@ Over The Light is my personal project for home automation system that allows you
 - [Authentication system with JWT](#how-authentication-and-device-command-work)
 - [Project Structure](#project-structure)
 - [Related](#related)
+- [PR](#pr)
 
 ## Installation
 To run the entire project you need:
-- An MQTT broker server active
-- MQTT libraries on pc
-- Install all node dependencies with `npm install` for each component
+- MQTT broker server
+- MQTT phao/mosquitto client for testing via shell
 - Fill the `config.json` file
+
+Then run `npm install` on each component.
+
 
 ```JSON
 {
@@ -34,7 +37,8 @@ To run the entire project you need:
         ],
         "MQTT_ALLOWED_COMMANDS" : [                         // MQTT allowed commands to control from intranet
             "ON", "OFF", "getstatus"
-        ]
+        ],
+        "MQTT_ALLOWED_ACTION_FOR_COMMAND" : "control"       // MQTT allowed actions command
     },
     "server" : {
         "SERVER_HOST" : "127.0.0.1",                        // Server IP host
@@ -59,7 +63,7 @@ To run the entire project you need:
 
 ## How Authentication and device command work
 
-The authentication system use JWT + PrivateKey + User IP to authenticate the request. You can open the image in large format [here](https://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png?raw=true)
+The authentication system use jwt + key + client IP. You can open the image in large format [HERE](https://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png?raw=true)
 
 <img src="https://github.com/Xiryl/OTL/blob/master/ot/IOT_Comunication.png" />
 
@@ -70,11 +74,13 @@ Each folder of the repo corresponds to an component. You can find these componen
   - Android app
   - Wear OS appIOT_Comunication.png
 - `controller`
-  - all the components that manage the back-end & MQTT broker
-- `raspi`
-  - all the components residing on raspi 3
+  - all the components for back-end
   
 #### Related
 - [tasmota](https://github.com/arendst/Sonoff-Tasmota)
 - [hass.io](https://github.com/home-assistant/hassio)
 - [mqtt](https://www.hivemq.com)
+
+#### PR
+PR are allowed.
+For make a PR plesase read the wiki/howtoPR
