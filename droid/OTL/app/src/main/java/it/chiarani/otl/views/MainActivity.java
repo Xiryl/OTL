@@ -21,6 +21,8 @@ import it.chiarani.otl.databinding.ActivityMainBinding;
 import it.chiarani.otl.helper.Config;
 import it.chiarani.otl.model.Device;
 import it.chiarani.otl.model.HouseRoom;
+import it.chiarani.otl.retrofit_model.RetrofitAuth;
+import it.chiarani.otl.retrofit_model.RetrofitAuthRes;
 import it.chiarani.otl.retrofit_model.RetrofitDevice;
 import it.chiarani.otl.retrofit_model.RetrofitDevices;
 import it.chiarani.otl.retrofit_model.RetrofitDiscover;
@@ -98,6 +100,25 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
 
             @Override
             public void onFailure(Call<RetrofitDiscover> call, Throwable t) {
+                int x = 1;
+            }
+        });
+
+        RetrofitAuth x = new RetrofitAuth();
+        x.setClientUsername("op6-fabio");
+        Call<RetrofitAuthRes> call1 = retrofitAPIClient.chiamataAuth(x);
+        call1.enqueue(new Callback<RetrofitAuthRes>() {
+            @Override
+            public void onResponse(Call<RetrofitAuthRes> call, Response<RetrofitAuthRes> response) {
+
+
+                response.body(); // have your all data
+                String id =response.body().getToken();
+                Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<RetrofitAuthRes> call, Throwable t) {
                 int x = 1;
             }
         });
