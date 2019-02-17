@@ -5,16 +5,16 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class RetrofitDevices {
+public class RetrofitDevicesModel {
     @SerializedName("devices")
     @Expose
-    private List<RetrofitDevice> devices = null;
+    private List<RetrofitDeviceModel> devices = null;
 
-    public List<RetrofitDevice> getDevices() {
+    public List<RetrofitDeviceModel> getDevices() {
         return devices;
     }
 
-    public void setDevices(List<RetrofitDevice> devices) {
+    public void setDevices(List<RetrofitDeviceModel> devices) {
         this.devices = devices;
     }
 }

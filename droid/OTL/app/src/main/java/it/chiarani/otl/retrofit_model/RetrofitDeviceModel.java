@@ -3,7 +3,7 @@ package it.chiarani.otl.retrofit_model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RetrofitDevice {
+public class RetrofitDeviceModel {
 
         @SerializedName("devname")
         @Expose

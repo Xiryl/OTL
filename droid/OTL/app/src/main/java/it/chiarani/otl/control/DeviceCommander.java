@@ -7,15 +7,13 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import it.chiarani.otl.ServerRepository;
+import it.chiarani.otl.model.Device;
+import it.chiarani.otl.retrofit_model.GET_RetrofitControlResponseModel;
 import it.chiarani.otl.helper.APITypes;
-import it.chiarani.otl.helper.Config;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DeviceCommander {
 
@@ -23,35 +21,37 @@ public class DeviceCommander {
 
     }
 
-    public static String makeRequest(APITypes apiType, RetrofitAPIClient client, String token) {
+    public static String sendCommand(APITypes apiType, RetrofitAPI client, String authToken, Device device) {
 
         switch (apiType) {
             case DEVICE_ON:
+                Call<GET_RetrofitControlResponseModel> call_on = client.APIControlDevice(authToken, device.getTopic(), device.getName(), "ON");
 
-                Call<ServerRepository> call_on = client.chiamataOn(token);
-                call_on.enqueue(new Callback<ServerRepository>() {
+                int x = 0;
+                call_on.enqueue(new Callback<GET_RetrofitControlResponseModel>() {
                     @Override
-                    public void onResponse(Call<ServerRepository> call, Response<ServerRepository> response) {
-                        int x = 1;
+                    public void onResponse(Call<GET_RetrofitControlResponseModel> call, Response<GET_RetrofitControlResponseModel> response) {
+                        x = 1;
+                        return;
                     }
 
                     @Override
-                    public void onFailure(Call<ServerRepository> call, Throwable t) {
+                    public void onFailure(Call<GET_RetrofitControlResponseModel> call, Throwable t) {
                         int x = 1;
                     }
                 });
 
                 break;
             case DEVICE_OFF:
-                Call<ServerRepository> call_off = client.chiamataOff(token);
-                call_off.enqueue(new Callback<ServerRepository>() {
+                Call<GET_RetrofitControlResponseModel> call_off = client.APIControlDevice(token);
+                call_off.enqueue(new Callback<GET_RetrofitControlResponseModel>() {
                     @Override
-                    public void onResponse(Call<ServerRepository> call, Response<ServerRepository> response) {
+                    public void onResponse(Call<GET_RetrofitControlResponseModel> call, Response<GET_RetrofitControlResponseModel> response) {
                         int x = 1;
                     }
 
                     @Override
-                    public void onFailure(Call<ServerRepository> call, Throwable t) {
+                    public void onFailure(Call<GET_RetrofitControlResponseModel> call, Throwable t) {
                         int x = 1;
                     }
                 });

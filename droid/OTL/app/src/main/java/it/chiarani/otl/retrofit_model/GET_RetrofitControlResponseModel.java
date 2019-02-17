@@ -3,13 +3,13 @@ package it.chiarani.otl.retrofit_model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RetrofitDiscover {
+public class GET_RetrofitControlResponseModel {
     @SerializedName("success")
     @Expose
     private Boolean success;
     @SerializedName("message")
     @Expose
-    private RetrofitDevices message;
+    private String message;
 
     public Boolean getSuccess() {
         return success;
@@ -19,11 +19,13 @@ public class RetrofitDiscover {
         this.success = success;
     }
 
-    public RetrofitDevices getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(RetrofitDevices message) {
+    public void setMessage(String message) {
         this.message = message;
     }
+
+
 }
