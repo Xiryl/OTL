@@ -21,12 +21,13 @@ public class DeviceCommander {
 
     }
 
-    public static String sendCommand(APITypes apiType, RetrofitAPI client, String authToken, Device device) {
+    public static Call<GET_RetrofitControlResponseModel> sendCommand(APITypes apiType, RetrofitAPI client, String authToken, Device device) {
 
         switch (apiType) {
             case DEVICE_ON:
                 Call<GET_RetrofitControlResponseModel> call_on = client.APIControlDevice(authToken, device.getTopic(), device.getName(), "ON");
-
+                return call_on;
+                /*
                 int x = 0;
                 call_on.enqueue(new Callback<GET_RetrofitControlResponseModel>() {
                     @Override
@@ -39,29 +40,14 @@ public class DeviceCommander {
                     public void onFailure(Call<GET_RetrofitControlResponseModel> call, Throwable t) {
                         int x = 1;
                     }
-                });
+                });*/
 
-                break;
-            case DEVICE_OFF:
-                Call<GET_RetrofitControlResponseModel> call_off = client.APIControlDevice(token);
-                call_off.enqueue(new Callback<GET_RetrofitControlResponseModel>() {
-                    @Override
-                    public void onResponse(Call<GET_RetrofitControlResponseModel> call, Response<GET_RetrofitControlResponseModel> response) {
-                        int x = 1;
-                    }
-
-                    @Override
-                    public void onFailure(Call<GET_RetrofitControlResponseModel> call, Throwable t) {
-                        int x = 1;
-                    }
-                });
-
-                break;
             case FULL_DISCOVERY: break;
             case ROOM_DISCOVERY: break;
-            default : break;
+            default : return  null;
         }
-        return "";
+
+        return null;
     }
 
     /**********************************************************************************************/

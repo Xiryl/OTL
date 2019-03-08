@@ -58,38 +58,56 @@ To run the entire project you need:
 ```JSON
 {
     "MQTT": {
-        "MQTT_BROKER_ADDRESS" : "mqtt://127.0.16.1",        // MQTT broker address  
-        "MQTT_ALLOWED_DEVICES" : [                          // MQTT allowed devices to control from intranet
+        "MQTT_BROKER_ADDRESS" : "mqtt://127.0.16.1",        
+        "MQTT_ALLOWED_DEVICES" : [                          
             "sonoff-1"
         ],
-        "MQTT_ALLOWED_TOPICS" : [                           // MQTT allowed topics to control from intranet
+        "MQTT_ALLOWED_TOPICS" : [                           
             "bedroom"
         ],
-        "MQTT_ALLOWED_COMMANDS" : [                         // MQTT allowed commands to control from intranet
+        "MQTT_ALLOWED_COMMANDS" : [                         
             "ON", "OFF", "getstatus"
         ],
-        "MQTT_ALLOWED_ACTION_FOR_COMMAND" : "control"       // MQTT allowed actions command
+        "MQTT_ALLOWED_ACTION_FOR_COMMAND" : "control"       
     },
     "server" : {
-        "SERVER_HOST" : "127.0.0.1",                        // Server IP host
-        "SERVER_PORT" : 5000,                               // Server port
-        "FILENAME_LOG" : "out-log.log",                     // Server log file
-        "ALLOWED_ACTIONS" : [                               // Server allowed API actions
+        "SERVER_HOST" : "127.0.0.1",                        
+        "SERVER_PORT" : 5000,                               
+        "FILENAME_LOG" : "out-log.log",                     
+        "ALLOWED_ACTIONS" : [                               
             "control",
             "getstatus"
         ]
     },
     "jwt" : {
-        "JWT_ALLOWED_USERS" : [ "mbp-fabio"],               // JWT allowed users
-        "JWT_TOKEN_EXPIRATION" : "1h",                      // JWT token expiration (h)
-        "JWT_PRIVATE_KEY" : "maow"                          // JWT signature
+        "JWT_ALLOWED_USERS" : [ "mbp-fabio"],               
+        "JWT_TOKEN_EXPIRATION" : "1h",                      
+        "JWT_PRIVATE_KEY" : "maow"                          
     },
     "slack" : {
-        "SLACK_WEBHOOK": "https://hooks.slack.com/...",     // Slack webhook
-        "SLACK_CHANNEL": "#maow"                            // Slack channel
+        "SLACK_WEBHOOK": "https://hooks.slack.com/...",     
+        "SLACK_CHANNEL": "#maow"                            
     }
 }
 ```
+
+| Type | Value | Description |
+| -- | -- | -- |
+| MQTT | `MQTT_BROKER_ADDRESS` | MQTT broker address host |
+| MQTT |  `MQTT_ALLOWED_DEVICES` | MQTT allowed devices to control from intranet |
+| MQTT |  `MQTT_ALLOWED_TOPICS` | MQTT allowed topics to control from intranet |
+| MQTT |  `MQTT_ALLOWED_COMMANDS` | MQTT allowed commands to control from intranet |
+| MQTT |  `MQTT_ALLOWED_ACTION_FOR_COMMAND` | MQTT allowed action for command (deprecated) |
+| SERVER |  `SERVER_HOST` | Server IP host |
+| SERVER | `SERVER_PORT` | Server port |
+| SERVER | `FILENAME_LOG` | Server log file path |
+| SERVER | `ALLOWED_ACTIONS` | Server allowed API actions |
+| JWT | `JWT_ALLOWED_USERS` | JWT allowed users |
+| JWT | `JWT_TOKEN_EXPIRATION` | JWT token expiration **in (h)**|
+| JWT | `JWT_PRIVATE_KEY` |  JWT signature private key |
+| SLACK | `SLACK_WEBHOOK` | Slack webhook uri |
+| SLACK | `SLACK_CHANNEL` | Slack channel to receive info |
+
 
 Then `npm install` and `node server.js`
 

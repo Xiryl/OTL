@@ -13,7 +13,9 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import it.chiarani.otl.R;
+import it.chiarani.otl.control.DeviceCommander;
 import it.chiarani.otl.control.RetrofitAPI;
+import it.chiarani.otl.helper.APITypes;
 import it.chiarani.otl.retrofit_model.GET_RetrofitControlResponseModel;
 import it.chiarani.otl.adapters.DeviceAdapter;
 import it.chiarani.otl.adapters.RoomsAdapter;
@@ -80,22 +82,46 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
 
         retrofitAPIClient = retrofit.create(RetrofitAPI.class);
 
-        Call<GET_RetrofitDiscoverResponseModel> call = retrofitAPIClient.APIDiscovery(Config.TMP_TOKEN);
-        call.enqueue(new Callback<GET_RetrofitDiscoverResponseModel>() {
+        POST_RetrofitAuthRequestModel retrofitAuthRequestModel = new POST_RetrofitAuthRequestModel();
+        retrofitAuthRequestModel.setClientUsername("op6-fabio");
+        Call<GET_RetrofitAuthResponseModel> call1 = retrofitAPIClient.APIAuth(retrofitAuthRequestModel);
+        String token = ";";
+        call1.enqueue(new Callback<GET_RetrofitAuthResponseModel>() {
+            @Override
+            public void onResponse(Call<GET_RetrofitAuthResponseModel> call, Response<GET_RetrofitAuthResponseModel> response) {
+                String ttt =response.body().getToken();
+
+
+            }
+
+            @Override
+            public void onFailure(Call<GET_RetrofitAuthResponseModel> call, Throwable t) {
+
+            }
+        });
+
+
+        Call<GET_RetrofitDiscoverResponseModel> retrofitDiscoverResponseModelCall = retrofitAPIClient.APIDiscovery(ttt);
+        retrofitDiscoverResponseModelCall.enqueue(new Callback<GET_RetrofitDiscoverResponseModel>() {
             @Override
             public void onResponse(Call<GET_RetrofitDiscoverResponseModel> call, Response<GET_RetrofitDiscoverResponseModel> response) {
 
-                response.body(); // have your all data
+
                 RetrofitDevicesModel mex =response.body().getMessage();
-                RetrofitDeviceModel x = mex.getDevices().get(0);
+                List<RetrofitDeviceModel> available_dev = mex.getDevices();
 
-                if(x.getState() == 1)
+                for(RetrofitDeviceModel device : available_dev) {
+                    if(device.getState() == 1) {
+                        devices.add(new Device("id", device.getDevname(), device.getTopic(), "", "", "", true, true));
+                    }
+                    else
+                    {
+                        devices.add(new Device("id", device.getDevname(), device.getTopic(), "", "", "", false, true));
+                    }
+                }
 
-                devices.add(new Device("h", x.getDevname(), x.getTopic(), "m", "n", "s", true, true));
-                else
-                    devices.add(new Device("h", x.getDevname(), x.getTopic(), "m", "n", "s", false, true));
-                    deviceAdapter.notifyDataSetChanged();
-             //   Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
+
+                Toast.makeText(MainActivity.this, "Scan completed.", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -104,25 +130,21 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
             }
         });
 
-        POST_RetrofitAuthRequestModel x = new POST_RetrofitAuthRequestModel();
-        x.setClientUsername("op6-fabio");
-        Call<GET_RetrofitAuthResponseModel> call1 = retrofitAPIClient.APIAuth(x);
-        call1.enqueue(new Callback<GET_RetrofitAuthResponseModel>() {
+        /*
+        Call<GET_RetrofitControlResponseModel> call_x = DeviceCommander.sendCommand(APITypes.DEVICE_ON,retrofitAPIClient, Config.TMP_TOKEN, devices.get(0));
+
+        call_x.enqueue(new Callback<GET_RetrofitControlResponseModel>() {
             @Override
-            public void onResponse(Call<GET_RetrofitAuthResponseModel> call, Response<GET_RetrofitAuthResponseModel> response) {
-
-
-                response.body(); // have your all data
-                String id =response.body().getToken();
-                Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
+            public void onResponse(Call<GET_RetrofitControlResponseModel> call, Response<GET_RetrofitControlResponseModel> response) {
+                int x = 1;
+                return;
             }
 
             @Override
-            public void onFailure(Call<GET_RetrofitAuthResponseModel> call, Throwable t) {
+            public void onFailure(Call<GET_RetrofitControlResponseModel> call, Throwable t) {
                 int x = 1;
             }
-        });
-
+        });*/
     }
 
     private void setListAdapters() {
@@ -158,38 +180,11 @@ public class MainActivity extends BaseActivity implements DeviceAdapter.ClickLis
     public void onClick(String status) {
 
         if(status.equals("OFF")) {
-            Call<GET_RetrofitControlResponseModel> call = retrofitAPIClient.APIControlDevice(Config.TMP_TOKEN);
-            call.enqueue(new Callback<GET_RetrofitControlResponseModel>() {
-                @Override
-                public void onResponse(Call<GET_RetrofitControlResponseModel> call, Response<GET_RetrofitControlResponseModel> response) {
 
-
-                    response.body(); // have your all data
-                    String id =response.body().getMessage();
-                    Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onFailure(Call<GET_RetrofitControlResponseModel> call, Throwable t) {
-                    int x = 1;
-                }
-            });
         }
         if(status.equals("ON")) {
-            Call<GET_RetrofitControlResponseModel> call = retrofitAPIClient.APIControlSwitchDeviceOn(Config.TMP_TOKEN);
-            call.enqueue(new Callback<GET_RetrofitControlResponseModel>() {
-                @Override
-                public void onResponse(Call<GET_RetrofitControlResponseModel> call, Response<GET_RetrofitControlResponseModel> response) {
-                    response.body(); // have your all data
-                    String id =response.body().getMessage();
-                    Toast.makeText(getApplicationContext(), id, Toast.LENGTH_LONG).show();
-                }
 
-                @Override
-                public void onFailure(Call<GET_RetrofitControlResponseModel> call, Throwable t) {
-                    int x = 1;
-                }
-            });
+
         }
 
     }

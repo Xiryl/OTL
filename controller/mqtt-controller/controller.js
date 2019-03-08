@@ -65,7 +65,7 @@ let controlDevice = (topic, device, command, callback) => {
 			log.debug(`[STATUS] new power status : ${newStatus} [0] OFF - [1] ON`);
 
 			if(command === convertedStatus) {
-				callback('-1'); // device was already on the same status
+				callback('-1'); // status not changed
 			}
 			else{
 				callback('1');	// status changed
@@ -86,6 +86,8 @@ let controlDevice = (topic, device, command, callback) => {
 			
 		}
 		else if( topic === `stat/${device}/RESULT`) {
+			// remove here
+
 			/*//log.warn('[RESULT] inside status');
 			//log.warn(`[RESULT] ${message.toString()}`);
 			
@@ -98,9 +100,9 @@ let controlDevice = (topic, device, command, callback) => {
 			//** skip this */
 		}
 		else if( topic === `stat/${device}/POWER`) {
-			
-		//	log.warn(`[POWER] ${message.toString()}`);
-			
+			// remove here
+
+			//	log.warn(`[POWER] ${message.toString()}`);	
 		}
 	});
 };
