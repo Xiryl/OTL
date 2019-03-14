@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-     //   Intent myIntent = new Intent(MainActivity.this, SignInActivity.class);
-     //  this.startActivity(myIntent);
+        Intent myIntent = new Intent(MainActivity.this, SignInActivity.class);
+       this.startActivity(myIntent);
     }
 }

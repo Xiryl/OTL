@@ -1,14 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+<data>
+</data>
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.SignInActivity">
+    android:background="@color/background_blue">
 
-    <com.google.android.gms.common.SignInButton
+    <!-- TOP LAYOUT WHITE -->
+    <LinearLayout
+        android:id="@+id/activity_sign_in_white_space"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sign_in_top_layout_height"
+        android:background="@color/background_white_gray"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mainactivity_title_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/std_m_16"
+            android:gravity="center"
+            android:fontFamily="@font/os_bold"
+            android:text="@string/sign_in_title"
+            android:textSize="@dimen/std_title"
+            android:textColor="@color/title_gray" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/std_m_16"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false"
+            app:lottie_fileName="lottielight.json"/>
+
+    </LinearLayout>
+    <!-- END TOP LAYOUT WHITE -->
+
+
+    <TextView
+        android:layout_below="@id/activity_sign_in_white_space"
+        android:layout_marginTop="@dimen/sign_in_mt_description"
+        android:id="@+id/txt"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:fontFamily="@font/os_regular"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in_description"
+        android:textSize="@dimen/std_description"
+        android:textColor="@color/background_white_gray" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_below="@id/txt"
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="   Accedi   "
+        android:padding="@dimen/std_p_10"
+        android:layout_marginTop="@dimen/sign_in_mt_description"
+        android:drawableStart="@drawable/ic_google_logo"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/background_white_rounded"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_below="@id/sign_in_button"
+        android:layout_width="match_parent"
+        android:gravity="bottom|center"
+        android:fontFamily="@font/os_light"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/std_m_6"
+        android:text="www.chiarani.it"
+        android:textSize="@dimen/std_description"
+        android:textColor="@color/background_white_gray" />
+
+</RelativeLayout>
+</layout>

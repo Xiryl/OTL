@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="slot_weather_conteiner_height">350dp</dimen>
+
+    <!-- STANDARD TEXT -->
+    <dimen name="std_title">25sp</dimen>
+    <dimen name="std_description">17sp</dimen>
+
+    <!-- STANDARD MARGINS -->
+    <dimen name="std_m_16">16dp</dimen>
+    <dimen name="std_m_6">6dp</dimen>
+    <dimen name="std_p_10">10dp</dimen>
+
+
+    <!-- SIGN IN ACTIVITY -->
+    <dimen name="sign_in_top_layout_height">560dp</dimen>
+    <dimen name="sign_in_mt_description">30dp</dimen>
+</resources>

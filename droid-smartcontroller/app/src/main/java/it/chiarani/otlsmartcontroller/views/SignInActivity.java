@@ -1,7 +1,9 @@
 package it.chiarani.otlsmartcontroller.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import it.chiarani.otlsmartcontroller.R;
+import it.chiarani.otlsmartcontroller.databinding.ActivitySignInBinding;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,14 +20,16 @@ import com.google.android.gms.tasks.Task;
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener {
 
     GoogleSignInClient mGoogleSignInClient;
+    ActivitySignInBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
+      //  setContentView();
 
         // Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -39,12 +43,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onStart() {
         super.onStart();
-
-
         // Check for existing Google Sign In account, if the user is already signed in
-// the GoogleSignInAccount will be non-null.
+        // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-      //  updateUI(account);¶
+        //  updateUI(account);
     }
 
     @Override

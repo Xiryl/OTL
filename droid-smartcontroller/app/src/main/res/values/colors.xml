@@ -8,9 +8,15 @@
     <color name="main_bg_panna">#FCF9F8</color>
     <color name="fab_icon">#8AB43D</color>
     <color name="background_fab">#F3A474</color>
+    <color name="black">#000000</color>
 
     <!-- Device Item Colors -->
     <color name="item_device_title_disactive">#F3A474</color>
     <color name="item_device_title_active">#6B6B6B</color>
+
+    <!-- CUSTOM -->
+    <color name="title_gray">#2A2A2A</color>
+    <color name="background_white_gray">#F6F7F8</color>
+    <color name="background_blue">#327CD0</color>
 
 </resources>

@@ -37,6 +37,11 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.7'
 
+    // Lottie animations
+    implementation 'com.airbnb.android:lottie:2.5.0'
+
+    // Cardview
+    implementation 'androidx.cardview:cardview:1.0.0'
 }
 
 // Firebase

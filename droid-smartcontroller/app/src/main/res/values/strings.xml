@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">OTLSmartController</string>
+
+    <!-- SIGN IN -->
+    <string name="sign_in_title">Over The Light</string>
+    <string name="sign_in_description">Accedi tramite il tuo account Google!</string>
 </resources>
