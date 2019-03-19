@@ -15,4 +15,6 @@
     <!-- SIGN IN ACTIVITY -->
     <dimen name="sign_in_top_layout_height">560dp</dimen>
     <dimen name="sign_in_mt_description">30dp</dimen>
+
+    <!-- MAIN IN ACTIVITY -->
 </resources>
