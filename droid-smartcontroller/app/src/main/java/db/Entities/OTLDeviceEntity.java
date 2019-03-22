@@ -2,6 +2,7 @@ package db.Entities;
 
 import java.util.List;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 

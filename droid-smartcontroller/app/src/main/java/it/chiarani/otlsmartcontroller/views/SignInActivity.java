@@ -2,9 +2,15 @@ package it.chiarani.otlsmartcontroller.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
+import db.Entities.UserProfileEntity;
+import it.chiarani.otlsmartcontroller.App;
 import it.chiarani.otlsmartcontroller.R;
 import it.chiarani.otlsmartcontroller.databinding.ActivitySignInBinding;
+import it.chiarani.otlsmartcontroller.repositories.UserProfileRepository;
+import it.chiarani.otlsmartcontroller.viewmodels.UserProfileViewModel;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +23,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-public class SignInActivity extends BaseActivity implements View.OnClickListener {
+public class SignInActivity extends BaseActivity implements View.OnClickListener, UserProfileRepository.insertResponse {
 
     GoogleSignInClient mGoogleSignInClient;
     ActivitySignInBinding binding;
+    UserProfileViewModel viewModel;
 
     @Override
     protected int getLayoutID() {
@@ -57,14 +64,14 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         if(account != null) {
 
             /*GoogleSignInResult result =
-Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-GoogleSignInAccount acct = result.getSignInAccount();
-String personName = acct.getDisplayName();
-String personGivenName = acct.getGivenName();
-String personFamilyName = acct.getFamilyName();
-String personEmail = acct.getEmail();
-String personId = acct.getId();
-Uri personPhoto = acct.getPhotoUrl();*/
+            Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            GoogleSignInAccount acct = result.getSignInAccount();
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();*/
             String personName = account.getDisplayName();
             gotoMain(account);
         }
@@ -116,11 +123,33 @@ Uri personPhoto = acct.getPhotoUrl();*/
         }
     }
 
+
+    protected UserProfileViewModel getViewModel() {
+        if(viewModel == null) {
+            Application application = getApplication();
+            UserProfileViewModel.Factory factory = new UserProfileViewModel.Factory(application, ((App)getApplication()).getRepository());
+            viewModel = ViewModelProviders.of(this, factory).get(UserProfileViewModel.class);
+        }
+        return viewModel;
+    }
+
+
     private void gotoMain(GoogleSignInAccount acc) {
+
+        UserProfileEntity entity = new UserProfileEntity();
+
+
+
+        getViewModel().insertData(entity, this);
+
+    }
+
+    @Override
+    public void onResponse() {
         Intent myIntent = new Intent(SignInActivity.this, MainActivity.class);
-        myIntent.putExtra("G-NAME", acc.getDisplayName());
-        String x  = acc.getPhotoUrl().toString();
-        myIntent.putExtra("G-PIC", x);
+        //myIntent.putExtra("G-NAME", acc.getDisplayName());
+        //String x  = acc.getPhotoUrl().toString();
+        // myIntent.putExtra("G-PIC", x);
         this.startActivity(myIntent);
     }
 }
