@@ -144,6 +144,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
             if(data == null) {
                 tmpUser.userAccessToken = account.getEmail();
+                tmpUser.userPicture = account.getPhotoUrl().toString();
+                tmpUser.userName =  account.getDisplayName();
                 getViewModel().insertData(tmpUser, this);
             }
 
@@ -156,6 +158,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
             if(!isUserLoged) {
                 tmpUser.userAccessToken = account.getEmail();
+                tmpUser.userPicture = account.getPhotoUrl().toString();
+                tmpUser.userName =  account.getDisplayName();
                 getViewModel().insertData(tmpUser, this);
             }
 
@@ -167,9 +171,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onResponse() {
         Intent myIntent = new Intent(SignInActivity.this, MainActivity.class);
-        myIntent.putExtra("G-NAME", account.getDisplayName());
-        String x  = account.getPhotoUrl().toString();
-         myIntent.putExtra("G-PIC", x);
         this.startActivity(myIntent);
     }
 }

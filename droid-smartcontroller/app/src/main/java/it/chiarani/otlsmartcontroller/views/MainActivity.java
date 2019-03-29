@@ -48,16 +48,15 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        String name = this.getIntent().getStringExtra("G-NAME");
-        String pic = this.getIntent().getStringExtra("G-PIC");
-        binding.activityMainWelcome.setText("Benvenuto "  + name.split(" ")[0]);
-
-
-
         CircularImageView imageView = (CircularImageView) findViewById(R.id.img);
-        Glide.with(this).load(pic).into(imageView);
+
+        getViewModel().getUserData().observe(this, users -> {
+            binding.activityMainWelcome.setText(users.get(0).userName);
+            Glide.with(this).load(users.get(0).userPicture).into(imageView);
+        });
+
+
+
 
 
       //  binding.img.setImageDrawable(new Dra);
