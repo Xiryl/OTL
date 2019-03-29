@@ -71,7 +71,6 @@ public class UserProfileViewModel extends AndroidViewModel {
     }
 
 
-
     // funzione public che si collega al repository e fa la getall ad esempio
     /*
     public UserProfileViewModel(@Nullable UserProfileRepository userProfileRepository) {

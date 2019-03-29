@@ -18,5 +18,6 @@
     <color name="title_gray">#2A2A2A</color>
     <color name="background_white_gray">#F6F7F8</color>
     <color name="background_blue">#327CD0</color>
+    <color name="background_azure">#E9F0FD</color>
 
 </resources>

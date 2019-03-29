@@ -62,10 +62,10 @@ public class MainActivity extends BaseActivity {
 
       //  binding.img.setImageDrawable(new Dra);
 
-        getViewModel().getUserData().observe(this, user -> {
+       /* getViewModel().getUserData().observe(this, user -> {
             int x = 1;
         });
-
+*/
     }
 
 

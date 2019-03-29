@@ -28,6 +28,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     GoogleSignInClient mGoogleSignInClient;
     ActivitySignInBinding binding;
     UserProfileViewModel viewModel;
+    GoogleSignInAccount account;
 
     @Override
     protected int getLayoutID() {
@@ -60,7 +61,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         super.onStart();
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
 
             /*GoogleSignInResult result =
@@ -109,7 +110,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            account = completedTask.getResult(ApiException.class);
 
             String personName = account.getDisplayName();
             // Signed in successfully, show authenticated UI.
@@ -136,20 +137,39 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private void gotoMain(GoogleSignInAccount acc) {
 
-        UserProfileEntity entity = new UserProfileEntity();
+        UserProfileEntity tmpUser = new UserProfileEntity();
 
+        getViewModel().getUserData().observe(this, data -> {
+            boolean isUserLoged = false;
 
+            if(data == null) {
+                tmpUser.userAccessToken = account.getEmail();
+                getViewModel().insertData(tmpUser, this);
+            }
 
-        getViewModel().insertData(entity, this);
+            for(UserProfileEntity user : data) {
+                if(user.userAccessToken.equals(account.getEmail())) {
+                    this.onResponse();
+                    isUserLoged = true;
+                }
+            }
+
+            if(!isUserLoged) {
+                tmpUser.userAccessToken = account.getEmail();
+                getViewModel().insertData(tmpUser, this);
+            }
+
+        });
+
 
     }
 
     @Override
     public void onResponse() {
         Intent myIntent = new Intent(SignInActivity.this, MainActivity.class);
-        //myIntent.putExtra("G-NAME", acc.getDisplayName());
-        //String x  = acc.getPhotoUrl().toString();
-        // myIntent.putExtra("G-PIC", x);
+        myIntent.putExtra("G-NAME", account.getDisplayName());
+        String x  = account.getPhotoUrl().toString();
+         myIntent.putExtra("G-PIC", x);
         this.startActivity(myIntent);
     }
 }
