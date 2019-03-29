@@ -48,23 +48,18 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CircularImageView imageView = (CircularImageView) findViewById(R.id.img);
 
+        updateUI();
+        
+    }
+
+    private void updateUI() {
         getViewModel().getUserData().observe(this, users -> {
-            binding.activityMainWelcome.setText(users.get(0).userName);
-            Glide.with(this).load(users.get(0).userPicture).into(imageView);
+
+            binding.mainActivityTxtWelcome.setText(users.get(0).userName);
+            Glide.with(this).load(users.get(0).userPicture).into(binding.mainActivityImgUser);
+
         });
-
-
-
-
-
-      //  binding.img.setImageDrawable(new Dra);
-
-       /* getViewModel().getUserData().observe(this, user -> {
-            int x = 1;
-        });
-*/
     }
 
 
