@@ -14,6 +14,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/main_activity_ll_welcome"
                 android:layout_width="match_parent"
                 android:layout_margin="30dp"
                 android:layout_height="wrap_content"
@@ -43,6 +44,29 @@
                     android:textSize="20sp"
                     android:textColor="@color/title_gray" />
             </LinearLayout>
+
+            <TextView
+                android:layout_below="@id/main_activity_ll_welcome"
+                android:id="@+id/mainactivity_title_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="@font/os_regular"
+                android:text="Le tue stanze"
+                android:textSize="@dimen/std_title"
+                android:textColor="@color/title_gray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_below="@id/mainactivity_title_room"
+                android:id="@+id/main_activity_recyclerview_rooms"
+                android:paddingStart="8dp"
+                android:layout_marginTop="16dp"
+                android:clipToPadding = "false"
+                android:overScrollMode="never"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal"
+                android:orientation="horizontal"/>
 
         </RelativeLayout>
 

@@ -1,22 +1,20 @@
 package it.chiarani.otlsmartcontroller.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Application;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.security.Signature;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import db.Entities.OTLRoomsEntity;
 import it.chiarani.otlsmartcontroller.App;
 import it.chiarani.otlsmartcontroller.R;
+import it.chiarani.otlsmartcontroller.adapters.RoomsAdapter;
 import it.chiarani.otlsmartcontroller.databinding.ActivityMainBinding;
 import it.chiarani.otlsmartcontroller.viewmodels.UserProfileViewModel;
 
@@ -50,14 +48,29 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         updateUI();
-        
     }
 
     private void updateUI() {
         getViewModel().getUserData().observe(this, users -> {
 
-            binding.mainActivityTxtWelcome.setText(users.get(0).userName);
+            List<OTLRoomsEntity> roomsEntities = new ArrayList<>();
+            OTLRoomsEntity room = new OTLRoomsEntity();
+            room.roomName = "cucina";
+            room.roomLocation = "kitchen";
+            roomsEntities.add(room) ;
+
+            users.get(0).otlRoomsList = roomsEntities;
+
+
+            binding.mainActivityTxtWelcome.setText(String.format("Benvenuto %s", users.get(0).userName.split(" ")[0]));
             Glide.with(this).load(users.get(0).userPicture).into(binding.mainActivityImgUser);
+
+            LinearLayoutManager linearLayoutManagerslot = new LinearLayoutManager(this);
+            linearLayoutManagerslot.setOrientation(LinearLayoutManager.HORIZONTAL);
+            binding.mainActivityRecyclerviewRooms.setLayoutManager(linearLayoutManagerslot);
+
+            RoomsAdapter roomsAdapter = new RoomsAdapter(users.get(0));
+            binding.mainActivityRecyclerviewRooms.setAdapter(roomsAdapter);
 
         });
     }
