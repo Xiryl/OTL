@@ -1,9 +1,8 @@
 package it.chiarani.otlsmartcontroller.views;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
-import db.Entities.UserProfileEntity;
+import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
 import it.chiarani.otlsmartcontroller.App;
 import it.chiarani.otlsmartcontroller.R;
 import it.chiarani.otlsmartcontroller.databinding.ActivitySignInBinding;
@@ -137,7 +136,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private void gotoMain(GoogleSignInAccount acc) {
 
-        UserProfileEntity tmpUser = new UserProfileEntity();
+        User tmpUser = new User();
 
         getViewModel().getUserData().observe(this, data -> {
             boolean isUserLoged = false;
@@ -149,7 +148,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 getViewModel().insertData(tmpUser, this);
             }
 
-            for(UserProfileEntity user : data) {
+            for(User user : data) {
                 if(user.userAccessToken.equals(account.getEmail())) {
                     this.onResponse();
                     isUserLoged = true;

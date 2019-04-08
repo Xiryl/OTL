@@ -1,7 +1,8 @@
-package it.chiarani.otlsmartcontroller.db;
+package it.chiarani.otlsmartcontroller.db.persistence;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import it.chiarani.otlsmartcontroller.db.UserDataSource;
 import it.chiarani.otlsmartcontroller.db.persistence.DAO.UserDao;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
 

@@ -1,4 +1,4 @@
-package it.chiarani.otlsmartcontroller.db.converters;
+package it.chiarani.otlsmartcontroller.db.persistence.converters;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import androidx.room.TypeConverter;
-import it.chiarani.otlsmartcontroller.db.Entities.OTLRoomsEntity;
+import it.chiarani.otlsmartcontroller.db.persistence.Entities.OTLRoomsEntity;
 
 /**
  * convert all classes to json

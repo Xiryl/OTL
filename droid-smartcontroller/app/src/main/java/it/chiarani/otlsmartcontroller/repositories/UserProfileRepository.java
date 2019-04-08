@@ -6,18 +6,16 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.room.Room;
-import db.AppDatabase;
-import db.DAO.UserProfileDAO;
-import db.Entities.UserProfileEntity;
-import it.chiarani.otlsmartcontroller.helpers.SingleLiveEvent;
+import it.chiarani.otlsmartcontroller.db.AppDatabase;
+import it.chiarani.otlsmartcontroller.db.persistence.DAO.UserDao;
+import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
 
 public class UserProfileRepository {
 
-    private UserProfileDAO userProfileDAO;
+    private UserDao userProfileDAO;
 
-    private LiveData<List<UserProfileEntity>> userProfileEntities;
+    private LiveData<List<User>> userProfileEntities;
 
     public UserProfileRepository(Application app){
         AppDatabase db      = Room.databaseBuilder(app.getApplicationContext(), AppDatabase.class, "appDatabase")
@@ -28,7 +26,7 @@ public class UserProfileRepository {
     }
 
 
-    public void insert(final UserProfileEntity entity, insertResponse response) {
+    public void insert(final User entity, insertResponse response) {
         /**
          * Execute insert on a new thread
          */
@@ -39,7 +37,7 @@ public class UserProfileRepository {
 
     }
 
-    public LiveData<List<UserProfileEntity>> getAll() {
+    public LiveData<List<User>> getAll() {
         return userProfileEntities;
     }
 

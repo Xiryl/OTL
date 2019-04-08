@@ -29,7 +29,7 @@ let getDeviceStatus = async (topic, device, callback) => {
 			// stop connection
 			mqtt_client.end();
 
-			
+		
 		}
 	});
 };

@@ -5,23 +5,20 @@ import android.app.Application;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import db.Entities.OTLRoomsEntity;
-import db.Entities.UserProfileEntity;
-import it.chiarani.otlsmartcontroller.helpers.SingleLiveEvent;
+import it.chiarani.otlsmartcontroller.db.persistence.Entities.OTLRoomsEntity;
+import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
 import it.chiarani.otlsmartcontroller.repositories.UserProfileRepository;
 
 public class UserProfileViewModel extends AndroidViewModel {
     private final UserProfileRepository repository;
 
-    private MutableLiveData<List<UserProfileEntity>> userEntities;
+    private MutableLiveData<List<User>> userEntities;
 
     public UserProfileViewModel(@NonNull Application application, UserProfileRepository repository) {
         super(application);
@@ -46,7 +43,7 @@ public class UserProfileViewModel extends AndroidViewModel {
     }
 
 
-    public LiveData<List<UserProfileEntity>> getUserData() {
+    public LiveData<List<User>> getUserData() {
         return this.repository.getAll();
     }
 
@@ -55,7 +52,7 @@ public class UserProfileViewModel extends AndroidViewModel {
         MediatorLiveData<List<OTLRoomsEntity>> stanze = new MediatorLiveData<>();
 
         // recupero live data origina
-        LiveData<List<UserProfileEntity>> dati = this.repository.getAll();
+        LiveData<List<User>> dati = this.repository.getAll();
 
         stanze.addSource(dati, userEntities -> {
             // qui lo devo aggiungere
@@ -66,7 +63,7 @@ public class UserProfileViewModel extends AndroidViewModel {
         return stanze;
     }
 
-    public void insertData(UserProfileEntity en, UserProfileRepository.insertResponse response) {
+    public void insertData(User en, UserProfileRepository.insertResponse response) {
         repository.insert(en, response);
     }
 

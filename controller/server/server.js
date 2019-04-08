@@ -81,7 +81,7 @@ let start = () => {
                     let data = { 
                         devname : config.MQTT.MQTT_ALLOWED_DEVICES[i],
                          state : status,
-                         topic:'tmp'
+                         topic:'none'
                         };
                     discovery.devices.push(data);
                     return response.json({

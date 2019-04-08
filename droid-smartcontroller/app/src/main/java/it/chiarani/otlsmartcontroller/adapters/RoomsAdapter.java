@@ -10,17 +10,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import db.Entities.UserProfileEntity;
+import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
 import it.chiarani.otlsmartcontroller.R;
 import it.chiarani.otlsmartcontroller.helpers.RoomHelper;
 import it.chiarani.otlsmartcontroller.helpers.RoomTypes;
 
 public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> {
 
-    private UserProfileEntity userProfileEntity;
+    private User userProfileEntity;
     private Context context;
 
-    public RoomsAdapter(UserProfileEntity userProfileEntity) {
+    public RoomsAdapter(User userProfileEntity) {
         this.userProfileEntity = userProfileEntity;
     }
 

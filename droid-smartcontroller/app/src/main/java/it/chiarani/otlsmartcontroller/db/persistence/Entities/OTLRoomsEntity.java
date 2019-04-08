@@ -1,4 +1,4 @@
-package it.chiarani.otlsmartcontroller.db.Entities;
+package it.chiarani.otlsmartcontroller.db.persistence.Entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

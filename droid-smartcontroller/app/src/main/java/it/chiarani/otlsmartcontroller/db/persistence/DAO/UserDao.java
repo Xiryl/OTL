@@ -1,4 +1,4 @@
-package it.chiarani.otlsmartcontroller.db.DAO;
+package it.chiarani.otlsmartcontroller.db.persistence.DAO;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import it.chiarani.otlsmartcontroller.db.Entities.User;
+import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
 
 @Dao
 public interface UserDao {
