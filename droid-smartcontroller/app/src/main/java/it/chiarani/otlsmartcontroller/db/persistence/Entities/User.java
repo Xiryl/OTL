@@ -1,13 +1,12 @@
-package db.Entities;
+package it.chiarani.otlsmartcontroller.db.Entities;
 
 import java.util.List;
 
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class UserProfileEntity {
+public class User {
     @PrimaryKey
     public int idUser;
 
