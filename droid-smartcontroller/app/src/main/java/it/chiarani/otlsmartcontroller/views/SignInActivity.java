@@ -2,12 +2,15 @@ package it.chiarani.otlsmartcontroller.views;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import it.chiarani.otlsmartcontroller.db.Injection;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
-import it.chiarani.otlsmartcontroller.App;
 import it.chiarani.otlsmartcontroller.R;
 import it.chiarani.otlsmartcontroller.databinding.ActivitySignInBinding;
-import it.chiarani.otlsmartcontroller.repositories.UserProfileRepository;
-import it.chiarani.otlsmartcontroller.viewmodels.UserProfileViewModel;
+import it.chiarani.otlsmartcontroller.viewmodels.UserViewModel;
+import it.chiarani.otlsmartcontroller.viewmodels.ViewModelFactory;
 
 import android.app.Application;
 import android.content.Intent;
@@ -22,12 +25,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-public class SignInActivity extends BaseActivity implements View.OnClickListener, UserProfileRepository.insertResponse {
+public class SignInActivity extends BaseActivity implements View.OnClickListener {
 
+    private static final String TAG = SignInActivity.class.getSimpleName();
+
+    // viewmodel
+    private ViewModelFactory mViewModelFactory;
+    private UserViewModel mUserViewModel;
+
+    // oauth
     GoogleSignInClient mGoogleSignInClient;
     ActivitySignInBinding binding;
-    UserProfileViewModel viewModel;
     GoogleSignInAccount account;
+
+    private final CompositeDisposable mDisposable = new CompositeDisposable();
 
     @Override
     protected int getLayoutID() {
@@ -53,6 +64,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+
+        mViewModelFactory = Injection.provideViewModelFactory(this);
+        mUserViewModel = ViewModelProviders.of(this, mViewModelFactory).get(UserViewModel.class);
     }
 
     @Override
@@ -71,13 +85,22 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             String personFamilyName = acct.getFamilyName();
             String personEmail = acct.getEmail();
             String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();*/
-            String personName = account.getDisplayName();
-            gotoMain(account);
+            Uri personPhoto = acct.getPhotoUrl();
+            String personName = account.getDisplayName();*/
+            testLogin(buildUser(account));
         }
 
         //  updateUI(account);
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // clear all the subscriptions
+        mDisposable.clear();
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -113,7 +136,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
             String personName = account.getDisplayName();
             // Signed in successfully, show authenticated UI.
-            gotoMain(account);
+            testLogin(buildUser(account));
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -123,52 +146,29 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-
-    protected UserProfileViewModel getViewModel() {
-        if(viewModel == null) {
-            Application application = getApplication();
-            UserProfileViewModel.Factory factory = new UserProfileViewModel.Factory(application, ((App)getApplication()).getRepository());
-            viewModel = ViewModelProviders.of(this, factory).get(UserProfileViewModel.class);
-        }
-        return viewModel;
+    private void testLogin(User user) {
+        mDisposable.add(mUserViewModel.insertUser(user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe( () -> {
+                    gotoMain();
+                }, throwable -> {
+                    Log.e(TAG, "Unable to update username", throwable);
+                }));
     }
 
 
-    private void gotoMain(GoogleSignInAccount acc) {
-
-        User tmpUser = new User();
-
-        getViewModel().getUserData().observe(this, data -> {
-            boolean isUserLoged = false;
-
-            if(data == null) {
-                tmpUser.userAccessToken = account.getEmail();
-                tmpUser.userPicture = account.getPhotoUrl().toString();
-                tmpUser.userName =  account.getDisplayName();
-                getViewModel().insertData(tmpUser, this);
-            }
-
-            for(User user : data) {
-                if(user.userAccessToken.equals(account.getEmail())) {
-                    this.onResponse();
-                    isUserLoged = true;
-                }
-            }
-
-            if(!isUserLoged) {
-                tmpUser.userAccessToken = account.getEmail();
-                tmpUser.userPicture = account.getPhotoUrl().toString();
-                tmpUser.userName =  account.getDisplayName();
-                getViewModel().insertData(tmpUser, this);
-            }
-
-        });
-
-    }
-
-    @Override
-    public void onResponse() {
+    public void gotoMain() {
         Intent myIntent = new Intent(SignInActivity.this, MainActivity.class);
         this.startActivity(myIntent);
+    }
+
+    private User buildUser(GoogleSignInAccount account) {
+        User tmpUser = new User();
+        tmpUser.userName = account.getDisplayName();
+        tmpUser.userPicture = account.getPhotoUrl().toString();
+        tmpUser.userAccessToken = account.getIdToken();
+        tmpUser.idUser =1;
+        return tmpUser;
     }
 }

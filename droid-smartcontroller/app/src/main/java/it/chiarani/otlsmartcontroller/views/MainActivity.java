@@ -22,11 +22,9 @@ import it.chiarani.otlsmartcontroller.api.AuthRetrofitModel;
 import it.chiarani.otlsmartcontroller.api.RetrofitAPI;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.OTLRoomsEntity;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
-import it.chiarani.otlsmartcontroller.App;
 import it.chiarani.otlsmartcontroller.R;
 import it.chiarani.otlsmartcontroller.adapters.RoomsAdapter;
 import it.chiarani.otlsmartcontroller.databinding.ActivityMainBinding;
-import it.chiarani.otlsmartcontroller.viewmodels.UserProfileViewModel;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +36,7 @@ public class MainActivity extends BaseActivity {
 
 
    ActivityMainBinding binding;
-   UserProfileViewModel viewModel;
+
 
     @Override
     protected int getLayoutID() {
@@ -50,26 +48,19 @@ public class MainActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, getLayoutID());
     }
 
-    protected UserProfileViewModel getViewModel() {
-        if(viewModel == null) {
-            Application application = getApplication();
-            UserProfileViewModel.Factory factory = new UserProfileViewModel.Factory(application, ((App)getApplication()).getRepository());
-            viewModel = ViewModelProviders.of(this, factory).get(UserProfileViewModel.class);
-        }
-        return viewModel;
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        updateUI();
+       // updateUI();
 
         Retrofit.Builder builder = new Retrofit.Builder();
 
         builder.baseUrl("https://156.54.213.27/api/")
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(getUnsafeOkHttpClient())
+                //.client(getUnsafeOkHttpClient())
                 .build();
 
         Retrofit retrofit = builder.build();
@@ -97,7 +88,7 @@ public class MainActivity extends BaseActivity {
         });
 
     }
-
+/*
     private void updateUI() {
         getViewModel().getUserData().observe(this, users -> {
 
@@ -174,8 +165,8 @@ public class MainActivity extends BaseActivity {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-    }
+*/
+   // }
 
 
 }
