@@ -21,7 +21,4 @@ public class OTLDeviceEntity {
     public boolean isAvailable;
 
     public String deviceToken;
-
-    public List<OTLDeviceEntity> deviceList;
-
 }

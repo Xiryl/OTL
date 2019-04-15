@@ -1,5 +1,7 @@
 package it.chiarani.otlsmartcontroller.db.persistence.Entities;
 
+import java.util.List;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -17,5 +19,7 @@ public class OTLRoomsEntity {
     public boolean isAvailable;
 
     public String roomToken;
+
+    public List<OTLDeviceEntity> devices;
 
 }

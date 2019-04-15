@@ -17,7 +17,4 @@ public class User {
     public String userAccessToken;
 
     public List<OTLRoomsEntity> otlRoomsList;
-
-    public List<OTLDeviceEntity> otlDeviceList;
-
 }

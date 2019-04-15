@@ -1,54 +1,35 @@
 package it.chiarani.otlsmartcontroller.views;
 
-import android.app.Application;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.bumptech.glide.Glide;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import androidx.constraintlayout.solver.widgets.Flow;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import io.reactivex.Flowable;
-import io.reactivex.FlowableSubscriber;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.internal.schedulers.ScheduledDirectPeriodicTask;
 import io.reactivex.schedulers.Schedulers;
+import it.chiarani.otlsmartcontroller.R;
+import it.chiarani.otlsmartcontroller.adapters.RoomsAdapter;
 import it.chiarani.otlsmartcontroller.api.AuthBodyRetrofitModel;
 import it.chiarani.otlsmartcontroller.api.AuthRetrofitModel;
 import it.chiarani.otlsmartcontroller.api.DiscoveryRetrofitModel;
 import it.chiarani.otlsmartcontroller.api.RetrofitAPI;
-import it.chiarani.otlsmartcontroller.controllers.ApiAuthService;
+import it.chiarani.otlsmartcontroller.databinding.ActivityMainBinding;
 import it.chiarani.otlsmartcontroller.db.Injection;
+import it.chiarani.otlsmartcontroller.db.persistence.Entities.OTLDeviceEntity;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.OTLRoomsEntity;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
-import it.chiarani.otlsmartcontroller.R;
-import it.chiarani.otlsmartcontroller.adapters.RoomsAdapter;
-import it.chiarani.otlsmartcontroller.databinding.ActivityMainBinding;
 import it.chiarani.otlsmartcontroller.helpers.Config;
 import it.chiarani.otlsmartcontroller.helpers.UnsafeHttpClient;
 import it.chiarani.otlsmartcontroller.viewmodels.UserViewModel;
 import it.chiarani.otlsmartcontroller.viewmodels.ViewModelFactory;
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -107,13 +88,25 @@ public class MainActivity extends BaseActivity {
 
                                     @Override
                                     public void onNext(DiscoveryRetrofitModel discoveryRetrofitModel) {
-                                        String roomName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("/")[0];
-                                        OTLRoomsEntity roomsEntity = new OTLRoomsEntity();
-                                        roomsEntity.roomName = roomName;
+
+                                        List<OTLDeviceEntity> tmpDevices = new ArrayList<>();
                                         List<OTLRoomsEntity> tmpRoomsEntity = new ArrayList<>();
+                                        OTLDeviceEntity deviceEntity = new OTLDeviceEntity();
+                                        OTLRoomsEntity roomsEntity = new OTLRoomsEntity();
+
+                                        String roomName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("/")[0];
+
+                                        deviceEntity.deviceDescription = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname();
+                                        deviceEntity.deviceStatus = discoveryRetrofitModel.getMessage().getDevices().get(0).getState() == 1;
+                                        deviceEntity.deviceName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("/")[1];
+                                        tmpDevices.add(deviceEntity);
+
+                                        roomsEntity.roomName = roomName;
+                                        roomsEntity.devices = tmpDevices;
+
                                         tmpRoomsEntity.add(roomsEntity);
 
-                                        mDisposable.add(mUserViewModel.getUser()
+                                                mDisposable.add(mUserViewModel.getUser()
                                                 .subscribeOn(Schedulers.io())
                                                 .observeOn(AndroidSchedulers.mainThread())
                                                 .subscribe( user -> {
@@ -146,7 +139,7 @@ public class MainActivity extends BaseActivity {
                     }
                 });
 
-
+        updateUI();
     }
 
 
@@ -159,76 +152,16 @@ public class MainActivity extends BaseActivity {
     }
 
 
-
-    // updateUI();
-
-        /*
-        Retrofit.Builder builder = new Retrofit.Builder();
-
-        builder.baseUrl("https://156.54.213.27/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(UnsafeHttpClient.makeUnsafe())
-                .build();
-
-        Retrofit retrofit = builder.build();
-
-        RetrofitAPI authRetrofitModel = retrofit.create(RetrofitAPI.class);
-
-        AuthBodyRetrofitModel authBodyRetrofitModel = new AuthBodyRetrofitModel();
-        authBodyRetrofitModel.setClientUsername("op6-fabio");
-
-
-        Call<AuthRetrofitModel> call = authRetrofitModel.auth(authBodyRetrofitModel);
-
-
-        call.enqueue(new Callback<AuthRetrofitModel>() {
-            @Override
-            public void onResponse(Call<AuthRetrofitModel> call, Response<AuthRetrofitModel> response) {
-                String ttt =response.body().getToken();
-        int x = 1;
-            }
-
-            @Override
-            public void onFailure(Call<AuthRetrofitModel> call, Throwable t) {
-                int x = 1;
-            }
-        });*/
-/*
     private void updateUI() {
-
-        authData.subscribeOn(Schedulers.io())
+        mDisposable.add(mUserViewModel.getUser()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( () -> {
-                    gotoMain();
-                }, throwable -> {
-                    Log.e(TAG, "Unable to update username", throwable);
+                .subscribe( user -> {
+                    binding.mainActivityTxtWelcome.setText(String.format("Benvenuto %s", user.userName.split(" ")[0]));
+                    Glide.with(this).load(user.userPicture).into(binding.mainActivityImgUser);
                 }));
-        getViewModel().getUserData().observe(this, users -> {
-
-            if(users == null) {
-                updateErrorUI();
-            }
-
-            List<OTLRoomsEntity> roomsEntities = new ArrayList<>();
-            OTLRoomsEntity room = new OTLRoomsEntity();
-            room.roomName = "cucina";
-            room.roomLocation = "kitchen";
-            roomsEntities.add(room) ;
-
-            users.get(0).otlRoomsList = roomsEntities;
-
-
-            binding.mainActivityTxtWelcome.setText(String.format("Benvenuto %s", users.get(0).userName.split(" ")[0]));
-            Glide.with(this).load(users.get(0).userPicture).into(binding.mainActivityImgUser);
-
-            bindRecyclerView(users.get(0));
-        });
-    }
-
-    private void updateErrorUI() {
 
     }
-*/
     private void bindRecyclerView(User userProfileEntity) {
         LinearLayoutManager linearLayoutManagerslot = new LinearLayoutManager(this);
         linearLayoutManagerslot.setOrientation(LinearLayoutManager.HORIZONTAL);
