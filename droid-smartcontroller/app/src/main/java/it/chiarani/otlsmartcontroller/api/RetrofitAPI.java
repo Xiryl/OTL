@@ -1,10 +1,16 @@
 package it.chiarani.otlsmartcontroller.api;
 
-import retrofit2.Call;
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface RetrofitAPI {
     @POST("auth")
-    Call<AuthRetrofitModel> auth(@Body AuthBodyRetrofitModel body);
+    Observable<AuthRetrofitModel> auth(@Body AuthBodyRetrofitModel body);
+
+    @GET("discovery")
+    Observable<DiscoveryRetrofitModel> discovery(@Header("Authorization") String authToken);
 }

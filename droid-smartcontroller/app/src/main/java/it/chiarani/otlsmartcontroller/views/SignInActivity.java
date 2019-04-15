@@ -29,14 +29,14 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private static final String TAG = SignInActivity.class.getSimpleName();
 
-    // viewmodel
-    private ViewModelFactory mViewModelFactory;
-    private UserViewModel mUserViewModel;
+    // ViewModel
+    private ViewModelFactory    mViewModelFactory;
+    private UserViewModel       mUserViewModel;
 
-    // oauth
-    GoogleSignInClient mGoogleSignInClient;
-    ActivitySignInBinding binding;
-    GoogleSignInAccount account;
+    // oAuth
+    GoogleSignInClient      mGoogleSignInClient;
+    ActivitySignInBinding   binding;
+    GoogleSignInAccount     account;
 
     private final CompositeDisposable mDisposable = new CompositeDisposable();
 
@@ -77,16 +77,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
 
-            /*GoogleSignInResult result =
-            Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            GoogleSignInAccount acct = result.getSignInAccount();
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
-            String personName = account.getDisplayName();*/
             testLogin(buildUser(account));
         }
 

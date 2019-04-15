@@ -17,11 +17,11 @@ import it.chiarani.otlsmartcontroller.helpers.RoomTypes;
 
 public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> {
 
-    private User userProfileEntity;
+    private User mUser;
     private Context context;
 
-    public RoomsAdapter(User userProfileEntity) {
-        this.userProfileEntity = userProfileEntity;
+    public RoomsAdapter(User mUser) {
+        this.mUser = mUser;
     }
 
     @NonNull
@@ -52,11 +52,11 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull RoomsAdapter.ViewHolder holder, int position) {
         holder.img.setImageDrawable(context.getResources().getDrawable(RoomHelper.getResource(RoomTypes.KITCHEN)));
-        //holder.title
+        holder.title.setText(mUser.otlRoomsList.get(position).roomName);
     }
 
     @Override
     public int getItemCount() {
-        return userProfileEntity.otlRoomsList.size();
+        return mUser.otlRoomsList.size();
     }
 }

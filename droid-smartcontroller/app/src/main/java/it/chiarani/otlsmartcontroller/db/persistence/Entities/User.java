@@ -18,4 +18,6 @@ public class User {
 
     public List<OTLRoomsEntity> otlRoomsList;
 
+    public List<OTLDeviceEntity> otlDeviceList;
+
 }
