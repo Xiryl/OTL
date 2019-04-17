@@ -4,4 +4,10 @@
     <!-- SIGN IN -->
     <string name="sign_in_title">Over The Light</string>
     <string name="sign_in_description">Accedi tramite il tuo account Google!</string>
+
+    <!-- MAINACTIVITY -->
+    <string name="main_welcome">Benvenuto</string>
+
+    <!-- ERRORS -->
+    <string name="err_no_device_found">Non ho trovato nessun dispositivo IOT :(</string>
 </resources>
