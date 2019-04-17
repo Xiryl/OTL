@@ -75,19 +75,17 @@ let start = () => {
         if(res_auth) {
             log.info(`User authenticated with IP: ${client_ip}. Executing discovery...`);
 
-            let discovery = { devices:[] };
-            for(let i = 0; i < config.MQTT.MQTT_ALLOWED_DEVICES.length; i++) {
-                let status = await controller.getDeviceStatus('', config.MQTT.MQTT_ALLOWED_DEVICES[i], ( status ) => { 
-                    let data = { 
-                        devname : config.MQTT.MQTT_ALLOWED_DEVICES[i],
-                         state : status,
-                         topic:'none'
-                        };
-                    discovery.devices.push(data);
-                    return response.json({
-                        success: true,
-                        message: discovery
-                    });
+            let discovery = await makeDiscovery();
+
+            log.error('size:'+discovery.devices.length);
+
+            if(discovery.devices.length < 1) {
+                return response.status(500).send('no devices');
+            }
+            else{
+                return response.json({
+                    success: true,
+                    message: discovery
                 });
             }
         }
@@ -177,6 +175,23 @@ let start = () => {
     });
     
     app.listen(config.server.SERVER_PORT, () => {log.info(`Server is listening on port: ${config.server.SERVER_PORT}`);});
+};
+
+let makeDiscovery = async () => {
+    let discovery = { devices:[] };
+
+    for(let i = 0; i < config.MQTT.MQTT_ALLOWED_DEVICES.length; i++) {
+        let status = await controller.getDeviceStatus('', config.MQTT.MQTT_ALLOWED_DEVICES[i]);
+        let data = { 
+            devname : config.MQTT.MQTT_ALLOWED_DEVICES[i],
+                state : status,
+                topic:'none'
+            };
+        discovery.devices.push(data);
+        log.error('devices:' + JSON.stringify(discovery));
+    }
+
+    return discovery;
 };
 
 start();
