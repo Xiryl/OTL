@@ -27,9 +27,10 @@ Over The Light is my personal project for home automation system that allows you
 
 **dafaq is this repo?** _why am I reinventing the wheel?_
 
-Who has never wanted to try some smart IoT devices in their home? I am among these.
+Who has never wanted to try some smart IoT devices in their home? I am among these. ¯\\_(ツ)_/¯
+
 **The problem:** the official app for this stuff, eWeLink, has several security problems. 
-- security concerns (clear HTTP traffic to China)
+- security concerns (clear HTTP traffic to China 🤔🤔 )
 - terrible UI/UX
 - lack of features
 
@@ -39,21 +40,22 @@ Who has never wanted to try some smart IoT devices in their home? I am among the
 
 OTL offers:
 - jwt + simmetric key + IP whitelist and authentication checks
-- supports all devices on mqtt
+- supports all devices on mqtt protocol
 - group IoT devices _by topic_
 - single or grouped device control
-- timers and actions
-- sexy UI
-- available on telegram, android, web and Postman (if you love raw requests 😏)
+- timers, actions and schedulers
+- available on telegram, android, web and Postman (if you love raw requests 😏😏)
 - full customization (block specific commands, APIs, devices, topics)
 - compatible with Google Assistant and Alexa
-- logs
+- better logs
+- obviusly, sexy UI
 
 ## Installation
 To run the entire project you need:
 - An instance of MQTT broker server
 - For shell testing, MQTT phao/mosquitto
 - Modify the `config.json` file accordingly
+- Patience
 
 ```JSON
 {
@@ -143,11 +145,11 @@ Each folder of the repo represents a component
 
 - `droid`
   - Android app
-  - Wear OS appIOT_Comunication.png
+  - Wear OS
 - `controller`
   - all the components for back-end
     - `server.js` contains API handler
-    - `controller.js` contains mqtt handler
+    - `controller.js` contains MQTT handler
   
 #### Related
 - [tasmota](https://github.com/arendst/Sonoff-Tasmota)
@@ -159,4 +161,4 @@ Each folder of the repo represents a component
 - [ewelink problems](https://www.iot-tests.org/2018/06/sonoff-basic-wifi/)
 
 #### Can I contribute?
-Pull requests are allowed. Please read `CONTRIBUTE.md` first.
+Pull requests are allowed. Maybe. Please read `CONTRIBUTE.md` first.
