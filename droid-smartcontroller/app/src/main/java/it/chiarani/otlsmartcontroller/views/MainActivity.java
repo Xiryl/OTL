@@ -1,6 +1,7 @@
 package it.chiarani.otlsmartcontroller.views;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -10,10 +11,13 @@ import java.util.List;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import it.chiarani.otlsmartcontroller.R;
 import it.chiarani.otlsmartcontroller.adapters.RoomsAdapter;
@@ -66,76 +70,55 @@ public class MainActivity extends BaseActivity {
         authBodyRetrofitModel.setClientUsername("op6-fabio");
 
         retrofitAPI.auth(authBodyRetrofitModel)
+                .flatMap((Function<AuthRetrofitModel, Observable<DiscoveryRetrofitModel>>) authRetrofitModel -> {
+                    String token = authRetrofitModel.getToken();
+                    return retrofitAPI.discovery(token);
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AuthRetrofitModel>() {
+                .subscribe(new Observer<DiscoveryRetrofitModel>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(AuthRetrofitModel authRetrofitModel) {
-                        String token = authRetrofitModel.getToken();
-                        retrofitAPI.discovery(token)
+                    public void onNext(DiscoveryRetrofitModel discoveryRetrofitModel) {
+                        List<OTLDeviceEntity> tmpDevices = new ArrayList<>();
+                        List<OTLRoomsEntity> tmpRoomsEntity = new ArrayList<>();
+                        OTLDeviceEntity deviceEntity = new OTLDeviceEntity();
+                        OTLRoomsEntity roomsEntity = new OTLRoomsEntity();
+
+                        String roomName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("/")[0];
+
+                        deviceEntity.deviceDescription = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname();
+                      //  deviceEntity.deviceStatus = discoveryRetrofitModel.getMessage().getDevices().get(0).getState() == 1;
+                        deviceEntity.deviceName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("/")[1];
+                        tmpDevices.add(deviceEntity);
+
+                        roomsEntity.roomName = roomName;
+                        roomsEntity.devices = tmpDevices;
+
+                        tmpRoomsEntity.add(roomsEntity);
+
+                        mDisposable.add(mUserViewModel.getUser()
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Observer<DiscoveryRetrofitModel>() {
-                                    @Override
-                                    public void onSubscribe(Disposable d) {
+                                .subscribe( user -> {
+                                    user.otlRoomsList = tmpRoomsEntity;
+                                    //bindRecyclerView(user);
 
-                                    }
-
-                                    @Override
-                                    public void onNext(DiscoveryRetrofitModel discoveryRetrofitModel) {
-
-                                        List<OTLDeviceEntity> tmpDevices = new ArrayList<>();
-                                        List<OTLRoomsEntity> tmpRoomsEntity = new ArrayList<>();
-                                        OTLDeviceEntity deviceEntity = new OTLDeviceEntity();
-                                        OTLRoomsEntity roomsEntity = new OTLRoomsEntity();
-
-                                        String roomName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("/")[0];
-
-                                        deviceEntity.deviceDescription = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname();
-                                        deviceEntity.deviceStatus = discoveryRetrofitModel.getMessage().getDevices().get(0).getState() == 1;
-                                        deviceEntity.deviceName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("/")[1];
-                                        tmpDevices.add(deviceEntity);
-
-                                        roomsEntity.roomName = roomName;
-                                        roomsEntity.devices = tmpDevices;
-
-                                        tmpRoomsEntity.add(roomsEntity);
-
-                                                mDisposable.add(mUserViewModel.getUser()
-                                                .subscribeOn(Schedulers.io())
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe( user -> {
-                                                    user.otlRoomsList = tmpRoomsEntity;
-                                                    bindRecyclerView(user);
-
-                                                }));
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onComplete() {
-
-                                    }
-                                });
+                                }));
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        int x = 1;
+
                     }
 
                     @Override
                     public void onComplete() {
-                        int x = 1;
+
                     }
                 });
 
@@ -157,12 +140,13 @@ public class MainActivity extends BaseActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( user -> {
-                    binding.mainActivityTxtWelcome.setText(String.format("Benvenuto %s", user.userName.split(" ")[0]));
+                    binding.mainActivityTxtWelcome.setText(String.format("%s %s",getResources().getString(R.string.main_welcome), user.userName.split(" ")[0]));
                     Glide.with(this).load(user.userPicture).into(binding.mainActivityImgUser);
                 }));
-
     }
+
     private void bindRecyclerView(User userProfileEntity) {
+        // qui observo
         LinearLayoutManager linearLayoutManagerslot = new LinearLayoutManager(this);
         linearLayoutManagerslot.setOrientation(LinearLayoutManager.HORIZONTAL);
         binding.mainActivityRecyclerviewRooms.setLayoutManager(linearLayoutManagerslot);
@@ -170,8 +154,6 @@ public class MainActivity extends BaseActivity {
         RoomsAdapter roomsAdapter = new RoomsAdapter(userProfileEntity);
         binding.mainActivityRecyclerviewRooms.setAdapter(roomsAdapter);
     }
-
-
 
     private RetrofitAPI buildRetrofitApi() {
         return new Retrofit.Builder()
