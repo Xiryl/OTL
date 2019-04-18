@@ -3,7 +3,7 @@ const config = require('../config/config.json');
 const log 	 = require('./../logger/logger');
 
 
-let getDeviceStatus = async (topic, device) => {
+let getDeviceStatus = (topic, device) => new Promise ( (resolve) => {
 	const mqtt_client = mqtt.connect(config.MQTT.MQTT_BROKER_ADDRESS);	
 
 	mqtt_client.on('connect', function () {
@@ -27,10 +27,10 @@ let getDeviceStatus = async (topic, device) => {
 			// stop connection
 			mqtt_client.end();
 
-			return actualPowerStatus;	
+			resolve(actualPowerStatus);	
 		}
 	});
-};
+});
 
 
 let controlDevice = (topic, device, command, callback) => {
