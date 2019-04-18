@@ -77,8 +77,6 @@ let start = () => {
 
             let discovery = await makeDiscovery();
 
-            log.error('size:'+discovery.devices.length);
-
             if(discovery.devices.length < 1) {
                 return response.status(500).send('no devices');
             }
@@ -188,7 +186,6 @@ let makeDiscovery = async () => {
                 topic:'none'
             };
         discovery.devices.push(data);
-        log.error('devices:' + JSON.stringify(discovery));
     }
 
     return discovery;

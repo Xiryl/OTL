@@ -18,11 +18,9 @@ let getDeviceStatus = (topic, device) => new Promise ( (resolve) => {
 	mqtt_client.on('message', function (topic, message) {
 
 		if( topic === `stat/${device}/STATUS`) {
-			log.warn('[STATUS] inside status');
-
 			const actualPowerStatus = JSON.parse(message.toString()).Status.Power;
 
-			log.warn(`[STATUS] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
+			log.debug(`[STATUS] actual power status: ${actualPowerStatus} [0] OFF - [1] ON`);
 			
 			// stop connection
 			mqtt_client.end();
