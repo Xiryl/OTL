@@ -3,6 +3,7 @@ package it.chiarani.otlsmartcontroller.views;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import it.chiarani.otlsmartcontroller.viewmodels.UserViewModel;
 
 /**
  * Sample activity to extends
@@ -21,6 +22,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract void setActivityBinding();
 
     /**
+     * set viewmodel
+     * @return
+     */
+    protected abstract void setViewModel();
+
+    /**
      * Override onCreate method
      * @param savedInstanceState bundle
      */
@@ -33,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         setActivityBinding();
+        setViewModel();
     }
 
 

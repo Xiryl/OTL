@@ -16,7 +16,7 @@ import it.chiarani.otlsmartcontroller.db.persistence.converters.OTLRoomsConverte
 /**
  * The Room database that contains the Users table
  */
-@Database(entities = {OTLDeviceEntity.class, OTLRoomsEntity.class, User.class}, version = 3, exportSchema = false)
+@Database(entities = {OTLDeviceEntity.class, OTLRoomsEntity.class, User.class}, version = 4, exportSchema = false)
 @TypeConverters({OTLRoomsConverter.class, OTLDeviceConverter.class})
 public abstract class UserDatabase extends RoomDatabase {
 
@@ -30,6 +30,7 @@ public abstract class UserDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             UserDatabase.class, "userData.db")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

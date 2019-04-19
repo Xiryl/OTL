@@ -4,6 +4,7 @@ import java.util.List;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.Dao;
 
 @Entity
 public class OTLDeviceEntity {
@@ -16,7 +17,7 @@ public class OTLDeviceEntity {
 
     public String deviceLocation;
 
-    public boolean deviceStatus;
+    public int deviceStatus;
 
     public boolean isAvailable;
 

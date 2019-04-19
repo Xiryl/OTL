@@ -1,18 +1,5 @@
 package it.chiarani.otlsmartcontroller.views;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
-import it.chiarani.otlsmartcontroller.db.Injection;
-import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
-import it.chiarani.otlsmartcontroller.R;
-import it.chiarani.otlsmartcontroller.databinding.ActivitySignInBinding;
-import it.chiarani.otlsmartcontroller.viewmodels.UserViewModel;
-import it.chiarani.otlsmartcontroller.viewmodels.ViewModelFactory;
-
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +11,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import it.chiarani.otlsmartcontroller.R;
+import it.chiarani.otlsmartcontroller.databinding.ActivitySignInBinding;
+import it.chiarani.otlsmartcontroller.db.Injection;
+import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
+import it.chiarani.otlsmartcontroller.viewmodels.UserViewModel;
+import it.chiarani.otlsmartcontroller.viewmodels.ViewModelFactory;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
 
@@ -48,6 +47,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void setActivityBinding() {
         binding = DataBindingUtil.setContentView(this, getLayoutID());
+    }
+
+    @Override
+    protected void setViewModel() {
+
     }
 
     @Override
