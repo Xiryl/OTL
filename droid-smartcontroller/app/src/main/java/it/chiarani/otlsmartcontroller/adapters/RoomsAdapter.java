@@ -36,14 +36,15 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout rl;
-        TextView title;
+        TextView title, qtaDevice;
         ImageView img;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
-            rl      = v.findViewById(R.id.item_room_rl);
-            title   = v.findViewById(R.id.item_room_title);
-            img     = v.findViewById(R.id.item_room_img);
+            rl          = v.findViewById(R.id.item_room_rl);
+            title       = v.findViewById(R.id.item_room_title);
+            img         = v.findViewById(R.id.item_room_img);
+            qtaDevice   = v.findViewById(R.id.item_room_qta_device);
         }
 
     }
@@ -53,6 +54,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull RoomsAdapter.ViewHolder holder, int position) {
         holder.img.setImageDrawable(context.getResources().getDrawable(RoomHelper.getResource(RoomTypes.KITCHEN)));
         holder.title.setText(mUser.otlRoomsList.get(position).roomName);
+        holder.qtaDevice.setText(mUser.otlRoomsList.get(position).devices.size() + "Device");
     }
 
     @Override

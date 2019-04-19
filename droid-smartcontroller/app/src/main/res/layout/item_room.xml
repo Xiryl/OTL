@@ -5,34 +5,52 @@
     <data>
     </data>
     <RelativeLayout
-        android:layout_width="70dp"
+        android:id="@+id/item_room_rl"
+        android:layout_width="@dimen/item_room_card_width"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp">
-        <RelativeLayout
-            android:id="@+id/item_room_rl"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="horizontal"
-            android:background="@drawable/ic_room_gradient_inactive"
-            android:layout_marginBottom="4dp">
-            <ImageView
-                android:padding="5dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_centerVertical="true"
-                android:id="@+id/item_room_img"/>
-        </RelativeLayout>
+        android:layout_marginEnd="@dimen/item_room_card_margin"
+        android:background="@drawable/ic_room_gradient_inactive"
+        android:layout_marginStart="@dimen/item_room_card_margin">
+        <LinearLayout
+            android:id="@+id/item_room_ll_qta_device"
+            android:layout_marginTop="@dimen/std_p_10"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_room_gradient_qta_device"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/item_room_qta_device"
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/os_regular"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textColor="@color/background_white_gray"
+                android:text="@string/item_room_qta_device"
+                android:paddingStart="@dimen/std_m_6"
+                android:paddingEnd="@dimen/std_m_6"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_margin="@dimen/std_p_10"
+            android:layout_width="@dimen/item_room_img_height"
+            android:layout_height="@dimen/item_room_img_height"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_room_kitchen"
+            android:layout_below="@id/item_room_ll_qta_device"
+            android:id="@+id/item_room_img"/>
 
         <TextView
-            android:layout_below="@id/item_room_rl"
+            android:layout_below="@id/item_room_img"
+            android:layout_marginTop="@dimen/std_m_16"
             android:id="@+id/item_room_title"
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:fontFamily="@font/os_regular"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="desc"/>
+            android:textColor="@color/background_white_gray"
+            android:layout_marginBottom="@dimen/std_p_10"
+            android:text="@string/item_room_description"/>
     </RelativeLayout>
 </layout>

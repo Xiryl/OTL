@@ -16,5 +16,8 @@
     <dimen name="sign_in_top_layout_height">560dp</dimen>
     <dimen name="sign_in_mt_description">30dp</dimen>
 
-    <!-- MAIN IN ACTIVITY -->
+    <!-- ITEM ROOM -->
+    <dimen name="item_room_card_width">100dp</dimen>
+    <dimen name="item_room_card_margin">8dp</dimen>
+    <dimen name="item_room_img_height">50dp</dimen>
 </resources>

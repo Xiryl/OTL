@@ -19,5 +19,6 @@
     <color name="background_white_gray">#F6F7F8</color>
     <color name="background_blue">#327CD0</color>
     <color name="background_azure">#E9F0FD</color>
+    <color name="background_dark_blu_qta_device">#1A4578</color>
 
 </resources>

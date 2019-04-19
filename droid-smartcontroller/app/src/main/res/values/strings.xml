@@ -10,4 +10,8 @@
 
     <!-- ERRORS -->
     <string name="err_no_device_found">Non ho trovato nessun dispositivo IOT :(</string>
+
+    <!-- ITEM ROOM -->
+    <string name="item_room_description">descrip</string>
+    <string name="item_room_qta_device"> 0 device </string>
 </resources>
