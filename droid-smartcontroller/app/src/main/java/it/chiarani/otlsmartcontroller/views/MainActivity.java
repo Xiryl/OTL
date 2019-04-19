@@ -1,6 +1,10 @@
 package it.chiarani.otlsmartcontroller.views;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
@@ -99,6 +103,7 @@ public class MainActivity extends BaseActivity {
 
                     RoomsAdapter roomsAdapter = new RoomsAdapter(user);
                     binding.mainActivityRecyclerviewRooms.setAdapter(roomsAdapter);
+
                 }));
     }
 }

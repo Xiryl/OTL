@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_height="match_parent"
-                    android:text="Benvenuto"
+                    android:text="@string/welcome"
                     android:gravity="center_vertical"
                     android:fontFamily="@font/os_bold"
                     android:textSize="20sp"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:fontFamily="@font/os_regular"
-                android:text="Le tue stanze"
+                android:text="@string/room_title"
                 android:textSize="@dimen/std_title"
                 android:textColor="@color/title_gray" />
 
@@ -70,96 +70,5 @@
                 android:orientation="horizontal"/>
 
         </RelativeLayout>
-
-
-
-        <!--
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/mainactivity_title_room"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:fontFamily="@font/os_regular"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:text="Le tue stanze"
-                android:textSize="25sp"
-                android:textColor="#000" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_below="@id/mainactivity_title_room"
-                android:paddingStart="8dp"
-                android:layout_marginTop="16dp"
-                android:clipToPadding = "false"
-                android:overScrollMode="never"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="horizontal"
-                android:id="@+id/mainactivity_rv_rooms"
-                android:orientation="horizontal"/>
-
-
-
-
-            <TextView
-                android:layout_below="@id/mainactivity_rv_rooms"
-                android:id="@+id/mainactivity_title_dispositivi"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:fontFamily="@font/os_regular"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:text="Dispositivi preferiti"
-                android:textSize="25sp"
-                android:textColor="#000" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_below="@id/mainactivity_title_dispositivi"
-                android:paddingStart="8dp"
-                android:layout_marginTop="16dp"
-                android:clipToPadding = "false"
-                android:overScrollMode="never"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="horizontal"
-                android:id="@+id/mainactivity_rv_devices"
-                android:orientation="horizontal"/>
-
-
-            <ImageView
-                android:layout_marginTop="40dp"
-                android:layout_below="@id/mainactivity_rv_devices"
-                android:layout_width="match_parent"
-                android:src="@drawable/ic_image_test"
-                android:layout_height="500dp" />
-        </RelativeLayout>
-
-
-
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/mainActivity_bottomappbar"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabAlignmentMode="center"
-            app:elevation="5dp">
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/mainactivity_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_anchor="@id/mainActivity_bottomappbar"
-            app:tint="#5D8FF1"
-            app:backgroundTint="@android:color/white"
-            android:src="@drawable/ic_home"/>
--->
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

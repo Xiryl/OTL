@@ -6,6 +6,7 @@
     </data>
     <RelativeLayout
         android:id="@+id/item_room_rl"
+        android:transitionName="prova1"
         android:layout_width="@dimen/item_room_card_width"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/item_room_card_margin"
@@ -38,6 +39,7 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/ic_room_kitchen"
             android:layout_below="@id/item_room_ll_qta_device"
+            android:transitionName="prova"
             android:id="@+id/item_room_img"/>
 
         <TextView

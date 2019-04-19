@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data/>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_bg_panna"
+        tools:context=".views.MainActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_marginTop="@dimen/std_m_16"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/activity_room_detail_rl_header"
+                android:layout_width="wrap_content"
+                android:transitionName="prova1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/item_room_card_margin"
+                android:background="@drawable/ic_room_gradient_inactive"
+                android:layout_marginStart="@dimen/item_room_card_margin">
+                <ImageView
+                    android:layout_marginStart="@dimen/std_m_16"
+                    android:layout_width="@dimen/item_room_img_height"
+                    android:layout_height="@dimen/item_room_img_height"
+                    android:layout_centerVertical="true"
+                    android:transitionName="prova"
+                    android:src="@drawable/ic_room_kitchen"
+                    android:id="@+id/activity_room_img_header"/>
+
+                <TextView
+                    android:id="@+id/activity_room_detail_room_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kitchen"
+                    android:gravity="center_vertical"
+                    android:fontFamily="@font/os_bold"
+                    android:textSize="20sp"
+                    android:textColor="@color/background_white_gray"
+                    android:layout_toRightOf="@id/activity_room_img_header"
+                    android:layout_margin="@dimen/std_m_16"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
