@@ -46,6 +46,36 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_below="@id/activity_room_detail_rl_header"
+                android:layout_marginTop="@dimen/std_m_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_marginTop="@dimen/std_m_16"
+                    android:id="@+id/activity_room_detail_txt_qta_device"
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/os_regular"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_marginBottom="@dimen/std_p_10"
+                    android:text="3 dispositivi rilevati. Controlla la stanza:"/>
+
+                <com.suke.widget.SwitchButton
+                    android:layout_marginStart="@dimen/std_m_16"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/activity_room_detail_txt_qta_device"
+                    android:id="@+id/switch_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
