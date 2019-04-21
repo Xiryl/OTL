@@ -116,11 +116,9 @@ Then `npm install` and `node server.js`
 ## Android
 Open the project with Android Studio.
 
-The app UI should look like these (_It would be different, I like to change the UI several times_):
+The app UI should look like these (_I only post login UI, but the rest of the app is sexy too with animation and transition_):
 
-<img src="https://github.com/Xiryl/OTL/blob/master/ot/mokup.png" width="600px" />
-
-Please forgive me for the Android mockup on and iPhone X(s).
+<img src="https://github.com/Xiryl/OTL/blob/master/droid-smartcontroller/graphics/login_template.jpg" width="400px" />
 
 ## Auth and API call workflow
 
