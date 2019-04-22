@@ -60,35 +60,32 @@ To run the entire project you need:
 ```JSON
 {
     "MQTT": {
-        "MQTT_BROKER_ADDRESS" : "mqtt://127.0.16.1",        
-        "MQTT_ALLOWED_DEVICES" : [                          
-            "sonoff-1"
+        "MQTT_BROKER_ADDRESS" : "mqtt://x.y.z.w",
+        "MQTT_ALLOWED_DEVICES" : [
+            "device_1"
         ],
-        "MQTT_ALLOWED_TOPICS" : [                           
-            "bedroom"
+        "MQTT_ALLOWED_COMMANDS" : [
+            "ON", "OFF"
         ],
-        "MQTT_ALLOWED_COMMANDS" : [                         
-            "ON", "OFF", "getstatus"
-        ],
-        "MQTT_ALLOWED_ACTION_FOR_COMMAND" : "control"       
+        "MQTT_ALLOWED_ACTION_FOR_COMMAND" : "control"
     },
     "server" : {
-        "SERVER_HOST" : "127.0.0.1",                        
-        "SERVER_PORT" : 5000,                               
-        "FILENAME_LOG" : "out-log.log",                     
-        "ALLOWED_ACTIONS" : [                               
+        "SERVER_HOST" : "x.y.z.w",
+        "SERVER_PORT" : 1234,
+        "FILENAME_LOG" : "out-log.log",
+        "ALLOWED_ACTIONS" : [
             "control",
             "getstatus"
         ]
     },
     "jwt" : {
-        "JWT_ALLOWED_USERS" : [ "mbp-fabio"],               
-        "JWT_TOKEN_EXPIRATION" : "1h",                      
-        "JWT_PRIVATE_KEY" : "maow"                          
+        "JWT_ALLOWED_USERS" : [ "user_1"],
+        "JWT_TOKEN_EXPIRATION" : "1h",
+        "JWT_PRIVATE_KEY" : "pk"
     },
     "slack" : {
-        "SLACK_WEBHOOK": "https://hooks.slack.com/...",     
-        "SLACK_CHANNEL": "#maow"                            
+        "SLACK_WEBHOOK": "https://hooks.slack.com/services/...",
+        "SLACK_CHANNEL": "#channel"
     }
 }
 ```
@@ -97,7 +94,6 @@ To run the entire project you need:
 | -- | -- | -- |
 | MQTT | `MQTT_BROKER_ADDRESS` | MQTT broker address host |
 | MQTT |  `MQTT_ALLOWED_DEVICES` | MQTT allowed devices to control from intranet |
-| MQTT |  `MQTT_ALLOWED_TOPICS` | MQTT allowed topics to control from intranet |
 | MQTT |  `MQTT_ALLOWED_COMMANDS` | MQTT allowed commands to control from intranet |
 | MQTT |  `MQTT_ALLOWED_ACTION_FOR_COMMAND` | MQTT allowed action for command (deprecated) |
 | SERVER |  `SERVER_HOST` | Server IP host |
