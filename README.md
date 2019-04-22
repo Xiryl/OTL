@@ -125,6 +125,7 @@ Main
 <img src="https://github.com/Xiryl/OTL/blob/master/droid-smartcontroller/graphics/main_template.png" width="400px" />
 
 Room Detail
+
 <img src="https://github.com/Xiryl/OTL/blob/master/droid-smartcontroller/graphics/room_detail_template.png" width="400px" />
 
 ## Auth and API call workflow
