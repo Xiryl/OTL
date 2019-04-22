@@ -114,11 +114,18 @@ To run the entire project you need:
 Then `npm install` and `node server.js`
 
 ## Android
-Open the project with Android Studio.
+Open the project with Android Studio. Probably you need to get your personal firebase json file.
 
-The app UI should look like these (_I only post login UI, but the rest of the app is sexy too with animation and transition_):
+The app UI should look like these 😍 :
 
+Login
 <img src="https://github.com/Xiryl/OTL/blob/master/droid-smartcontroller/graphics/login_template.jpg" width="400px" />
+
+Main
+<img src="https://github.com/Xiryl/OTL/blob/master/droid-smartcontroller/graphics/main_template.png" width="400px" />
+
+Room Detail
+<img src="https://github.com/Xiryl/OTL/blob/master/droid-smartcontroller/graphics/room_detail_template.png" width="400px" />
 
 ## Auth and API call workflow
 
