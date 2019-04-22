@@ -23,7 +23,7 @@ import it.chiarani.otlsmartcontroller.views.RoomDetailActivity;
 
 public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> {
 
-    private User mUser;
+    private User    mUser;
     private Context context;
 
     public RoomsAdapter(User mUser) {
@@ -58,14 +58,12 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> 
         @Override
         public void onClick(View v) {
             Intent i = new Intent(v.getContext(), RoomDetailActivity.class);
+            i.putExtra("ROOM_INDEX", this.getAdapterPosition());
 
-
-            String transitionName = "prova";
             Pair<View, String> p1 =  Pair.create((View)img, "prova");
             Pair<View, String> p2 =  Pair.create((View)rl, "prova1");
 
             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)context,p1,p2);
-
 
             v.getContext().startActivity(i, options.toBundle());
         }
@@ -75,7 +73,7 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull RoomsAdapter.ViewHolder holder, int position) {
         holder.img.setImageDrawable(context.getResources().getDrawable(RoomHelper.getResource(RoomTypes.KITCHEN)));
-        holder.title.setText(mUser.otlRoomsList.get(position).roomName);
+        holder.title.setText(mUser.otlRoomsList.get(position).roomName.split("$")[0]);
         holder.qtaDevice.setText(mUser.otlRoomsList.get(position).devices.size() + "Device");
     }
 

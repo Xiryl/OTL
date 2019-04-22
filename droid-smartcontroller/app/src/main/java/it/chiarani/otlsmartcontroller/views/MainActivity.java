@@ -1,10 +1,6 @@
 package it.chiarani.otlsmartcontroller.views;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
@@ -22,7 +18,7 @@ import it.chiarani.otlsmartcontroller.api.RetrofitAPI;
 import it.chiarani.otlsmartcontroller.databinding.ActivityMainBinding;
 import it.chiarani.otlsmartcontroller.db.Injection;
 import it.chiarani.otlsmartcontroller.helpers.Config;
-import it.chiarani.otlsmartcontroller.helpers.DiscoveryInitialization;
+import it.chiarani.otlsmartcontroller.controllers.DiscoveryInitialization;
 import it.chiarani.otlsmartcontroller.viewmodels.UserViewModel;
 import it.chiarani.otlsmartcontroller.viewmodels.ViewModelFactory;
 
@@ -48,7 +44,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void setViewModel() {
         mViewModelFactory = Injection.provideViewModelFactory(this);
-        mUserViewModel =  ViewModelProviders.of(this, mViewModelFactory).get(UserViewModel.class);;
+        mUserViewModel =  ViewModelProviders.of(this, mViewModelFactory).get(UserViewModel.class);
     }
 
 
@@ -105,5 +101,10 @@ public class MainActivity extends BaseActivity {
                     binding.mainActivityRecyclerviewRooms.setAdapter(roomsAdapter);
 
                 }));
+    }
+
+    @Override
+    public void onBackPressed() {
+        // nothing
     }
 }

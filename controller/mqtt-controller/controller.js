@@ -8,7 +8,7 @@ let getDeviceStatus = (topic, device) => new Promise ( (resolve) => {
 
 	mqtt_client.on('connect', function () {
 
-		log.debug(`[CONTROLLER]-[connect]-[${Date.now()}] Connected to ${config.MQTT.MQTT_BROKER_ADDRESS}`);
+		log.debug(`[CONTROLLER]-[connect-dev-status]-[${Date.now()}] Connected to ${config.MQTT.MQTT_BROKER_ADDRESS}`);
 
 		mqtt_client.subscribe(`stat/${device}/+`);
 		mqtt_client.publish	 (`cmnd/${device}/status`);
@@ -46,12 +46,16 @@ let controlDevice = (topic, device, command, callback) => {
 
 		// send command to device
 		mqtt_client.publish(`cmnd/${device}/power`, command);
+		console.log('qui5');
+
 	});
 
 	/** DEVICE CALLBACK MESSAGE HANDLER */
 	mqtt_client.on('message', function (topic, message) {
+		console.log('qui4');
 
 		if( topic === `stat/${device}/STATUS`) {
+			console.log('qui3');
 
 			const actualPowerStatus = JSON.parse(message.toString()).Status.Power;
 			const newStatus 		= actualPowerStatus == 0 ? 'ON' : 'OFF';
@@ -80,8 +84,11 @@ let controlDevice = (topic, device, command, callback) => {
 				// nothing
 			});
 			
+			console.log('qui2');
+
 		}
 		else if( topic === `stat/${device}/RESULT`) {
+			console.log('qui');
 			// remove here
 
 			/*//log.warn('[RESULT] inside status');
@@ -96,6 +103,8 @@ let controlDevice = (topic, device, command, callback) => {
 			//** skip this */
 		}
 		else if( topic === `stat/${device}/POWER`) {
+			console.log('qui1');
+
 			// remove here
 
 			//	log.warn(`[POWER] ${message.toString()}`);	

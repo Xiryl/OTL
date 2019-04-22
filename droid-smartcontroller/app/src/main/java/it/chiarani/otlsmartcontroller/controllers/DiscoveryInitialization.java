@@ -1,4 +1,4 @@
-package it.chiarani.otlsmartcontroller.helpers;
+package it.chiarani.otlsmartcontroller.controllers;
 
 import android.annotation.SuppressLint;
 
@@ -35,11 +35,11 @@ public class DiscoveryInitialization implements Observer<DiscoveryRetrofitModel>
         OTLDeviceEntity deviceEntity        = new OTLDeviceEntity();
         OTLRoomsEntity roomsEntity          = new OTLRoomsEntity();
 
-        String roomName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("/")[0];
+        String roomName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("\\$")[0];
 
         deviceEntity.deviceDescription  = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname();
         deviceEntity.deviceStatus       = discoveryRetrofitModel.getMessage().getDevices().get(0).getState();
-        deviceEntity.deviceName         = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("/")[1];
+        deviceEntity.deviceName         = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("\\$")[1];
         tmpDevices.add(deviceEntity);
 
         roomsEntity.roomName = roomName;
