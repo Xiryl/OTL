@@ -1,8 +1,13 @@
 package it.chiarani.otlsmartcontroller.views;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -44,7 +49,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void setViewModel() {
         mViewModelFactory = Injection.provideViewModelFactory(this);
-        mUserViewModel =  ViewModelProviders.of(this, mViewModelFactory).get(UserViewModel.class);
+        mUserViewModel    =  ViewModelProviders.of(this, mViewModelFactory).get(UserViewModel.class);
     }
 
 
@@ -68,6 +73,25 @@ public class MainActivity extends BaseActivity {
                 .subscribe(new DiscoveryInitialization(mUserViewModel));
 
         updateUI();
+
+        GraphView graph = (GraphView) findViewById(R.id.main_activity_graph_usage);
+        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, 1),
+                new DataPoint(1, 5),
+                new DataPoint(2, 3),
+                new DataPoint(3, 2),
+                new DataPoint(4, 6),
+                new DataPoint(5, 3),
+                new DataPoint(6, 0),
+                new DataPoint(7, 6)
+        });
+        graph.addSeries(series);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+        graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.parseColor("#bab2ec"));
+        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.parseColor("#bab2ec"));
+
     }
 
 

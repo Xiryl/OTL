@@ -16,13 +16,13 @@
             <LinearLayout
                 android:id="@+id/main_activity_ll_welcome"
                 android:layout_width="match_parent"
-                android:layout_margin="30dp"
+                android:layout_marginTop="@dimen/std_m_16"
+                android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/main_activity_img_user"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="50dp"
@@ -46,6 +46,7 @@
             </LinearLayout>
 
             <TextView
+                android:layout_marginTop="@dimen/std_m_16"
                 android:layout_below="@id/main_activity_ll_welcome"
                 android:id="@+id/mainactivity_title_room"
                 android:layout_width="match_parent"
@@ -69,15 +70,62 @@
                 android:orientation="horizontal"/>
 
 
+
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="@dimen/std_m_16"
+                    android:layout_marginEnd="@dimen/std_m_16"
+                    android:id="@+id/main_activity_rl_timer"
+                    android:layout_marginTop="16dp">
+
+                    <ImageView
+                        android:id="@+id/main_activity_img_timer"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/std_m_16"
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_clock"/>
+
+                    <TextView
+                        android:layout_toRightOf="@id/main_activity_img_timer"
+                        android:id="@+id/main_activity_txt_timer"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="@dimen/std_m_16"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:fontFamily="@font/os_regular"
+                        android:text="Scheduler"
+                        android:textSize="20sp"
+                        android:textColor="@color/title_gray" />
+
+                    <TextView
+                        android:layout_below="@id/main_activity_txt_timer"
+                        android:layout_toRightOf="@id/main_activity_img_timer"
+                        android:id="@+id/main_activity_txt_timer_descr"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="@dimen/std_m_16"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:fontFamily="@font/os_light"
+                        android:text="Prossimo scheduler alle 13:00"
+                        android:textSize="18sp"
+                        android:textColor="@color/title_gray" />
+                </RelativeLayout>
+            <RelativeLayout
+                android:layout_below="@id/main_activity_rl_timer"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_rounded_gray"
                 android:gravity="center_vertical"
                 android:layout_marginStart="@dimen/std_m_16"
                 android:layout_marginEnd="@dimen/std_m_16"
-                android:layout_below="@id/main_activity_recyclerview_rooms"
-                android:layout_marginTop="@dimen/std_m_16">
+                android:id="@+id/main_activity_rl_usage">
 
                 <ImageView
                     android:id="@+id/main_activity_img_energy"
@@ -111,20 +159,18 @@
                     android:text="Stima cosumo giornaliero"
                     android:textSize="18sp"
                     android:textColor="@color/title_gray" />
-
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/main_activity_settings"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="9dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_settings"
-                android:layout_marginBottom="@dimen/std_m_16"/>
-
+            <com.jjoe64.graphview.GraphView
+                android:layout_margin="30dp"
+                android:layout_marginBottom="@dimen/std_m_16"
+                android:layout_marginTop="@dimen/std_m_16"
+                android:layout_below="@id/main_activity_rl_usage"
+                android:background="@drawable/background_rounded_gray"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/main_activity_graph_usage" />
+            </RelativeLayout>
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
