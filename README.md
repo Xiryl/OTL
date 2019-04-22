@@ -118,13 +118,15 @@ Open the project with Android Studio. Probably you need to get your personal fir
 
 The app UI should look like these 😍 :
 
-Login
+Login:
+
 <img src="https://github.com/Xiryl/OTL/blob/master/droid-smartcontroller/graphics/login_template.jpg" width="400px" />
 
-Main
+Main:
+
 <img src="https://github.com/Xiryl/OTL/blob/master/droid-smartcontroller/graphics/main_template.png" width="400px" />
 
-Room Detail
+Room Detail:
 
 <img src="https://github.com/Xiryl/OTL/blob/master/droid-smartcontroller/graphics/room_detail_template.png" width="400px" />
 
