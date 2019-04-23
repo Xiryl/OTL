@@ -4,6 +4,7 @@ import java.util.List;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import it.chiarani.otlsmartcontroller.helpers.RoomTypes;
 
 @Entity
 public class OTLRoomsEntity {
@@ -11,6 +12,8 @@ public class OTLRoomsEntity {
     public int idRoom;
 
     public String roomName;
+
+    public String roomType;
 
     public String roomTags;
 

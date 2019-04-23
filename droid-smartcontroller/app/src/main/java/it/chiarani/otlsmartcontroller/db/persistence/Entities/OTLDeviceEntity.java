@@ -1,10 +1,9 @@
 package it.chiarani.otlsmartcontroller.db.persistence.Entities;
 
-import java.util.List;
-
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.Dao;
+import androidx.room.TypeConverters;
+import it.chiarani.otlsmartcontroller.helpers.DeviceTypes;
 
 @Entity
 public class OTLDeviceEntity {
@@ -12,6 +11,8 @@ public class OTLDeviceEntity {
     public int idDevice;
 
     public String deviceName;
+
+    public String deviceType;
 
     public String deviceDescription;
 

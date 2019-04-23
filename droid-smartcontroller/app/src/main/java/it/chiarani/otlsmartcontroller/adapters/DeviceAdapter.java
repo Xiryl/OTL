@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import it.chiarani.otlsmartcontroller.R;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
+import it.chiarani.otlsmartcontroller.helpers.DeviceHelper;
+import it.chiarani.otlsmartcontroller.helpers.DeviceTypes;
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder> {
 
@@ -58,7 +60,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull DeviceAdapter.ViewHolder holder, int position) {
-       // holder.img.setImageDrawable(context.getResources().getDrawable(RoomHelper.getResource(RoomTypes.KITCHEN)));
+        DeviceTypes type = DeviceHelper.parseType(mUser.otlRoomsList.get(roomIndex).devices.get(position).deviceType);
+        holder.img.setImageDrawable(context.getResources().getDrawable(DeviceHelper.getResource(type)));
         holder.title.setText(mUser.otlRoomsList.get(roomIndex).devices.get(position).deviceName);
         holder.devStatus.setText(mUser.otlRoomsList.get(roomIndex).devices.get(position).deviceStatus == 1 ? " ON " : " OFF ");
     }

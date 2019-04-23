@@ -1,5 +1,5 @@
 package it.chiarani.otlsmartcontroller.helpers;
 
-public enum RoomTypes {
-    KITCHEN
+public enum DeviceTypes {
+    LIGHT
 }

@@ -12,6 +12,10 @@ import io.reactivex.schedulers.Schedulers;
 import it.chiarani.otlsmartcontroller.api.DiscoveryRetrofitModel;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.OTLDeviceEntity;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.OTLRoomsEntity;
+import it.chiarani.otlsmartcontroller.helpers.DeviceHelper;
+import it.chiarani.otlsmartcontroller.helpers.DeviceTypes;
+import it.chiarani.otlsmartcontroller.helpers.RoomHelper;
+import it.chiarani.otlsmartcontroller.helpers.RoomTypes;
 import it.chiarani.otlsmartcontroller.viewmodels.UserViewModel;
 
 public class DiscoveryInitialization implements Observer<DiscoveryRetrofitModel> {
@@ -35,14 +39,17 @@ public class DiscoveryInitialization implements Observer<DiscoveryRetrofitModel>
         OTLDeviceEntity deviceEntity        = new OTLDeviceEntity();
         OTLRoomsEntity roomsEntity          = new OTLRoomsEntity();
 
-        String roomName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("\\$")[0];
+        String roomType   = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("\\$")[0];
+        String deviceType = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("\\$")[1];
+        String deviceName = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("\\$")[2];
 
         deviceEntity.deviceDescription  = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname();
         deviceEntity.deviceStatus       = discoveryRetrofitModel.getMessage().getDevices().get(0).getState();
-        deviceEntity.deviceName         = discoveryRetrofitModel.getMessage().getDevices().get(0).getDevname().split("\\$")[1];
+        deviceEntity.deviceType         = deviceType;
+        deviceEntity.deviceName         = deviceName;
         tmpDevices.add(deviceEntity);
 
-        roomsEntity.roomName = roomName;
+        roomsEntity.roomType = roomType;
         roomsEntity.devices  = tmpDevices;
         tmpRoomsEntity.add(roomsEntity);
 

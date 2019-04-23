@@ -72,8 +72,9 @@ public class RoomsAdapter extends RecyclerView.Adapter<RoomsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull RoomsAdapter.ViewHolder holder, int position) {
-        holder.img.setImageDrawable(context.getResources().getDrawable(RoomHelper.getResource(RoomTypes.KITCHEN)));
-        holder.title.setText(mUser.otlRoomsList.get(position).roomName.split("$")[0]);
+        RoomTypes type = RoomHelper.parseType(mUser.otlRoomsList.get(position).roomType);
+        holder.img.setImageDrawable(context.getResources().getDrawable(RoomHelper.getResource(type)));
+        holder.title.setText(mUser.otlRoomsList.get(position).roomType);
         holder.qtaDevice.setText(mUser.otlRoomsList.get(position).devices.size() + "Device");
     }
 
