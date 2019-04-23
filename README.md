@@ -110,9 +110,10 @@ Then `npm install` and `node server.js`
 
 Imporant note: the mqtt device need to have this format, otherwise the android app don't reconize it
 
-MQTT > Device TOPIC name: `ROOM_TYPE$DEVICE_NAME`
+MQTT > Device TOPIC name: `ROOM_TYPE$DEVICE_TYPE$DEVICE_NAME`
 
 Where `ROOM_TYPE` is defined into android > helper > `RoomTypes.java`
+Where `DEVICE_TYPE` is defined into android > helper > `DeviceTypes.java`
 
 ## Android
 Open the project with Android Studio.
