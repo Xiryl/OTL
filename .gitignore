@@ -158,3 +158,5 @@ controller/config/config\.json
 droid/OTL/app/src/main/java/it/chiarani/otl/helper/Config\.java
 
 droid-smartcontroller/app/google-services\.json
+
+droid-smartcontroller/app/src/main/java/it/chiarani/otlsmartcontroller/helpers/Config\.java
