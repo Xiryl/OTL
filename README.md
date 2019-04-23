@@ -14,6 +14,7 @@ Over The Light is my personal project for home automation system that allows you
 ## Guide
 - [Dafaq am I reinventing the wheel!?](#why-reinventing-the-wheel)
 - [Install](#installation)
+- [Device Configuration](#devuce-configuration)
 - [Android](#android)
 - [Auth & API call workflow](#auth-and-api-call-workflow)
 - [System Workflow - connection](#system-workflow-connection)
@@ -104,8 +105,16 @@ To run the entire project you need:
 
 Then `npm install` and `node server.js`
 
+## Device Configuration
+
+Imporant note: the mqtt device need to have this format, otherwise the android app don't reconize it
+
+MQTT > Device TOPIC name: `ROOM_TYPE$DEVICE_NAME`
+
+Where `ROOM_TYPE` is defined into android > helper > `RoomTypes.java`
+
 ## Android
-Open the project with Android Studio. Probably you need to get your personal firebase json file.
+Open the project with Android Studio.
 
 The app UI should look like these 😍 :
 
