@@ -60,32 +60,28 @@ To run the entire project you need:
 ```JSON
 {
     "MQTT": {
-        "MQTT_BROKER_ADDRESS" : "mqtt://x.y.z.w",
+        "MQTT_BROKER_ADDRESS" : "mqtt://z.z.z.z",
         "MQTT_ALLOWED_DEVICES" : [
             "device_1"
         ],
         "MQTT_ALLOWED_COMMANDS" : [
-            "ON", "OFF"
+            "ON", "OFF", "getstatus"
         ],
         "MQTT_ALLOWED_ACTION_FOR_COMMAND" : "control"
     },
     "server" : {
-        "SERVER_HOST" : "x.y.z.w",
+        "SERVER_HOST" : "z.z.z.z",
         "SERVER_PORT" : 1234,
-        "FILENAME_LOG" : "out-log.log",
-        "ALLOWED_ACTIONS" : [
-            "control",
-            "getstatus"
-        ]
+        "FILENAME_LOG" : "out-log.log"
     },
     "jwt" : {
-        "JWT_ALLOWED_USERS" : [ "user_1"],
+        "JWT_ALLOWED_USERS" : [ "user"],
         "JWT_TOKEN_EXPIRATION" : "1h",
         "JWT_PRIVATE_KEY" : "pk"
     },
     "slack" : {
-        "SLACK_WEBHOOK": "https://hooks.slack.com/services/...",
-        "SLACK_CHANNEL": "#channel"
+        "SLACK_WEBHOOK": "https://hooks.slack.com/services/zzzz",
+        "SLACK_CHANNEL": "#zzzz"
     }
 }
 ```
@@ -99,7 +95,6 @@ To run the entire project you need:
 | SERVER |  `SERVER_HOST` | Server IP host |
 | SERVER | `SERVER_PORT` | Server port |
 | SERVER | `FILENAME_LOG` | Server log file path |
-| SERVER | `ALLOWED_ACTIONS` | Server allowed API actions |
 | JWT | `JWT_ALLOWED_USERS` | JWT allowed users |
 | JWT | `JWT_TOKEN_EXPIRATION` | JWT token expiration **in (h)**|
 | JWT | `JWT_PRIVATE_KEY` |  JWT signature private key |
