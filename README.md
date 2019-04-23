@@ -21,6 +21,7 @@ Over The Light is my personal project for home automation system that allows you
 - [System Workflow - discovery](#system-workflow-discovery)
 - [Project Structure](#project-structure)
 - [Related](#related)
+- [Privacy](#privacy)
 - [PR](#can-i-contribute)
 
 ## Why Reinventing the Wheel?
@@ -158,7 +159,21 @@ Each folder of the repo represents a component
   - all the components for back-end
     - `server.js` contains API handler
     - `controller.js` contains MQTT handler
-  
+
+## Privacy
+
+This project is privacy-oriented. All depends on your bad, or good decision.
+
+- It's your device.
+- It's your mqtt server.
+- It's your backend.
+- It's your mqtt auth.
+- It's your symmetric jwt key.
+- It's your SSL certificate.
+- It's your google account.
+- It's your client.
+
+
 #### Related
 - [tasmota](https://github.com/arendst/Sonoff-Tasmota)
 - [hass.io](https://github.com/home-assistant/hassio)
