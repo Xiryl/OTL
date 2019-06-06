@@ -8,10 +8,12 @@ import java.util.List;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import it.chiarani.otlsmartcontroller.api.DiscoveryRetrofitModel;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.OTLDeviceEntity;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.OTLRoomsEntity;
+import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
 import it.chiarani.otlsmartcontroller.helpers.DeviceHelper;
 import it.chiarani.otlsmartcontroller.helpers.DeviceTypes;
 import it.chiarani.otlsmartcontroller.helpers.RoomHelper;
@@ -57,11 +59,11 @@ public class DiscoveryInitialization implements Observer<DiscoveryRetrofitModel>
                 .take(1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( user -> {
+                .subscribe(user -> {
                     user.otlRoomsList = tmpRoomsEntity;
                     //bindRecyclerView(user);
 
-                   mUserViewModel.insertUser(user)
+                    mUserViewModel.insertUser(user)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread()).subscribe();
                 });

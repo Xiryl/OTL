@@ -96,6 +96,15 @@ let start = () => {
         }
     });
 
+
+    /** [test] */
+    /**======================================================================== */
+    app.get('/test', async (request, response)  => {
+      require('./usage-scheduler');
+    });
+
+
+
     /** COMMAND */
     /**======================================================================== */
     app.get('/:action/:topic/:device/:command', async (request, response) => {

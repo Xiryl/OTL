@@ -7,11 +7,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import it.chiarani.otlsmartcontroller.R;
+import it.chiarani.otlsmartcontroller.api.AuthBodyRetrofitModel;
+import it.chiarani.otlsmartcontroller.api.OTLAPI;
+import it.chiarani.otlsmartcontroller.api.RetrofitAPI;
+import it.chiarani.otlsmartcontroller.controllers.DiscoveryInitialization;
 import it.chiarani.otlsmartcontroller.db.persistence.Entities.User;
+import it.chiarani.otlsmartcontroller.helpers.Config;
 import it.chiarani.otlsmartcontroller.helpers.DeviceHelper;
 import it.chiarani.otlsmartcontroller.helpers.DeviceTypes;
 
@@ -53,6 +61,24 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
+
+            Toast.makeText(v.getContext(), "invio", Toast.LENGTH_LONG).show();
+            RetrofitAPI mRetrofitAPI = OTLAPI.getInstance();
+
+            AuthBodyRetrofitModel authBodyRetrofitModel = new AuthBodyRetrofitModel();
+            authBodyRetrofitModel.setClientUsername(Config.CLIENT_USERNAME);
+
+            mRetrofitAPI.auth(authBodyRetrofitModel)
+                    .take(1)
+                    .flatMap(authRetrofitModel -> {
+                        String token = authRetrofitModel.getToken();
+                        return mRetrofitAPI.controlDevice(token);
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe( x -> {
+                        x.getMessage();
+                    });
 
         }
     }

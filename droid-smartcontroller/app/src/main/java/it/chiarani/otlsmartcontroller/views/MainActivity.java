@@ -1,7 +1,9 @@
 package it.chiarani.otlsmartcontroller.views;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.jjoe64.graphview.GraphView;
@@ -33,8 +35,6 @@ public class MainActivity extends BaseActivity {
     private final CompositeDisposable mDisposable = new CompositeDisposable();
     private ViewModelFactory mViewModelFactory;
     private UserViewModel mUserViewModel;
-    private RetrofitAPI mRetrofitAPI;
-
 
     @Override
     protected int getLayoutID() {
@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void setViewModel() {
         mViewModelFactory = Injection.provideViewModelFactory(this);
-        mUserViewModel    =  ViewModelProviders.of(this, mViewModelFactory).get(UserViewModel.class);
+        mUserViewModel    = ViewModelProviders.of(this, mViewModelFactory).get(UserViewModel.class);
     }
 
 
@@ -73,25 +73,6 @@ public class MainActivity extends BaseActivity {
                 .subscribe(new DiscoveryInitialization(mUserViewModel));
 
         updateUI();
-
-        GraphView graph = (GraphView) findViewById(R.id.main_activity_graph_usage);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6),
-                new DataPoint(5, 3),
-                new DataPoint(6, 0),
-                new DataPoint(7, 6)
-        });
-        graph.addSeries(series);
-        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
-        graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
-        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.parseColor("#bab2ec"));
-        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.parseColor("#bab2ec"));
-
     }
 
 
@@ -109,22 +90,51 @@ public class MainActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe( user -> {
 
-                    if (user == null || user.otlRoomsList == null) {
+                    if (user == null) {
                         return;
+                    }
+                    if(user.otlRoomsList != null) {
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                        binding.mainActivityRecyclerviewRooms.setLayoutManager(linearLayoutManager);
+
+                        RoomsAdapter roomsAdapter = new RoomsAdapter(user);
+                        binding.mainActivityRecyclerviewRooms.setAdapter(roomsAdapter);
+
+                        GraphView graph = (GraphView) findViewById(R.id.main_activity_graph_usage);
+                        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
+                                new DataPoint(0, 1),
+                                new DataPoint(1, 5),
+                                new DataPoint(2, 3),
+                                new DataPoint(3, 2),
+                                new DataPoint(4, 6),
+                                new DataPoint(5, 3),
+                                new DataPoint(6, 0),
+                                new DataPoint(7, 6)
+                        });
+                        graph.addSeries(series);
+                        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+                        graph.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+                        graph.getGridLabelRenderer().setVerticalLabelsVisible(true);
+                        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.parseColor("#bab2ec"));
+                        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.parseColor("#bab2ec"));
+                        binding.mainActivityImgNodata.setImageDrawable(null);
+                        binding.mainactivityTitleRoom.setText("Le tue stanze");
+                        binding.mainActivityRlContainer.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        binding.mainActivityImgNodata.setImageResource(R.drawable.nofound);
+                        binding.mainActivityRlContainer.setVisibility(View.GONE);
+                        binding.mainactivityTitleRoom.setText("Non ho trovato nessuna stanza!");
                     }
 
                     // update user profile
                     binding.mainActivityTxtWelcome.setText(String.format("%s %s",getResources().getString(R.string.main_welcome), user.userName.split(" ")[0]));
                     Glide.with(this).load(user.userPicture).into(binding.mainActivityImgUser);
 
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                    linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-                    binding.mainActivityRecyclerviewRooms.setLayoutManager(linearLayoutManager);
-
-                    RoomsAdapter roomsAdapter = new RoomsAdapter(user);
-                    binding.mainActivityRecyclerviewRooms.setAdapter(roomsAdapter);
-
                 }));
+
+
     }
 
     @Override

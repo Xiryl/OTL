@@ -33,11 +33,10 @@ public class UnsafeHttpClient {
                 }
             }};
 
-            // Install the all-trusting trust manager
+
+
             final SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustAllCerts,
-                    new java.security.SecureRandom());
-            // Create an ssl socket factory with our all-trusting manager
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             final SSLSocketFactory sslSocketFactory = sslContext
                     .getSocketFactory();
 

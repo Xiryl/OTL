@@ -13,4 +13,7 @@ public interface RetrofitAPI {
 
     @GET("discovery")
     Observable<DiscoveryRetrofitModel> discovery(@Header("Authorization") String authToken);
+
+    @GET("control/bedroom/kitchen$light$lampada-sala/ON")
+    Observable<DeviceControlRetrofitModel> controlDevice(@Header("Authorization") String authToken);
 }
