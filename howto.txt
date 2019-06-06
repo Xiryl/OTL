@@ -8,4 +8,4 @@ subscribe status:
 mosquitto_sub -h 192.168.1.109 -t cmnd/sonoff-1/STATUS -v
 
 
-mosquitto_pub -h 156.54.213.27 -t cmnd/sonoff-1/power -m 0
+mosquitto_pub -h 192.168.1.88 -t cmnd/sonoff-1/power -m 0
