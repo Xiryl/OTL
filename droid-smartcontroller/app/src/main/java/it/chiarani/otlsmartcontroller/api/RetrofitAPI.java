@@ -6,6 +6,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface RetrofitAPI {
     @POST("auth")
@@ -14,6 +15,7 @@ public interface RetrofitAPI {
     @GET("discovery")
     Observable<DiscoveryRetrofitModel> discovery(@Header("Authorization") String authToken);
 
-    @GET("control/bedroom/kitchen$light$lampada-sala/ON")
-    Observable<DeviceControlRetrofitModel> controlDevice(@Header("Authorization") String authToken);
+    //@GET("control/bedroom/kitchen$light$lampada-sala/ON")
+    @GET("control/bedroom/{device}/{newStatus}")
+    Observable<DeviceControlRetrofitModel> controlDevice(@Header("Authorization") String authToken, @Path("device") String device, @Path("newStatus") String newStatus);
 }

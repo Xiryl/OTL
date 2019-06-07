@@ -1,8 +1,8 @@
 package it.chiarani.otlsmartcontroller.views;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -22,10 +22,10 @@ import it.chiarani.otlsmartcontroller.adapters.RoomsAdapter;
 import it.chiarani.otlsmartcontroller.api.AuthBodyRetrofitModel;
 import it.chiarani.otlsmartcontroller.api.OTLAPI;
 import it.chiarani.otlsmartcontroller.api.RetrofitAPI;
+import it.chiarani.otlsmartcontroller.controllers.DiscoveryInitialization;
 import it.chiarani.otlsmartcontroller.databinding.ActivityMainBinding;
 import it.chiarani.otlsmartcontroller.db.Injection;
 import it.chiarani.otlsmartcontroller.helpers.Config;
-import it.chiarani.otlsmartcontroller.controllers.DiscoveryInitialization;
 import it.chiarani.otlsmartcontroller.viewmodels.UserViewModel;
 import it.chiarani.otlsmartcontroller.viewmodels.ViewModelFactory;
 
@@ -70,9 +70,10 @@ public class MainActivity extends BaseActivity {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DiscoveryInitialization(mUserViewModel));
+                .subscribe(new DiscoveryInitialization(this, mUserViewModel));
 
         updateUI();
+
     }
 
 
@@ -93,6 +94,7 @@ public class MainActivity extends BaseActivity {
                     if (user == null) {
                         return;
                     }
+
                     if(user.otlRoomsList != null) {
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -133,8 +135,6 @@ public class MainActivity extends BaseActivity {
                     Glide.with(this).load(user.userPicture).into(binding.mainActivityImgUser);
 
                 }));
-
-
     }
 
     @Override

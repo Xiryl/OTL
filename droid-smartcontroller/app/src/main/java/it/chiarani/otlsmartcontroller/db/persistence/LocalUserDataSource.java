@@ -33,4 +33,5 @@ public class LocalUserDataSource implements UserDataSource {
     public void deleteAllUsers() {
         mUserDao.deleteAll();
     }
+
 }

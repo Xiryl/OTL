@@ -22,4 +22,6 @@ public interface UserDataSource {
      * Remove all users from database
      */
     void deleteAllUsers();
+
+
 }

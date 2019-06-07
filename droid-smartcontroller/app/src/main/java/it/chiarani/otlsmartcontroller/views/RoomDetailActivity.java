@@ -74,7 +74,7 @@ public class RoomDetailActivity extends BaseActivity {
                     linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                     binding.activityRoomDetailRvDevices.setLayoutManager(linearLayoutManager);
 
-                    DeviceAdapter deviceAdapter = new DeviceAdapter(user, roomIndex);
+                    DeviceAdapter deviceAdapter = new DeviceAdapter(user, roomIndex, mUserViewModel);
                     binding.activityRoomDetailRvDevices.setAdapter(deviceAdapter);
 
                 }));
